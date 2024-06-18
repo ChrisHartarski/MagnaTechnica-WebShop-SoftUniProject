@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addAdminUser() {
-        saveUser(new User("admin@mail", "asdasd", "admin", UserRole.ADMIN));
+        saveUser(new User("admin@mail", "asdasd", "admin", "admin", UserRole.ADMIN));
     }
 
 

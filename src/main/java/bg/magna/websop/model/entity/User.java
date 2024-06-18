@@ -16,8 +16,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String name;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column
     private String phone;
@@ -29,10 +32,11 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password, String name, UserRole userRole) {
+    public User(String email, String password, String firstName, String lastName, UserRole userRole) {
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userRole = userRole;
     }
 
@@ -60,12 +64,20 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhone() {

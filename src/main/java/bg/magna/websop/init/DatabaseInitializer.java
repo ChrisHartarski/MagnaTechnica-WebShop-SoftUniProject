@@ -1,4 +1,4 @@
-package bg.magna.websop.util;
+package bg.magna.websop.init;
 
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.service.BrandService;
