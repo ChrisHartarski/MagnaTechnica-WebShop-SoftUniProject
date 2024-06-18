@@ -26,35 +26,47 @@
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
-                                <form>
+                                <form
+                                    th:method="post"
+                                    th:action="@{/register}"
+                                    th:object="${registerData}">
                                     <!-- Email address input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" th:field="*{email}" />
                                         <label for="email">Email address</label>
-                                        <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                                        <small th:errors="*{email}" class="text-danger">Email input error!</small>
+                                        <small th:if="${emailExists}" class="text-danger">User with this email already exists!</small>
                                     </div>
                                     <!-- Password input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" type="password" placeholder="password" data-sb-validations="required" />
+                                        <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}" />
                                         <label for="password">Password</label>
-                                        <div class="invalid-feedback" data-sb-feedback="password:required">A password is required.</div>
+                                        <small th:errors="*{password}" class="text-danger">Password input error!</small>
                                     </div>
                                     <!-- Confirm Password input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="confirm-password" type="password" placeholder="confirm password" data-sb-validations="required" />
+                                        <input class="form-control" id="confirmPassword" type="password" placeholder="confirm password" th:field="*{confirmPassword}" />
                                         <label for="confirm-password">Confirm password</label>
-                                        <div class="invalid-feedback" data-sb-feedback="confirm-password:required">A password is required.</div>
+                                        <small th:errors="*{confirmPassword}" class="text-danger">Confirm password input error!</small>
+                                        <small th:if="${passwordsDoNotMatch}" class="text-danger">Passwords do not match!</small>
                                     </div>
-                                    <!-- Name input-->
+                                    <!-- First Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" type="text" placeholder="Enter your name..."/>
-                                        <label for="name">Full name</label>
+                                        <input class="form-control" id="firstName" type="text" placeholder="Enter your first name..." th:field="*{firstName}"/>
+                                        <label for="name">First name</label>
+                                        <small th:errors="*{firstName}" class="text-danger">First name input errors!</small>
+                                    </div>
+                                    <!-- Last Name input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="lastName" type="text" placeholder="Enter your last name..." th:field="*{lastName}"/>
+                                        <label for="name">Last name</label>
+                                        <small th:errors="*{lastName}" class="text-danger">Last name input errors!</small>
                                     </div>
                                     <!-- Phone number input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890"/>
+                                        <input class="form-control" id="phone" type="text" placeholder="(123) 456-7890" th:field="*{phone}"/>
                                         <label for="phone">Phone number</label>
+                                        <small th:errors="*{phone}" class="text-danger">Phone number input errors!</small>
                                     </div>
                                     <!-- Submit success message-->
                                     <!---->
