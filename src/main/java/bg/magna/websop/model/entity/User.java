@@ -29,6 +29,13 @@ public class User {
     public User() {
     }
 
+    public User(String email, String password, String name, UserRole userRole) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.userRole = userRole;
+    }
+
     public String getId() {
         return id;
     }
