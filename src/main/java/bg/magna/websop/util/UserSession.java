@@ -14,7 +14,7 @@ public class UserSession {
     private UserRole userRole;
 
     public boolean isUserLoggedIn() {
-        return id.isEmpty();
+        return !id.isEmpty();
     }
 
     public void login(User user){

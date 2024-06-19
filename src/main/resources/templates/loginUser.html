@@ -27,19 +27,22 @@
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
-                                <form>
+                                <form
+                                    th:action="@{/loginUser}"
+                                    th:method="post"
+                                    th:object="${loginData}">
                                     <!-- Email address input-->
+                                    <small th:if="${wrongUsernameOrPassword}" class="text-danger">Incorrect username or password!</small>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" th:field="*{email}"/>
                                         <label for="email">Email address</label>
-                                        <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                                        <small th:errors="*{email}" class="text-danger">Email invalid!</small>
                                     </div>
                                     <!-- Password input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" type="password" placeholder="password" data-sb-validations="required" />
+                                        <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}" />
                                         <label for="password">Password</label>
-                                        <div class="invalid-feedback" data-sb-feedback="password:required">A password is required.</div>
+                                        <small th:errors="*{password}" class="text-danger">Password invalid!</small>
                                     </div>
 
                                     <!-- Login Button-->

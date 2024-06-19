@@ -1,10 +1,12 @@
 package bg.magna.websop.service.impl;
 
+import bg.magna.websop.model.dto.LoginUserDTO;
 import bg.magna.websop.model.dto.RegisterUserDTO;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final UserSession userSession;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.userSession = userSession;
     }
 
     @Override
@@ -49,5 +53,24 @@ public class UserServiceImpl implements UserService {
         saveUserToDB(user);
     }
 
+    @Override
+    public boolean isValidUser(LoginUserDTO loginData) {
+        return getUserByEmailAndPassword(loginData) != null;
+    }
 
+    @Override
+    public void loginUser(LoginUserDTO loginData) {
+        userSession.login(getUserByEmailAndPassword(loginData));
+    }
+
+    @Override
+    public void logoutUser() {
+        userSession.logout();
+    }
+
+    private User getUserByEmailAndPassword(LoginUserDTO loginData) {
+        return userRepository.getUserByEmail(loginData.getEmail())
+                .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))
+                .orElse(null);
+    }
 }

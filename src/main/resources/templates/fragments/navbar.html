@@ -32,11 +32,19 @@
 <!--                        </ul>-->
 <!--                    </li>-->
                     <li class="nav-item"><a class="nav-link" th:href="@{/}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="faq.html">Spare Parts</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/webshop}">Spare Parts</a></li>
                     <li class="nav-item"><a class="nav-link" href="faq.html">Service</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/loginUser}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/register}">Register</a></li>
+                    <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/register}">Register</a></li>
+                    <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/loginUser}">Login</a></li>
+                    <li class="nav-item" th:if="${@userSession.isUserLoggedIn()}">
+                        <form
+                            th:action="@{/logout}"
+                            th:method="post">
+                            <button class="btn btn-link nav-link" type="submit" th:href="@{/logout}">Logout</button>
+                        </form>
+                    </li>
+                    <li class="nav-item" th:if="${@userSession.isUserLoggedIn()}"><span class="nav-link">Welcome, <span th:text="${@userSession.firstName}">user</span>!</span></li>
                 </ul>
             </div>
         </div>
