@@ -17,8 +17,18 @@ public class UserSession {
         return !getId().isEmpty();
     }
 
+    public boolean isUserWithUserRoleLoggedIn() {
+        if(isUserLoggedIn()) {
+            return getUserRole().equals(UserRole.USER);
+        }
+        return false;
+    }
+
     public boolean isAdminLoggedIn() {
-        return getUserRole().equals(UserRole.ADMIN);
+        if(isUserLoggedIn()) {
+            return getUserRole().equals(UserRole.ADMIN);
+        }
+        return false;
     }
 
     public void login(User user){

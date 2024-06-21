@@ -1,9 +1,7 @@
 package bg.magna.websop.model.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import bg.magna.websop.model.enums.UserRole;
+import jakarta.validation.constraints.*;
 
 public class RegisterUserDTO {
     @NotEmpty(message = "{email.notEmpty}")
@@ -28,6 +26,9 @@ public class RegisterUserDTO {
 
     @Pattern(regexp = "[\\+]?\\d{6,15}", message = "{phone.pattern}")
     private String phone;
+
+    @NotNull(message = "{userRole.select}")
+    private UserRole userRole;
 
     public RegisterUserDTO() {
     }
@@ -76,7 +77,15 @@ public class RegisterUserDTO {
         return phone;
     }
 
-    public void setPhoneNumber(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

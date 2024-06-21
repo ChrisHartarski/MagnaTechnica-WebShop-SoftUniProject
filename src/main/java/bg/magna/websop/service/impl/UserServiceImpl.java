@@ -49,7 +49,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(RegisterUserDTO registerData) {
         User user = modelMapper.map(registerData, User.class);
-        user.setUserRole(UserRole.USER);
+        if(user.getUserRole() == null) {
+            user.setUserRole(UserRole.USER);
+        }
         saveUserToDB(user);
     }
 
@@ -66,6 +68,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logoutUser() {
         userSession.logout();
+    }
+
+    @Override
+    public long getUserCount() {
+        return userRepository.count();
+    }
+
+    @Override
+    public long getUserCountByRole(UserRole userRole) {
+        return userRepository.findAllByUserRole(userRole).size();
     }
 
     private User getUserByEmailAndPassword(LoginUserDTO loginData) {

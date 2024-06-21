@@ -12,11 +12,17 @@ public class Part {
     @Column(name = "part_code", unique = true, nullable = false)
     private String partCode;
 
+    @Column(nullable = false)
+    private int quantity;
+
     @Column(name = "description_en", nullable = false)
     private String descriptionEn;
 
     @Column(name = "description_bg", nullable = false)
     private String descriptionBg;
+
+    @Column(name = "pic_url")
+    private String picURL;
 
     @ManyToOne
     private Brand brand;
@@ -41,6 +47,14 @@ public class Part {
 
     public void setPartCode(String partCode) {
         this.partCode = partCode;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getDescriptionEn() {
@@ -73,5 +87,13 @@ public class Part {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getPicURL() {
+        return picURL;
+    }
+
+    public void setPicURL(String picURL) {
+        this.picURL = picURL;
     }
 }

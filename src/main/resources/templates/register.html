@@ -68,6 +68,18 @@
                                         <label for="phone">Phone number</label>
                                         <small th:errors="*{phone}" class="text-danger">Phone number input errors!</small>
                                     </div>
+                                    <!-- User role input-->
+                                    <div th:if="${@userSession.isAdminLoggedIn()}" class="form-floating mb-3">
+<!--                                        <input class="form-control" id="phone" type="text" placeholder="(123) 456-7890" th:field="*{phone}"/>-->
+                                        <select class="form-select" id="userRole" name="userRole" th:field="*{userRole}">
+                                            <option value="">Select user role</option>
+                                            <option value="USER">User</option>
+                                            <option value="ADMIN">Administrator</option>
+                                        </select>
+                                        <label for="userRole">User role</label>
+
+                                        <small th:errors="*{userRole}" class="text-danger">User Role input errors!</small>
+                                    </div>
                                     <!-- Submit success message-->
                                     <!---->
                                     <!-- This is what your users will see when the form-->
