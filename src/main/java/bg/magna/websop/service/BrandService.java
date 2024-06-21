@@ -4,4 +4,5 @@ public interface BrandService {
     boolean brandRepositoryIsEmpty();
     void addBrand(String name);
     long getCount();
+    boolean brandExists(String name);
 }

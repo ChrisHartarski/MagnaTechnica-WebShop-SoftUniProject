@@ -29,4 +29,9 @@ public class BrandServiceImpl implements BrandService {
     public long getCount() {
         return brandRepository.count();
     }
+
+    @Override
+    public boolean brandExists(String name) {
+        return brandRepository.existsByName(name);
+    }
 }

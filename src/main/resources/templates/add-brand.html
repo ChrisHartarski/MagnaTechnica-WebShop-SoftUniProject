@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" /><!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5">
+
+                    <!-- Login form-->
+                    <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
+                        <div class="text-center mb-5">
+                            <h1 class="fw-bolder">Add Brand</h1>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-8 col-xl-6">
+                                <form
+                                    th:action="@{/add-brand}"
+                                    th:method="post"
+                                    th:object="${brandData}">
+                                    <!-- Brand name input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="brandName" type="text" placeholder="Brand name" th:field="*{name}"/>
+                                        <label for="brandName">Brand name</label>
+                                        <small th:errors="*{name}" class="text-danger">Email invalid!</small>
+                                        <small th:if="${brandExists}" class="text-danger">Brand with this name already exists!</small>
+                                    </div>
+
+                                    <!-- Add Brand Button-->
+                                    <div class="d-grid">
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Add Brand</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

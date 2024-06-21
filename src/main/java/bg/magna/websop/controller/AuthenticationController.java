@@ -28,6 +28,9 @@ public class AuthenticationController {
 
     @GetMapping("/loginUser")
     public String viewLogin() {
+        if(userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
         return "loginUser";
     }
 
@@ -35,6 +38,10 @@ public class AuthenticationController {
     public String loginUser(@Valid LoginUserDTO loginData,
                             BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {
+
+        if(userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
 
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("loginData", loginData);
@@ -54,6 +61,10 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     public String logout(){
+        if(!userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
+
         userService.logoutUser();
         return "redirect:/";
     }
