@@ -11,10 +11,14 @@ public class UserSession {
     private String id = "";
     private String firstName = "";
     private String lastName = "";
-    private UserRole userRole;
+    private UserRole userRole = UserRole.USER;
 
     public boolean isUserLoggedIn() {
-        return !id.isEmpty();
+        return !getId().isEmpty();
+    }
+
+    public boolean isAdminLoggedIn() {
+        return getUserRole().equals(UserRole.ADMIN);
     }
 
     public void login(User user){

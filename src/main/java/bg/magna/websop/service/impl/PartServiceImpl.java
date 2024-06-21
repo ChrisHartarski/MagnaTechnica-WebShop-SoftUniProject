@@ -11,4 +11,9 @@ public class PartServiceImpl implements PartService {
     public PartServiceImpl(PartRepository partRepository) {
         this.partRepository = partRepository;
     }
+
+    @Override
+    public long getCount() {
+        return partRepository.count();
+    }
 }

@@ -24,4 +24,9 @@ public class BrandServiceImpl implements BrandService {
             brandRepository.saveAndFlush(new Brand(name));
         }
     }
+
+    @Override
+    public long getCount() {
+        return brandRepository.count();
+    }
 }
