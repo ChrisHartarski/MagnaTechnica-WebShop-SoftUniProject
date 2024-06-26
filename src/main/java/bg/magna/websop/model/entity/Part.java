@@ -2,6 +2,8 @@ package bg.magna.websop.model.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "parts")
 public class Part {
@@ -21,14 +23,14 @@ public class Part {
     @Column(name = "description_bg", nullable = false)
     private String descriptionBg;
 
-    @Column(name = "pic_url")
-    private String picURL;
+    @Column(name = "image_url")
+    private String imageURL;
 
     @ManyToOne
     private Brand brand;
 
     @Column(nullable = false)
-    private double price;
+    private BigDecimal price;
 
     public Part() {
     }
@@ -81,19 +83,19 @@ public class Part {
         this.brand = brand;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public String getPicURL() {
-        return picURL;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setPicURL(String picURL) {
-        this.picURL = picURL;
+    public void setImageURL(String picURL) {
+        this.imageURL = picURL;
     }
 }
