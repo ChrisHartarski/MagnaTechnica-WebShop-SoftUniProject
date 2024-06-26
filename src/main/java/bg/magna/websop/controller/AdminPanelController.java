@@ -51,7 +51,7 @@ public class AdminPanelController {
         return "admin-panel";
     }
 
-    @GetMapping("/add-brand")
+    @GetMapping("/brands/add")
     public String viewAddBrand() {
         if(!userSession.isAdminLoggedIn()) {
             return "redirect:/";
@@ -59,7 +59,7 @@ public class AdminPanelController {
         return "add-brand";
     }
 
-    @PostMapping("/add-brand")
+    @PostMapping("/brands/add")
     public String addBrand(@Valid AddBrandDTO brandData,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
@@ -70,13 +70,13 @@ public class AdminPanelController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandData", brandData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandData", bindingResult);
-            return "redirect:/add-brand";
+            return "redirect:/brands/add";
         }
 
         if(brandService.brandExists(brandData.getName())) {
             redirectAttributes.addFlashAttribute("brandData", brandData);
             redirectAttributes.addFlashAttribute("brandExists", true);
-            return "redirect:/add-brand";
+            return "redirect:/brands/add";
         }
 
         brandService.addBrand(brandData.getName());

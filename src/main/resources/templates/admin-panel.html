@@ -35,22 +35,16 @@
 
                     <div class="row  gx-2 row-cols-1 row-cols-lg-4 py-2 justify-content-center">
                         <div class="col">
-                            <form th:action="@{/register}" th:method="post">
-                                <button class="btn btn-warning" type="submit">Register User</button>
-                            </form>
+                            <a class="btn btn-warning" th:href="@{/register}">Register User</a>
                         </div>
                         <div class="col">
-                            <form th:action="@{/add-brand}" th:method="post">
-                                <button class="btn btn-warning" type="submit">Add Brand</button>
-                            </form>
+                            <a class="btn btn-warning" th:href="@{/brands/add}">Add Brand</a>
                         </div>
                         <div class="col">
-                            <form th:action="@{/parts/add}" th:method="post">
-                                <button class="btn btn-warning" type="submit">Add Part</button>
-                            </form>
+                            <a class="btn btn-warning" th:href="@{/parts/add}">Add Part</a>
                         </div>
                         <div class="col">
-                            <form th:action="@{/add-category}" th:method="post">
+                            <form th:action="@{/initializeMockDB}" th:method="post">
                                 <button class="btn btn-warning" type="submit">Initialize Mock DB</button>
                             </form>
                         </div>

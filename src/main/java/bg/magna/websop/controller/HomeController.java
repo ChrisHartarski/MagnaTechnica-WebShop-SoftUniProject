@@ -20,9 +20,4 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/about")
-    public String viewAbout() {
-        return "about";
-    }
-
 }
