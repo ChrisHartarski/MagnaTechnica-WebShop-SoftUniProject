@@ -1,6 +1,7 @@
 package bg.magna.websop.controller;
 
 import bg.magna.websop.model.dto.AddPartDTO;
+import bg.magna.websop.model.dto.FullPartDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.util.UserSession;
@@ -8,10 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -66,5 +64,13 @@ public class PartsController {
 
         partService.addPart(partData);
         return "redirect:/admin-panel";
+    }
+
+    @GetMapping("/{partCode}")
+    public String getPartDetails(@PathVariable("partCode") String partCode, Model model) {
+        FullPartDTO part = partService.getPartDTOFromPartCode(partCode);
+        model.addAttribute("part", part);
+
+        return "part-details";
     }
 }

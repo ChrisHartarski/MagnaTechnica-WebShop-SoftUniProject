@@ -1,6 +1,7 @@
 package bg.magna.websop.service;
 
 import bg.magna.websop.model.dto.AddPartDTO;
+import bg.magna.websop.model.dto.FullPartDTO;
 import bg.magna.websop.model.entity.Part;
 
 import java.io.IOException;
@@ -18,4 +19,6 @@ public interface PartService {
     List<Part> getAllParts();
 
     void initializeMockParts() throws IOException;
+
+    FullPartDTO getPartDTOFromPartCode(String partCode);
 }

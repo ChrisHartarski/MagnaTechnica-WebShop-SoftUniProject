@@ -1,17 +1,16 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.dto.AddPartDTO;
+import bg.magna.websop.model.dto.FullPartDTO;
 import bg.magna.websop.model.entity.Brand;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -80,5 +79,14 @@ public class PartServiceImpl implements PartService {
                         }
                     });
         }
+    }
+
+    @Override
+    public FullPartDTO getPartDTOFromPartCode(String partCode) {
+        if (partExists(partCode)) {
+            Part part = partRepository.getByPartCode(partCode);
+            return modelMapper.map(part, FullPartDTO.class);
+        }
+        return null;
     }
 }
