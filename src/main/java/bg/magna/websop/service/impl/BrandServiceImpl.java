@@ -19,18 +19,6 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public boolean brandRepositoryIsEmpty() {
-        return brandRepository.count() == 0;
-    }
-
-    @Override
-    public void addBrand(String name) {
-        if(!brandRepository.existsByName(name)) {
-            brandRepository.saveAndFlush(new Brand(name));
-        }
-    }
-
-    @Override
     public long getCount() {
         return brandRepository.count();
     }
@@ -48,5 +36,27 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand getBrandByName(String brandName) {
         return brandRepository.getByName(brandName);
+    }
+
+    @Override
+    public void initializeMockBrands() {
+        if (brandRepository.count() == 0){
+            addBrand("John Deere");
+            addBrand("Massey Ferguson");
+            addBrand("New Holland");
+            addBrand("Claas");
+            addBrand("Manitou");
+            addBrand("Case IH");
+            addBrand("Deutz");
+            addBrand("Arbos");
+        }
+    }
+
+
+    @Override
+    public void addBrand(String name) {
+        if(!brandRepository.existsByName(name)) {
+            brandRepository.saveAndFlush(new Brand(name));
+        }
     }
 }

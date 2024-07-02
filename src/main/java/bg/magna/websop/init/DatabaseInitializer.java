@@ -20,16 +20,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (userService.userRepositoryIsEmpty()){
             userService.addAdminUser();
-        }
-
-        if (brandService.brandRepositoryIsEmpty()){
-            brandService.addBrand("John Deere");
-            brandService.addBrand("Massey Ferguson");
-            brandService.addBrand("New Holland");
-            brandService.addBrand("Claas");
-            brandService.addBrand("Manitou");
-            brandService.addBrand("Case IH");
-            brandService.addBrand("Deutz");
+            userService.addFirstUser();
         }
     }
 }

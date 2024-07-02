@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void addFirstUser() {
+        saveUserToDB(new User("user01@mail", "asdasd", "user01", "user01", UserRole.USER));
+    }
+
+    @Override
     public void registerUser(RegisterUserDTO registerData) {
         User user = modelMapper.map(registerData, User.class);
         if(user.getUserRole() == null) {

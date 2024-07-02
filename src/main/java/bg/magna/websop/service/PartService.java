@@ -3,6 +3,7 @@ package bg.magna.websop.service;
 import bg.magna.websop.model.dto.AddPartDTO;
 import bg.magna.websop.model.entity.Part;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PartService {
@@ -15,4 +16,6 @@ public interface PartService {
     void addPart(AddPartDTO partData);
 
     List<Part> getAllParts();
+
+    void initializeMockParts() throws IOException;
 }

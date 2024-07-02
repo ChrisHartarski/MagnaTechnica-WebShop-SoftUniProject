@@ -29,14 +29,17 @@ public class AddPartDTO {
     @Positive(message = "{part.price.positive}")
     private BigDecimal price;
 
+    @Size(max = 50, message = "{part.size.length}")
     private String size;
 
     @Positive(message = "{part.weight.positive}")
     private double weight;
 
-    private String moreInfo;
-
+    @Size(max = 200, message = "{part.suitableFor.length}")
     private String suitableFor;
+
+    @Size(max = 200, message = "{part.moreInfo.length}")
+    private String moreInfo;
 
     public AddPartDTO() {
     }

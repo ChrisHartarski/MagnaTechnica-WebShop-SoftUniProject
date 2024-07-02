@@ -10,6 +10,7 @@ public interface UserService {
     boolean userEmailExists(String email);
     void saveUserToDB(User user);
     void addAdminUser();
+    void addFirstUser();
     void registerUser(RegisterUserDTO registerData);
     boolean isValidUser(LoginUserDTO loginData);
     void loginUser(LoginUserDTO loginData);
