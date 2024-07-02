@@ -43,14 +43,16 @@
                         <div th:each="part : ${parts}" class="col-lg-3 mb-5">
                             <div class="card h-100 shadow border-0">
                                 <a th:href="@{/parts/{partCode}(partCode=${part.partCode})}">
-                                <img class="card-img-top" th:src="${part.imageURL}" th:alt="${part.partCode}"/>
+                                <img class="img-fluid align-content-center" height="auto" width="auto" th:src="${part.imageURL}" th:alt="${part.partCode}"/>
                                 </a>
                                 <div class="card-body p-4">
-                                        <p class="text-muted mb-0" th:text="${part.brand.name}"></p>
-                                        <div class="h5 card-title mb-3"><span th:text="${part.partCode}"></span></div></a>
-                                    <p class="card-text mb-0"><span th:text="${part.descriptionEn}"></span></p>
                                 </div>
                                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                    <div class="pb-3">
+                                        <p class="text-muted mb-0" th:text="${part.brand.name}"></p>
+                                        <div class="h5 card-title mb-3"><span th:text="${part.partCode}"></span></div>
+                                        <p class="card-text mb-0"><span th:text="${part.descriptionEn}"></span></p>
+                                    </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <div class="small">
@@ -60,12 +62,12 @@
                                                 <div th:unless="${@userSession.isUserLoggedIn()}" class="fw-bold"> To view prices <a th:href="@{/loginUser}">login</a> or <a th:href="@{/register}">register</a>.</div>
                                                 <div th:if="${@userSession.isUserLoggedIn()}" class="text-muted">Available: <span th:text="${part.quantity}"></span></div>
                                             </div>
-                                            <div th:if="${@userSession.isUserWithUserRoleLoggedIn()}">
-                                                <button class="btn btn-warning" type="submit">Add to Cart</button>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="mt-2 align-items-end" th:if="${@userSession.isAdminLoggedIn()}">
+                                    <div class="mt-3 align-items-center justify-content-between" th:if="${@userSession.isUserWithUserRoleLoggedIn()}">
+                                        <button class="btn btn-warning" type="submit">Add to Cart</button>
+                                    </div>
+                                    <div class="mt-3 align-items-center justify-content-between" th:if="${@userSession.isAdminLoggedIn()}">
                                         <button class="btn btn-warning" type="submit">Modify</button>
                                         <button class="btn btn-danger" type="submit">Delete</button>
                                 </div>
