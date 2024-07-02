@@ -71,6 +71,30 @@
                                         <label for="price">Price in EUR</label>
                                         <small th:errors="*{price}" class="text-danger">Price invalid!</small>
                                     </div>
+                                    <!-- Size input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="size" type="text" placeholder="size" th:field="*{size}"/>
+                                        <label for="size">Part size</label>
+                                        <small th:errors="*{size}" class="text-danger">Part size invalid!</small>
+                                    </div>
+                                    <!-- Weight input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="weight" type="number" step="0.01" placeholder="weight" th:field="*{weight}"/>
+                                        <label for="weight">Part weight in kg</label>
+                                        <small th:errors="*{weight}" class="text-danger">Part weight invalid!</small>
+                                    </div>
+                                    <!-- Suitable For input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="suitableFor" type="text" placeholder="suitableFor" th:field="*{suitableFor}"/>
+                                        <label for="suitableFor">Suitable For</label>
+                                        <small th:errors="*{suitableFor}" class="text-danger">Suitable for information invalid!</small>
+                                    </div>
+                                    <!-- More Info input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="moreInfo" type="text" placeholder="moreInfo" th:field="*{moreInfo}"/>
+                                        <label for="moreInfo">Part information</label>
+                                        <small th:errors="*{moreInfo}" class="text-danger">Part information invalid!</small>
+                                    </div>
 
                                     <!-- Add Part Button-->
                                     <div class="d-grid">

@@ -29,6 +29,15 @@ public class AddPartDTO {
     @Positive(message = "{part.price.positive}")
     private BigDecimal price;
 
+    private String size;
+
+    @Positive(message = "{part.weight.positive}")
+    private double weight;
+
+    private String moreInfo;
+
+    private String suitableFor;
+
     public AddPartDTO() {
     }
 
@@ -78,5 +87,37 @@ public class AddPartDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getMoreInfo() {
+        return moreInfo;
+    }
+
+    public void setMoreInfo(String moreInfo) {
+        this.moreInfo = moreInfo;
+    }
+
+    public String getSuitableFor() {
+        return suitableFor;
+    }
+
+    public void setSuitableFor(String suitableFor) {
+        this.suitableFor = suitableFor;
     }
 }

@@ -56,7 +56,7 @@ public class AuthenticationController {
         }
 
         userService.loginUser(loginData);
-        return "redirect:/webshop";
+        return "redirect:/web-shop";
     }
 
     @PostMapping("/logout")

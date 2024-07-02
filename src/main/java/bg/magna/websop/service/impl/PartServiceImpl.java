@@ -9,6 +9,8 @@ import bg.magna.websop.service.PartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PartServiceImpl implements PartService {
     private final PartRepository partRepository;
@@ -45,5 +47,10 @@ public class PartServiceImpl implements PartService {
         Brand brand = brandService.getBrandByName(partData.getBrandName());
         part.setBrand(brand);
         partRepository.saveAndFlush(part);
+    }
+
+    @Override
+    public List<Part> getAllParts() {
+        return partRepository.findAll();
     }
 }

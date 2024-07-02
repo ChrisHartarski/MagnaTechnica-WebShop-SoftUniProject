@@ -32,6 +32,18 @@ public class Part {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @Column
+    private String size;
+
+    @Column
+    private double weight;
+
+    @Column(name = "more_info")
+    private String moreInfo;
+
+    @Column(name = "suitable_for")
+    private String suitableFor;
+
     public Part() {
     }
 
@@ -97,5 +109,37 @@ public class Part {
 
     public void setImageURL(String picURL) {
         this.imageURL = picURL;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getMoreInfo() {
+        return moreInfo;
+    }
+
+    public void setMoreInfo(String moreInfo) {
+        this.moreInfo = moreInfo;
+    }
+
+    public String getSuitableFor() {
+        return suitableFor;
+    }
+
+    public void setSuitableFor(String suitableFor) {
+        this.suitableFor = suitableFor;
     }
 }
