@@ -69,7 +69,7 @@ public class PartServiceImpl implements PartService {
             Arrays.stream(gson.fromJson(Files.readString(Path.of(PARTS_JSON_FILE_PATH)), AddPartDTO[].class))
                     .map(dto -> {
                         Part part = modelMapper.map(dto, Part.class);
-                        part.setQuantity(0);
+                        part.setQuantity(20);
                         part.setBrand(brandService.getBrandByName(dto.getBrandName()));
                         return part;
                     })
