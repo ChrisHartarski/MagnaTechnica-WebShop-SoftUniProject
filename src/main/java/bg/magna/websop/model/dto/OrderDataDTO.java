@@ -1,9 +1,11 @@
 package bg.magna.websop.model.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class OrderDataDTO {
     @Size(max = 200, message = "{order.deliveryAddress.length}")
+    @NotEmpty(message = "{order.deliveryAddress.notEmpty}")
     private String deliveryAddress;
 
     @Size(max = 200, message = "{order.notes.length}")
