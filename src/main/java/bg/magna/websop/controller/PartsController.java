@@ -68,6 +68,7 @@ public class PartsController {
 
     @GetMapping("/{partCode}")
     public String getPartDetails(@PathVariable("partCode") String partCode, Model model) {
+
         FullPartDTO part = partService.getPartDTOFromPartCode(partCode);
         model.addAttribute("part", part);
 
