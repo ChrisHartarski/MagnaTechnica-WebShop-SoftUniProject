@@ -86,6 +86,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByUserRole(userRole).size();
     }
 
+    @Override
+    public User getUserById(String id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     private User getUserByEmailAndPassword(LoginUserDTO loginData) {
         return userRepository.getUserByEmail(loginData.getEmail())
                 .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))

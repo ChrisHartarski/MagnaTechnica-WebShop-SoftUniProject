@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PartServiceImpl implements PartService {
@@ -98,5 +99,13 @@ public class PartServiceImpl implements PartService {
     @Override
     public void savePartToDB(Part part) {
         partRepository.saveAndFlush(part);
+    }
+
+    @Override
+    public void removeQuantitiesFromParts(Map<Part, Integer> partsAndQuantities) {
+        partsAndQuantities.forEach((part, quantity) -> {
+            part.setQuantity(part.getQuantity() - quantity);
+            savePartToDB(part);
+        });
     }
 }

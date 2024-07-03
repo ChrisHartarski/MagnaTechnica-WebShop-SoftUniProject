@@ -6,6 +6,7 @@ import bg.magna.websop.model.entity.Part;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface PartService {
     long getCount();
@@ -25,4 +26,6 @@ public interface PartService {
     Part getPartByPartCode(String partCode);
 
     void savePartToDB(Part part);
+
+    void removeQuantitiesFromParts(Map<Part, Integer> partsAndQuantities);
 }

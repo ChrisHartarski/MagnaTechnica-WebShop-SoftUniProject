@@ -17,4 +17,5 @@ public interface UserService {
     void logoutUser();
     long getUserCount();
     long getUserCountByRole(UserRole userRole);
+    User getUserById(String id);
 }

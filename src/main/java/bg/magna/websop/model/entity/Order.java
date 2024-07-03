@@ -13,13 +13,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToMany(targetEntity = Part.class)
+    @ElementCollection
+    @MapKeyJoinColumn(name = "part_id")
     @JoinTable(name = "orders_parts",
-            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "part_id", referencedColumnName = "id"))
-    @MapKey
+            joinColumns = @JoinColumn(name = "order_id"))
+    @Column(name = "order_quantity")
     private Map<Part, Integer> partsAndQuantities;
-
 
     @ManyToOne
     private User user;

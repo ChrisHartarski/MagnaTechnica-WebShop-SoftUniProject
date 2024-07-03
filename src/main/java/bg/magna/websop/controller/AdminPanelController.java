@@ -3,6 +3,7 @@ package bg.magna.websop.controller;
 import bg.magna.websop.model.dto.AddBrandDTO;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.BrandService;
+import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
@@ -24,12 +25,14 @@ public class AdminPanelController {
     private final BrandService brandService;
     private final PartService partService;
     private final UserSession userSession;
+    private final OrderService orderService;
 
-    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, UserSession userSession) {
+    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, UserSession userSession, OrderService orderService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
         this.userSession = userSession;
+        this.orderService = orderService;
     }
 
     @ModelAttribute("brandData")
@@ -50,6 +53,10 @@ public class AdminPanelController {
         model.addAttribute("brandsCount", brandService.getCount());
         model.addAttribute("partArticlesCount", partService.getCount());
         model.addAttribute("totalPartsCount", partService.getTotalParts());
+
+        model.addAttribute("awaitingOrdersCount", orderService.getAwaitingOrders().size());
+        model.addAttribute("dispatchedOrdersCount", orderService.getDispatchedOrders().size());
+        model.addAttribute("deliveredOrdersCount", orderService.getDeliveredOrders().size());
 
         return "admin-panel";
     }
