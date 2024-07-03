@@ -82,10 +82,12 @@ public class PartsController {
         Cart cart = userSession.getCart();
         Part part = partService.getPartByPartCode(partCode);
 
-        cart.getPartsAndQuantities().putIfAbsent(part, quantity);
+
 
         if (cart.getPartsAndQuantities().containsKey(part)) {
             cart.getPartsAndQuantities().put(part, cart.getPartsAndQuantities().get(part) + quantity);
+        } else {
+            cart.getPartsAndQuantities().put(part, quantity);
         }
 
 //        part.setQuantity(part.getQuantity() - quantity);

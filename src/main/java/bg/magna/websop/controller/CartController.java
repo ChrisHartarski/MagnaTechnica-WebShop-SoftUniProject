@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/cart")
 public class CartController {
     private final UserSession userSession;
     private final PartService partService;
@@ -25,7 +24,7 @@ public class CartController {
         return new OrderDataDTO();
     }
 
-    @GetMapping("")
+    @GetMapping("/cart")
     public String viewCart() {
         if (!userSession.isUserWithUserRoleLoggedIn()) {
             return "redirect:/";
@@ -33,7 +32,7 @@ public class CartController {
         return "cart";
     }
 
-    @DeleteMapping("/delete-item/{partCode}")
+    @DeleteMapping("/cart/delete-item/{partCode}")
     public String deletePartFromCart(@PathVariable String partCode) {
         if (!userSession.isUserWithUserRoleLoggedIn()) {
             return "redirect:/";

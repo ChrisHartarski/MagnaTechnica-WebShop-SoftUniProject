@@ -35,11 +35,14 @@
                         <div class="col-2 fw-bold align-items-start" >Price</div>
                         <div class="col-2 fw-bold align-items-start" >Total</div>
                         <div class="col-1 align-items-start" > </div>
-
                     </div>
 
                     <div class="row gx-5" th:each="article : ${@userSession.cart.partsAndQuantities}">
-                        <div class="col-2 align-items-start" th:text="${article.getKey().partCode}">{partCode}</div>
+                        <div class="col-2 align-items-start link-primary">
+                            <a th:href="@{/parts/{partCode}(partCode=${article.getKey().partCode})}">
+                                <span th:text="${article.getKey().partCode}">{partCode}</span>
+                            </a>
+                        </div>
                         <div class="col-3 align-items-start" th:text="${article.getKey().descriptionEn}">{descriptionEn}</div>
                         <div class="col-2 align-items-start" th:text="${article.getValue()}">{quantity}</div>
                         <div class="col-2 align-items-start" ><span th:text="${article.getKey().price}">{price}</span> EUR</div>
@@ -49,7 +52,7 @@
                                 th:action="@{/cart/delete-item/{partCode}(partCode=${article.getKey().partCode})}"
                                 th:method="delete">
                                 <button class="btn btn-link" type="submit">
-                                    <i class="bi bi-x"></i>
+                                    <i class="bi bi-x-lg link-danger"></i>
                                 </button>
                             </form>
                         </div>
@@ -88,7 +91,6 @@
                             </div>
                         </form>
                     </div>
-
                 </div>
             </section>
         </main>

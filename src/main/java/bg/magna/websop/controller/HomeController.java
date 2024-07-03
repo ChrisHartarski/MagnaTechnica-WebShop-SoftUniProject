@@ -7,13 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    private final BrandService brandService;
-    private final PartService partService;
-
-    public HomeController(BrandService brandService, PartService partService) {
-        this.brandService = brandService;
-        this.partService = partService;
-    }
 
     @GetMapping("/")
     public String viewIndex() {
