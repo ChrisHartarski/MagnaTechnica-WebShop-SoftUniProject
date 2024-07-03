@@ -51,11 +51,17 @@
                                         <form
                                             th:action="@{parts/add-to-cart/{partCode}(partCode=${part.partCode})}"
                                             th:method="post">
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="quantity" type="number" th:max="${part.quantity}" placeholder="quantity" th:name="quantity"/>
-                                                <label for="quantity">Order Quantity</label>
+                                            <div class="form-floating mb-3 row">
+                                                <div class="col-6">
+                                                    <input class="form-control" id="quantity" type="number" th:min="1" th:max="${part.quantity}" placeholder="Quantity" th:name="quantity"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-warning" type="submit">Add to Cart</button>
+                                                </div>
+
+
                                             </div>
-                                            <button class="btn btn-warning" type="submit">Add to Cart</button>
+
                                         </form>
 
                                     </div>

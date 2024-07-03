@@ -49,9 +49,9 @@
                         <div class="col-2 align-items-start" ><span th:text="${@userSession.cart.getArticlePrice(article.getKey())}">{total}</span> EUR</div>
                         <div class="col-1 align-items-start" >
                             <form
-                                th:action="@{/cart/delete-item/{partCode}(partCode=${article.getKey().partCode})}"
-                                th:method="delete">
-                                <button class="btn btn-link" type="submit">
+                                    th:action="@{/cart/remove-item/{partCode}(partCode=${article.getKey().partCode})}"
+                                    th:method="delete">
+                                <button class="btn btn-link">
                                     <i class="bi bi-x-lg link-danger"></i>
                                 </button>
                             </form>

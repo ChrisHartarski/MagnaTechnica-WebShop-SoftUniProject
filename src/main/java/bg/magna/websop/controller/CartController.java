@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+
 @Controller
 public class CartController {
     private final UserSession userSession;
@@ -37,7 +39,7 @@ public class CartController {
         return "cart";
     }
 
-    @DeleteMapping("/cart/delete-item/{partCode}")
+    @DeleteMapping("/cart/remove-item/{partCode}")
     public String deletePartFromCart(@PathVariable String partCode) {
         if (!userSession.isUserWithUserRoleLoggedIn()) {
             return "redirect:/";
@@ -61,12 +63,12 @@ public class CartController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("orderData", orderData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderData", bindingResult);
-            return "redirect:/orders/add";
+            return "redirect:/cart";
         }
 
         orderService.addOrder(orderData);
         partService.removeQuantitiesFromParts(userSession.getCart().getPartsAndQuantities());
-        userSession.getCart().getPartsAndQuantities().clear();
+        userSession.getCart().setPartsAndQuantities(new HashMap<>());
 
         return "redirect:/web-shop";
     }
