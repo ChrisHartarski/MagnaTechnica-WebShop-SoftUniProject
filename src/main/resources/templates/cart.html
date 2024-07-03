@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+
+            <!-- Cart Details Section -->
+            <section class="py-5">
+                <div class="container px-5">
+                    <div class="card-header">
+                        <h2 class="fw-bolder fs-5">Shopping cart</h2>
+                        <div class="text-muted" >User: <span th:text="${@userSession.getFullName()}">User name</span></div>
+                        <div class="text-muted mb-4" >Email: <span th:text="${@userSession.email}">User email</span></div>
+                    </div>
+
+                    <h5 class="fw-bold">Cart Items:</h5>
+                    <div class="row gx-5">
+                        <div class="col-2 fw-bold align-items-start" >Part code</div>
+                        <div class="col-3 fw-bold align-items-start" >Description</div>
+                        <div class="col-2 fw-bold align-items-start" >Quantity</div>
+                        <div class="col-2 fw-bold align-items-start" >Price</div>
+                        <div class="col-2 fw-bold align-items-start" >Total</div>
+                        <div class="col-1 align-items-start" > </div>
+
+                    </div>
+
+                    <div class="row gx-5" th:each="article : ${@userSession.cart.partsAndQuantities}">
+                        <div class="col-2 align-items-start" th:text="${article.getKey().partCode}">{partCode}</div>
+                        <div class="col-3 align-items-start" th:text="${article.getKey().descriptionEn}">{descriptionEn}</div>
+                        <div class="col-2 align-items-start" th:text="${article.getValue()}">{quantity}</div>
+                        <div class="col-2 align-items-start" ><span th:text="${article.getKey().price}">{price}</span> EUR</div>
+                        <div class="col-2 align-items-start" ><span th:text="${@userSession.cart.getArticlePrice(article.getKey())}">{total}</span> EUR</div>
+                        <div class="col-1 align-items-start" >
+                            <form
+                                th:action="@{/cart/delete-item/{partCode}(partCode=${article.getKey().partCode})}"
+                                th:method="delete">
+                                <button class="btn btn-link" type="submit">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row gx-5">
+                        <div class="col-2"></div>
+                        <div class="col-3"></div>
+                        <div class="col-2"></div>
+                        <div class="col-2 fw-bold" >Total: </div>
+                        <div class="col-2 fw-bold" ><span th:text="${@userSession.cart.getTotalPrice()}">{total}</span> EUR</div>
+                        <div class="col-1"></div>
+                    </div>
+
+                    <div class="mt-4 mb-4">
+                        <form
+                                th:action="@{/order/add}"
+                                th:method="post"
+                                th:object="${orderData}">
+                            <!-- Delivery address input-->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="deliveryAddress" type="text" placeholder="Delivery Address" th:field="*{deliveryAddress}"/>
+                                <label for="deliveryAddress">Delivery address</label>
+                                <small th:errors="*{deliveryAddress}" class="text-danger">Delivery address invalid!</small>
+                            </div>
+                            <!-- Notes input-->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="notes" type="text" placeholder="Notes" th:field="*{notes}"/>
+                                <label for="notes">Notes</label>
+                                <small th:errors="*{notes}" class="text-danger">Notes invalid!</small>
+                            </div>
+
+                            <!-- Submit order Button-->
+                            <div class="d-grid">
+                                <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit Order</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>

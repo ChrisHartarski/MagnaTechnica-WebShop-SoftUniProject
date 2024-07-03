@@ -1,15 +1,16 @@
 package bg.magna.websop.util;
 
-import bg.magna.websop.model.entity.Cart;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.SessionScope;
 
 @Component
 @SessionScope
 public class UserSession {
     private String id = "";
+    private String email = "";
     private String firstName = "";
     private String lastName = "";
     private UserRole userRole = UserRole.USER;
@@ -33,20 +34,23 @@ public class UserSession {
         return false;
     }
 
+    @Transactional
     public void login(User user){
         this.id = user.getId();
+        this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.userRole = user.getUserRole();
-        this.cart = user.getCart();
+        this.cart = new Cart();
     }
 
     public void logout(){
         this.id = "";
+        this.email = "";
         this.firstName = "";
         this.lastName = "";
         this.userRole = UserRole.USER;
-        this.cart = null;
+        this.cart = new Cart();
     };
 
     public boolean isAdmin() {
@@ -57,6 +61,10 @@ public class UserSession {
         return id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -64,6 +72,8 @@ public class UserSession {
     public String getLastName() {
         return lastName;
     }
+
+    public String getFullName() {return getFirstName() + " " + getLastName();}
 
     public UserRole getUserRole() {
         return userRole;

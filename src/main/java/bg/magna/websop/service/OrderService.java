@@ -1,4 +1,4 @@
 package bg.magna.websop.service;
 
-public interface PartOrderService {
+public interface OrderService {
 }

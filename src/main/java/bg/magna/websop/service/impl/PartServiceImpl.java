@@ -84,9 +84,19 @@ public class PartServiceImpl implements PartService {
     @Override
     public FullPartDTO getPartDTOFromPartCode(String partCode) {
         if (partExists(partCode)) {
-            Part part = partRepository.getByPartCode(partCode);
+            Part part = getPartByPartCode(partCode);
             return modelMapper.map(part, FullPartDTO.class);
         }
         return null;
+    }
+
+    @Override
+    public Part getPartByPartCode(String partCode) {
+        return partRepository.getByPartCode(partCode);
+    }
+
+    @Override
+    public void savePartToDB(Part part) {
+        partRepository.saveAndFlush(part);
     }
 }

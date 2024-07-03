@@ -2,8 +2,10 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.dto.AddPartDTO;
 import bg.magna.websop.model.dto.FullPartDTO;
+import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
+import bg.magna.websop.util.Cart;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -73,5 +75,22 @@ public class PartsController {
         model.addAttribute("part", part);
 
         return "part-details";
+    }
+
+    @PostMapping("/add-to-cart/{partCode}")
+    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity) {
+        Cart cart = userSession.getCart();
+        Part part = partService.getPartByPartCode(partCode);
+
+        cart.getPartsAndQuantities().putIfAbsent(part, quantity);
+
+        if (cart.getPartsAndQuantities().containsKey(part)) {
+            cart.getPartsAndQuantities().put(part, cart.getPartsAndQuantities().get(part) + quantity);
+        }
+
+//        part.setQuantity(part.getQuantity() - quantity);
+//        partService.savePartToDB(part);
+
+        return "redirect:/web-shop";
     }
 }

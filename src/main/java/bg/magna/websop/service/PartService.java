@@ -21,4 +21,8 @@ public interface PartService {
     void initializeMockParts() throws IOException;
 
     FullPartDTO getPartDTOFromPartCode(String partCode);
+
+    Part getPartByPartCode(String partCode);
+
+    void savePartToDB(Part part);
 }

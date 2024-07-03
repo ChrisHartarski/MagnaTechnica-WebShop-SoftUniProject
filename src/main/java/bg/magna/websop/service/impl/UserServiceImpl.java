@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     public void saveUserToDB(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
+
     }
 
     @Override

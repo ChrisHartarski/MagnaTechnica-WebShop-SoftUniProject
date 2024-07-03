@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@Table(name = "part_orders")
-public class PartOrder {
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -39,7 +39,7 @@ public class PartOrder {
     @Column
     private String notes;
 
-    public PartOrder() {
+    public Order() {
         this.partsAndQuantities = new HashMap<>();
     }
 
