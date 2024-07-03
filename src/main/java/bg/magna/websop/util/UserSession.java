@@ -1,5 +1,6 @@
 package bg.magna.websop.util;
 
+import bg.magna.websop.model.entity.Cart;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ public class UserSession {
     private String firstName = "";
     private String lastName = "";
     private UserRole userRole = UserRole.USER;
+    private Cart cart;
 
     public boolean isUserLoggedIn() {
         return !getId().isEmpty();
@@ -36,6 +38,7 @@ public class UserSession {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.userRole = user.getUserRole();
+        this.cart = user.getCart();
     }
 
     public void logout(){
@@ -43,6 +46,7 @@ public class UserSession {
         this.firstName = "";
         this.lastName = "";
         this.userRole = UserRole.USER;
+        this.cart = null;
     };
 
     public boolean isAdmin() {
@@ -63,5 +67,9 @@ public class UserSession {
 
     public UserRole getUserRole() {
         return userRole;
+    }
+
+    public Cart getCart() {
+        return cart;
     }
 }

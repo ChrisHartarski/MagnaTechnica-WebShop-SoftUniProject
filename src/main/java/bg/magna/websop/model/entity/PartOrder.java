@@ -3,6 +3,7 @@ package bg.magna.websop.model.entity;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -39,6 +40,7 @@ public class PartOrder {
     private String notes;
 
     public PartOrder() {
+        this.partsAndQuantities = new HashMap<>();
     }
 
     public long getId() {
@@ -103,5 +105,9 @@ public class PartOrder {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public int getSize() {
+        return getPartsAndQuantities().size();
     }
 }

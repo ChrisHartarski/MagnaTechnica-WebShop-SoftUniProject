@@ -3,6 +3,9 @@ package bg.magna.websop.model.entity;
 import bg.magna.websop.model.enums.UserRole;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -29,15 +32,25 @@ public class User {
     @Column(nullable = false)
     private UserRole userRole;
 
+    @OneToOne
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user")
+    private List<PartOrder> orders;
+
     public User() {
+        this.cart = new Cart();
+        this.orders = new ArrayList<>();
     }
 
     public User(String email, String password, String firstName, String lastName, UserRole userRole) {
+        super();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userRole = userRole;
+
     }
 
     public String getId() {
@@ -94,5 +107,21 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public List<PartOrder> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<PartOrder> orders) {
+        this.orders = orders;
     }
 }
