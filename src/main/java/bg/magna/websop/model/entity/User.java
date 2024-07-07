@@ -36,17 +36,21 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    @ManyToOne
+    private Company company;
+
     public User() {
         this.orders = new ArrayList<>();
     }
 
-    public User(String email, String password, String firstName, String lastName, UserRole userRole) {
+    public User(String email, String password, String firstName, String lastName, UserRole userRole, Company company) {
         super();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userRole = userRole;
+        this.company = company;
     }
 
     public String getId() {

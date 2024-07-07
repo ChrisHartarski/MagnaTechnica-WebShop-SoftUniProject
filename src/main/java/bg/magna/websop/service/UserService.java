@@ -1,7 +1,7 @@
 package bg.magna.websop.service;
 
 import bg.magna.websop.model.dto.LoginUserDTO;
-import bg.magna.websop.model.dto.RegisterUserDTO;
+import bg.magna.websop.model.dto.UserDTO;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 
@@ -11,7 +11,7 @@ public interface UserService {
     void saveUserToDB(User user);
     void addAdminUser();
     void addFirstUser();
-    void registerUser(RegisterUserDTO registerData);
+    void registerUser(UserDTO registerData);
     boolean isValidUser(LoginUserDTO loginData);
     void loginUser(LoginUserDTO loginData);
     void logoutUser();

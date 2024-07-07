@@ -1,10 +1,12 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.dto.LoginUserDTO;
-import bg.magna.websop.model.dto.RegisterUserDTO;
+import bg.magna.websop.model.dto.UserDTO;
+import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
+import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
@@ -14,12 +16,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CompanyService companyService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserSession userSession;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
+    public UserServiceImpl(UserRepository userRepository, CompanyService companyService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
         this.userRepository = userRepository;
+        this.companyService = companyService;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.userSession = userSession;
@@ -44,16 +48,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addAdminUser() {
-        saveUserToDB(new User("admin@mail", "asdasd", "admin", "admin", UserRole.ADMIN));
+        saveUserToDB(new User("admin@mail", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd.")));
     }
 
     @Override
     public void addFirstUser() {
-        saveUserToDB(new User("user01@mail", "asdasd", "user01", "user01", UserRole.USER));
+        saveUserToDB(new User("user01@mail", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1")));
     }
 
     @Override
-    public void registerUser(RegisterUserDTO registerData) {
+    public void registerUser(UserDTO registerData) {
         User user = modelMapper.map(registerData, User.class);
         if(user.getUserRole() == null) {
             user.setUserRole(UserRole.USER);
