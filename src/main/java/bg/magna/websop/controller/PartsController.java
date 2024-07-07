@@ -2,6 +2,7 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.service.BrandService;
+import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.util.Cart;
 import bg.magna.websop.util.UserSession;
@@ -18,11 +19,13 @@ public class PartsController {
     private final UserSession userSession;
     private final BrandService brandService;
     private final PartService partService;
+    private final OrderService orderService;
 
-    public PartsController(UserSession userSession, BrandService brandService, PartService partService) {
+    public PartsController(UserSession userSession, BrandService brandService, PartService partService, OrderService orderService) {
         this.userSession = userSession;
         this.brandService = brandService;
         this.partService = partService;
+        this.orderService = orderService;
     }
 
     @ModelAttribute("partData")
@@ -121,5 +124,22 @@ public class PartsController {
         partService.editPart(partData);
 
         return "redirect:/admin-panel";
+    }
+
+    @DeleteMapping("/delete/{partCode}")
+    public String deletePart(@PathVariable String partCode,
+                             RedirectAttributes redirectAttributes) {
+        if(!userSession.isAdminLoggedIn()) {
+            return "redirect:/";
+        }
+
+        if (orderService.partIsInExistingOrder(partService.getPartByPartCode(partCode))) {
+            redirectAttributes.addFlashAttribute("partInExistingOrder", true);
+            redirectAttributes.addFlashAttribute("errorPartCode", partCode);
+            return "redirect:/web-shop";
+        }
+
+        partService.deletePart(partCode);
+        return "redirect:/web-shop";
     }
 }

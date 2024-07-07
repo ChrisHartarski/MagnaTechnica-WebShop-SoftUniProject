@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -55,6 +56,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getDeliveredOrders() {
         return orderRepository.findAllByDeliveredOnNotNull();
+    }
+
+    @Override
+    public boolean partIsInExistingOrder(Part part) {
+        return orderRepository.findAll().stream()
+                .map(Order::getPartsAndQuantities)
+                .map(Map::keySet).anyMatch(set -> set.contains(part));
     }
 
     private Map<Part,Integer> createPartsAndQuantitiesMapFromCart(Map<String,Integer> cartMap) {

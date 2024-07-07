@@ -19,6 +19,8 @@ public interface PartService {
 
     void editPart(PartDataDTO partData);
 
+    void deletePart(String partCode);
+
     List<Part> getAllParts();
 
     void initializeMockParts() throws IOException;

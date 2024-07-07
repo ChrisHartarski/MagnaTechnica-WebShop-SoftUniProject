@@ -10,6 +10,7 @@ import bg.magna.websop.util.UserSession;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -67,6 +68,12 @@ public class PartServiceImpl implements PartService {
         Brand brand = brandService.getBrandByName(partData.getBrandName());
         part.setBrand(brand);
         partRepository.saveAndFlush(part);
+    }
+
+    @Override
+    @Transactional
+    public void deletePart(String partCode) {
+        partRepository.deleteByPartCode(partCode);
     }
 
     @Override
