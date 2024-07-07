@@ -106,7 +106,7 @@ public class UserController {
         return "redirect:/web-shop";
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/users/logout")
     public String logout(){
         if(!userSession.isUserLoggedIn()) {
             return "redirect:/";
