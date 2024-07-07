@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" /><!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5">
+
+                    <!-- Login form-->
+                    <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
+                        <div class="text-center mb-5">
+                            <h1 class="fw-bolder">Change email</h1>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-8 col-xl-6">
+                                <form
+                                    th:action="@{/users/edit/email/{id}(id=${@userSession.id})}"
+                                    th:method="post"
+                                    th:object="${userData}">
+
+                                    <h5 class="fw-bold mb-3">Current email: <span th:text="*{email}"></span></h5>
+                                    <!-- Email address input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" th:field="*{email}"/>
+                                        <label for="email">Email address</label>
+                                        <small th:errors="*{email}" class="text-danger">Email invalid!</small>
+                                        <small th:if="${emailExists}" class="text-danger">User with this email already exists!</small>
+                                    </div>
+                                    <!-- Password input-->
+<!--                                    <div class="form-floating mb-3">-->
+<!--                                        <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}" />-->
+<!--                                        <label for="password">Password</label>-->
+<!--                                        <small th:errors="*{password}" class="text-danger">Password invalid!</small>-->
+<!--                                    </div>-->
+
+                                    <!-- Login Button-->
+                                    <div class="d-grid">
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit email</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

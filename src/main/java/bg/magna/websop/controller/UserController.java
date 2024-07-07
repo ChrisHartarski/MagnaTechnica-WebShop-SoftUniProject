@@ -1,7 +1,9 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.dto.EditUserDTO;
 import bg.magna.websop.model.dto.LoginUserDTO;
 import bg.magna.websop.model.dto.UserDTO;
+import bg.magna.websop.model.dto.UserEmailDTO;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
@@ -26,8 +28,8 @@ public class UserController {
         this.userSession = userSession;
     }
 
-    @ModelAttribute("registerData")
-    public UserDTO registerUserDTO() {
+    @ModelAttribute("userData")
+    public UserDTO userDTO() {
         return new UserDTO();
     }
 
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid UserDTO registerData,
+    public String registerUser(@Valid UserDTO userData,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
@@ -55,34 +57,34 @@ public class UserController {
         }
 
         if(!userSession.isAdminLoggedIn()) {
-            registerData.setUserRole(UserRole.USER);
+            userData.setUserRole(UserRole.USER);
         }
 
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("registerData", registerData);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerData", bindingResult);
+            redirectAttributes.addFlashAttribute("userData", userData);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
             return "redirect:/users/register";
         }
 
-        if(!registerData.getPassword().equals(registerData.getConfirmPassword())){
-            redirectAttributes.addFlashAttribute("registerData", registerData);
+        if(!userData.getPassword().equals(userData.getConfirmPassword())){
+            redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("passwordsDoNotMatch", true);
             return "redirect:/users/register";
         }
 
-        if(userService.userEmailExists(registerData.getEmail())) {
-            redirectAttributes.addFlashAttribute("registerData", registerData);
+        if(userService.userEmailExists(userData.getEmail())) {
+            redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("emailExists", true);
             return "redirect:/users/register";
         }
 
-        if(!companyService.companyExists(registerData.getCompanyName())) {
-            redirectAttributes.addFlashAttribute("registerData", registerData);
+        if(!companyService.companyExists(userData.getCompanyName())) {
+            redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("companyDoesNotExist", true);
             return "redirect:/users/register";
         }
 
-        userService.registerUser(registerData);
+        userService.registerUser(userData);
         return "redirect:/users/login";
     }
 
@@ -130,10 +132,78 @@ public class UserController {
     }
 
     @GetMapping("/edit/{id}")
-    public String viewEditUser(@PathVariable String id) {
-        if(userSession.isUserWithUserRoleLoggedIn()) {
+    public String viewEditUser(@PathVariable String id, Model model) {
+        if(!userSession.isUserLoggedIn()) {
             return "redirect:/";
         }
+
+        UserDTO userData = userService.getCurrentUserData();
+        model.addAttribute("userData", userData);
+
         return "edit-user";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editUser(@PathVariable String id,
+                           @Valid EditUserDTO userData,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+
+        if(!userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userData", userData);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
+            return "redirect:/users/edit/{id}";
+        }
+
+        if(!companyService.companyExists(userData.getCompanyName())) {
+            redirectAttributes.addFlashAttribute("userData", userData);
+            redirectAttributes.addFlashAttribute("companyDoesNotExist", true);
+            return "redirect:/users/edit/{id}";
+        }
+
+        userService.editUserData(userData);
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/email/{id}")
+    public String viewEditUserEmail(@PathVariable String id, Model model) {
+//        if(!userSession.isUserLoggedIn()) {
+//            return "redirect:/";
+//        }
+
+        UserDTO userData = userService.getCurrentUserData();
+        model.addAttribute("userData", userData);
+
+        return "edit-user-email";
+    }
+
+    @PostMapping("/edit/email/{id}")
+    public String editUserEmail(@PathVariable String id,
+                                @Valid UserEmailDTO userData,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+
+//        if(!userSession.isUserLoggedIn()) {
+//            return "redirect:/";
+//        }
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userData", userData);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
+            return "redirect:/users/edit/email/{id}";
+        }
+
+        if(userService.userEmailExists(userData.getEmail())) {
+            redirectAttributes.addFlashAttribute("userData", userData);
+            redirectAttributes.addFlashAttribute("emailExists", true);
+            return "redirect:/users/edit/email/{id}";
+        }
+
+        userService.updateUserEmail(userData);
+        return "redirect:/";
     }
 }

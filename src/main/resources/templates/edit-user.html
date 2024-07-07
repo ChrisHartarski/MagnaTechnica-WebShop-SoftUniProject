@@ -22,36 +22,25 @@
                     <!-- Register form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Register</h1>
+                            <h1 class="fw-bolder">Edit User Details</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
                                 <form
                                     th:method="post"
-                                    th:action="@{/users/register}"
+                                    th:action="@{/users/edit/{id}(id=${@userSession.id})}"
                                     th:object="${userData}">
-                                    <!-- Email address input-->
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" th:field="*{email}" />
-                                        <label for="email">Email address</label>
-                                        <small th:errors="*{email}" class="text-danger">Email input error!</small>
-                                        <small th:if="${emailExists}" class="text-danger">User with this email already exists!</small>
-                                    </div>
-                                    <!-- Password input-->
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}" />
-                                        <label for="password">Password</label>
-                                        <small th:errors="*{password}" class="text-danger">Password input error!</small>
-                                    </div>
-                                    <!-- Confirm Password input-->
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="confirmPassword" type="password" placeholder="confirm password" th:field="*{confirmPassword}" />
-                                        <label for="confirmPassword">Confirm password</label>
-                                        <small th:errors="*{confirmPassword}" class="text-danger">Confirm password input error!</small>
-                                        <small th:if="${passwordsDoNotMatch}" class="text-danger">Passwords do not match!</small>
-                                    </div>
+
+                                    <h5 class="fw-bold">Email: <span th:text="*{email}"></span></h5>
+
+                                    <!-- Email change button-->
+                                    <a class="btn btn-warning" th:href="@{/users/edit/email/{id}(id=${@userSession.id})}">Change email</a>
+
+                                    <!-- Password change button-->
+                                    <a class="btn btn-warning" th:href="@{/users/edit/password/{id}(id=${@userSession.id})}">Change password</a>
+
                                     <!-- First Name input-->
-                                    <div class="form-floating mb-3">
+                                    <div class="form-floating mb-3 mt-3">
                                         <input class="form-control" id="firstName" type="text" placeholder="Enter your first name..." th:field="*{firstName}"/>
                                         <label for="firstName">First name</label>
                                         <small th:errors="*{firstName}" class="text-danger">First name input errors!</small>
@@ -75,18 +64,10 @@
                                         <label for="phone">Phone number</label>
                                         <small th:errors="*{phone}" class="text-danger">Phone number input errors!</small>
                                     </div>
-                                    <!-- User role input-->
-                                    <div th:if="${@userSession.isAdminLoggedIn()}" class="form-floating mb-3">
-                                        <select class="form-select" id="userRole" name="userRole" th:field="*{userRole}">
-                                            <option value="USER" selected>User</option>
-                                            <option value="ADMIN">Administrator</option>
-                                        </select>
-                                        <label for="userRole">User role</label>
-                                    </div>
 
                                     <!-- Submit Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Register</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Update user details</button>
                                     </div>
                                 </form>
                             </div>
