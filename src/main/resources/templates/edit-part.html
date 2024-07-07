@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" /><!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5">
+
+                    <!-- Add Part form-->
+                    <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
+                        <div class="text-center mb-5">
+                            <h1 class="fw-bolder">Edit Part</h1>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-8 col-xl-6">
+                                <form
+                                    th:action="@{/parts/edit/{partCode}(partCode=${partData.partCode})}"
+                                    th:method="post"
+                                    th:object="${partData}">
+                                    <!-- Part code input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="partCode" type="text" placeholder="Part code" th:field="*{partCode}" readonly/>
+                                        <label for="brandName">Part code</label>
+                                        <small th:errors="*{partCode}" class="text-danger">Part Code invalid!</small>
+                                    </div>
+                                    <!-- Quantity input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="quantity" type="number" step="1" th:min="0" placeholder="quantity" th:field="*{quantity}"/>
+                                        <label for="quantity">Quantity</label>
+                                        <small th:errors="*{quantity}" class="text-danger">Quantity invalid!</small>
+                                    </div>
+                                    <!-- DescriptionEn input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="descriptionEn" type="text" placeholder="descriptionEn" th:field="*{descriptionEn}"/>
+                                        <label for="descriptionEn">Description in English</label>
+                                        <small th:errors="*{descriptionEn}" class="text-danger">Description in English invalid!</small>
+                                    </div>
+                                    <!-- DescriptionBg input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="descriptionBg" type="text" placeholder="descriptionBg" th:field="*{descriptionBg}"/>
+                                        <label for="descriptionEn">Description in Bulgarian</label>
+                                        <small th:errors="*{descriptionBg}" class="text-danger">Description in Bulgarian invalid!</small>
+                                    </div>
+                                    <!-- ImageURL input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="imageURL" type="text" placeholder="imageURL" th:field="*{imageURL}"/>
+                                        <label for="imageURL">Image URL</label>
+                                        <small th:errors="*{imageURL}" class="text-danger">Image URL invalid!</small>
+                                    </div>
+                                    <!-- Brand name input-->
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="brandName" name="brandName" th:field="*{brandName}">
+                                            <option value="">Select brand name</option>
+                                            <option th:each="brand : ${allBrands}" th:value="${brand}"><span th:text="${brand}">{brandName}</span></option>
+                                        </select>
+                                        <label for="brandName">Brand name</label>
+                                        <small th:errors="*{brandName}" class="text-danger">Please select brand name!</small>
+                                    </div>
+                                    <!-- Price input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="price" type="number" step="0.01" th:min="0" placeholder="price" th:field="*{price}"/>
+                                        <label for="price">Price in EUR</label>
+                                        <small th:errors="*{price}" class="text-danger">Price invalid!</small>
+                                    </div>
+                                    <!-- Size input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="size" type="text" placeholder="size" th:field="*{size}"/>
+                                        <label for="size">Part size</label>
+                                        <small th:errors="*{size}" class="text-danger">Part size invalid!</small>
+                                    </div>
+                                    <!-- Weight input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="weight" type="number" step="0.01" th:min="0" placeholder="weight" th:field="*{weight}"/>
+                                        <label for="weight">Part weight in kg</label>
+                                        <small th:errors="*{weight}" class="text-danger">Part weight invalid!</small>
+                                    </div>
+                                    <!-- Suitable For input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="suitableFor" type="text" placeholder="suitableFor" th:field="*{suitableFor}"/>
+                                        <label for="suitableFor">Suitable For</label>
+                                        <small th:errors="*{suitableFor}" class="text-danger">Suitable for information invalid!</small>
+                                    </div>
+                                    <!-- More Info input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="moreInfo" type="text" placeholder="moreInfo" th:field="*{moreInfo}"/>
+                                        <label for="moreInfo">Part information</label>
+                                        <small th:errors="*{moreInfo}" class="text-danger">Part information invalid!</small>
+                                    </div>
+
+                                    <!-- Submit Part Button-->
+                                    <div class="d-grid">
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit Part</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

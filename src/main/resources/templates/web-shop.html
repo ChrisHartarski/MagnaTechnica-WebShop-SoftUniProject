@@ -58,16 +58,22 @@
                                                 <div class="col-6">
                                                     <button class="btn btn-warning" type="submit">Add to Cart</button>
                                                 </div>
-
-
                                             </div>
-
                                         </form>
 
                                     </div>
                                     <div class="mt-3 align-items-center justify-content-between" th:if="${@userSession.isAdminLoggedIn()}">
-                                        <button class="btn btn-warning" type="submit">Modify</button>
-                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                        <form
+                                            th:action="@{/parts/edit/{partCode}(partCode=${part.partCode})}"
+                                            th:method="get">
+                                            <button class="btn btn-warning" type="submit" >Modify</button>
+                                        </form>
+                                        <form
+                                                th:action="@{/parts/delete/{partCode}(partCode=${part.partCode})}"
+                                                th:method="delete">
+                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                        </form>
+
                                 </div>
                             </div>
                         </div>

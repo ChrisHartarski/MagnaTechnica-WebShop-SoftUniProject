@@ -1,7 +1,6 @@
 package bg.magna.websop.service.impl;
 
-import bg.magna.websop.model.dto.AddPartDTO;
-import bg.magna.websop.model.dto.FullPartDTO;
+import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.model.entity.Brand;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.PartRepository;
@@ -53,9 +52,18 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public void addPart(AddPartDTO partData) {
+    public void addPart(PartDataDTO partData) {
         Part part = modelMapper.map(partData, Part.class);
-        part.setQuantity(0);
+        Brand brand = brandService.getBrandByName(partData.getBrandName());
+        part.setBrand(brand);
+        partRepository.saveAndFlush(part);
+    }
+
+    @Override
+    public void editPart(PartDataDTO partData) {
+        Part part = getPartByPartCode(partData.getPartCode());
+
+        modelMapper.map(partData, part);
         Brand brand = brandService.getBrandByName(partData.getBrandName());
         part.setBrand(brand);
         partRepository.saveAndFlush(part);
@@ -69,7 +77,7 @@ public class PartServiceImpl implements PartService {
     @Override
     public void initializeMockParts() throws IOException {
         if(partRepository.count() == 0) {
-            Arrays.stream(gson.fromJson(Files.readString(Path.of(PARTS_JSON_FILE_PATH)), AddPartDTO[].class))
+            Arrays.stream(gson.fromJson(Files.readString(Path.of(PARTS_JSON_FILE_PATH)), PartDataDTO[].class))
                     .map(dto -> {
                         Part part = modelMapper.map(dto, Part.class);
                         part.setQuantity(20);
@@ -85,10 +93,10 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public FullPartDTO getPartDTOFromPartCode(String partCode) {
+    public PartDataDTO getPartDTOFromPartCode(String partCode) {
         if (partExists(partCode)) {
             Part part = getPartByPartCode(partCode);
-            return modelMapper.map(part, FullPartDTO.class);
+            return modelMapper.map(part, PartDataDTO.class);
         }
         return null;
     }

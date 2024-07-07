@@ -1,7 +1,6 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.dto.AddPartDTO;
-import bg.magna.websop.model.dto.FullPartDTO;
+import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.model.entity.Part;
 
 import java.io.IOException;
@@ -16,13 +15,15 @@ public interface PartService {
 
     boolean partExists(String partCode);
 
-    void addPart(AddPartDTO partData);
+    void addPart(PartDataDTO partData);
+
+    void editPart(PartDataDTO partData);
 
     List<Part> getAllParts();
 
     void initializeMockParts() throws IOException;
 
-    FullPartDTO getPartDTOFromPartCode(String partCode);
+    PartDataDTO getPartDTOFromPartCode(String partCode);
 
     Part getPartByPartCode(String partCode);
 

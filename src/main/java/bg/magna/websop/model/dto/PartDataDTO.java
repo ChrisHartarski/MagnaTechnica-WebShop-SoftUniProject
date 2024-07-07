@@ -4,10 +4,14 @@ import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-public class AddPartDTO {
+public class PartDataDTO {
     @NotEmpty(message = "{part.code.notEmpty}")
     @Size(min = 2, max = 20, message = "{part.code.length}")
     private String partCode;
+
+    @NotNull(message = "{part.quantity.notEmpty}")
+    @PositiveOrZero(message = "{part.quantity.positive}")
+    private int quantity;
 
     @NotEmpty(message = "{part.description.notEmpty}")
     @Size(min = 2, max = 40, message = "{part.description.length}")
@@ -32,7 +36,7 @@ public class AddPartDTO {
     @Size(max = 50, message = "{part.size.length}")
     private String size;
 
-    @Positive(message = "{part.weight.positive}")
+    @PositiveOrZero(message = "{part.weight.positive}")
     private double weight;
 
     @Size(max = 200, message = "{part.suitableFor.length}")
@@ -41,7 +45,7 @@ public class AddPartDTO {
     @Size(max = 200, message = "{part.moreInfo.length}")
     private String moreInfo;
 
-    public AddPartDTO() {
+    public PartDataDTO() {
     }
 
     public String getPartCode() {
@@ -50,6 +54,14 @@ public class AddPartDTO {
 
     public void setPartCode(String partCode) {
         this.partCode = partCode;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getDescriptionEn() {

@@ -1,8 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.dto.AddPartDTO;
-import bg.magna.websop.model.dto.FullPartDTO;
-import bg.magna.websop.model.entity.Part;
+import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.util.Cart;
@@ -28,8 +26,8 @@ public class PartsController {
     }
 
     @ModelAttribute("partData")
-    public AddPartDTO addPartDTO() {
-        return new AddPartDTO();
+    public PartDataDTO addPartDTO() {
+        return new PartDataDTO();
     }
 
     @GetMapping("/add")
@@ -44,7 +42,7 @@ public class PartsController {
     }
 
     @PostMapping("/add")
-    public String addPart(@Valid AddPartDTO partData,
+    public String addPart(@Valid PartDataDTO partData,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
 
@@ -71,7 +69,7 @@ public class PartsController {
     @GetMapping("/{partCode}")
     public String getPartDetails(@PathVariable("partCode") String partCode, Model model) {
 
-        FullPartDTO part = partService.getPartDTOFromPartCode(partCode);
+        PartDataDTO part = partService.getPartDTOFromPartCode(partCode);
         model.addAttribute("part", part);
 
         return "part-details";
@@ -88,5 +86,40 @@ public class PartsController {
         }
 
         return "redirect:/web-shop";
+    }
+
+    @GetMapping("/edit/{partCode}")
+    public String viewEditPart(@PathVariable String partCode, Model model) {
+        if(!userSession.isAdminLoggedIn()) {
+            return "redirect:/";
+        }
+
+        PartDataDTO partDataDTO = partService.getPartDTOFromPartCode(partCode);
+
+        model.addAttribute("partData", partDataDTO);
+        model.addAttribute("allBrands", brandService.getAllBrandNames());
+
+        return "edit-part";
+    }
+
+    @PostMapping("/edit/{partCode}")
+    public String editPart(@PathVariable String partCode,
+                          @Valid PartDataDTO partData,
+                          BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes) {
+
+        if(!userSession.isAdminLoggedIn()) {
+            return "redirect:/";
+        }
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("partData", partData);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.partData", bindingResult);
+            return "redirect:/parts/edit/{partCode}";
+        }
+
+        partService.editPart(partData);
+
+        return "redirect:/admin-panel";
     }
 }
