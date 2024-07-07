@@ -10,14 +10,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class AuthenticationController {
+@RequestMapping("/users")
+public class UserController {
     private final UserService userService;
     private final UserSession userSession;
 
-    public AuthenticationController(UserService userService, UserSession userSession) {
+    public UserController(UserService userService, UserSession userSession) {
         this.userService = userService;
         this.userSession = userSession;
     }
@@ -71,7 +73,7 @@ public class AuthenticationController {
         return "redirect:/loginUser";
     }
 
-    @GetMapping("/loginUser")
+    @GetMapping("/login")
     public String viewLogin() {
         if(userSession.isUserLoggedIn()) {
             return "redirect:/";
@@ -79,7 +81,7 @@ public class AuthenticationController {
         return "loginUser";
     }
 
-    @PostMapping("/loginUser")
+    @PostMapping("/login")
     public String loginUser(@Valid LoginUserDTO loginData,
                             BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {

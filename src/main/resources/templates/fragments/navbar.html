@@ -28,17 +28,17 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/web-shop}">Spare Parts</a></li>
 <!--                    <li class="nav-item"><a class="nav-link" href="faq.html">Service</a></li>-->
                     <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
-                    <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/register}">Register</a></li>
-                    <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/loginUser}">Login</a></li>
+                    <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/users/register}">Register</a></li>
+                    <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/users/login}">Login</a></li>
                     <li class="nav-item dropdown" th:if="${@userSession.isUserLoggedIn()}">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, <span th:text="${@userSession.firstName}">user</span>!</span></a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                             <li><a class="dropdown-item" href="blog-home.html">Update profile</a></li>
                             <li><a class="dropdown-item" href="blog-home.html">View orders</a></li>
                             <li>
-                                <form th:action="@{/logout}"
+                                <form th:action="@{/users/logout}"
                                       th:method="post">
-                                    <button class="dropdown-item" type="submit" th:href="@{/logout}">Logout</button>
+                                    <button class="dropdown-item" type="submit" th:href="@{/users/logout}">Logout</button>
                                 </form>
                             </li>
                         </ul>

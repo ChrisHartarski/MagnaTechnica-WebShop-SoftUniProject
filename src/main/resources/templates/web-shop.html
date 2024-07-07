@@ -42,7 +42,7 @@
                                                 <div th:if="${@userSession.isUserLoggedIn()}" class="fw-bold">Price:
                                                     <span th:text="${part.price}"></span> EUR
                                                 </div>
-                                                <div th:unless="${@userSession.isUserLoggedIn()}" class="fw-bold"> To view prices <a th:href="@{/loginUser}">login</a> or <a th:href="@{/register}">register</a>.</div>
+                                                <div th:unless="${@userSession.isUserLoggedIn()}" class="fw-bold"> To view prices <a th:href="@{/users/login}">login</a> or <a th:href="@{/users/register}">register</a>.</div>
                                                 <div th:if="${@userSession.isUserLoggedIn()}" class="text-muted">Available: <span th:text="${part.quantity}"></span></div>
                                             </div>
                                         </div>
