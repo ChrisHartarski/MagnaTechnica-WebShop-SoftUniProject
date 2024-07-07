@@ -54,23 +54,23 @@ public class UserController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("registerData", registerData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerData", bindingResult);
-            return "redirect:/register";
+            return "redirect:/users/register";
         }
 
         if(!registerData.getPassword().equals(registerData.getConfirmPassword())){
             redirectAttributes.addFlashAttribute("registerData", registerData);
             redirectAttributes.addFlashAttribute("passwordsDoNotMatch", true);
-            return "redirect:/register";
+            return "redirect:/users/register";
         }
 
         if(userService.userEmailExists(registerData.getEmail())) {
             redirectAttributes.addFlashAttribute("registerData", registerData);
             redirectAttributes.addFlashAttribute("emailExists", true);
-            return "redirect:/register";
+            return "redirect:/users/register";
         }
 
         userService.registerUser(registerData);
-        return "redirect:/loginUser";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")
@@ -93,20 +93,20 @@ public class UserController {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("loginData", loginData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.loginData", bindingResult);
-            return "redirect:/loginUser";
+            return "redirect:/users/login";
         }
 
         if(!userService.isValidUser(loginData)) {
             redirectAttributes.addFlashAttribute("loginData", loginData);
             redirectAttributes.addFlashAttribute("wrongUsernameOrPassword", true);
-            return "redirect:/loginUser";
+            return "redirect:/users/login";
         }
 
         userService.loginUser(loginData);
         return "redirect:/web-shop";
     }
 
-    @PostMapping("/users/logout")
+    @PostMapping("/logout")
     public String logout(){
         if(!userSession.isUserLoggedIn()) {
             return "redirect:/";
