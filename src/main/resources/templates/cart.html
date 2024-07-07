@@ -38,18 +38,19 @@
                     </div>
 
                     <div class="row gx-5" th:each="article : ${@userSession.cart.partsAndQuantities}">
+
                         <div class="col-2 align-items-start link-primary">
-                            <a th:href="@{/parts/{partCode}(partCode=${article.getKey().partCode})}">
-                                <span th:text="${article.getKey().partCode}">{partCode}</span>
+                            <a th:href="@{/parts/{partCode}(partCode=${article.getKey()})}">
+                                <span th:text="${article.getKey()}">{partCode}</span>
                             </a>
                         </div>
-                        <div class="col-3 align-items-start" th:text="${article.getKey().descriptionEn}">{descriptionEn}</div>
+                        <div class="col-3 align-items-start" th:text="${cartPartsMap.get(article.getKey()).descriptionEn}">{descriptionEn}</div>
                         <div class="col-2 align-items-start" th:text="${article.getValue()}">{quantity}</div>
-                        <div class="col-2 align-items-start" ><span th:text="${article.getKey().price}">{price}</span> EUR</div>
-                        <div class="col-2 align-items-start" ><span th:text="${@userSession.cart.getArticlePrice(article.getKey())}">{total}</span> EUR</div>
+                        <div class="col-2 align-items-start" ><span th:text="${cartPartsMap.get(article.getKey()).price}">{price}</span> EUR</div>
+                        <div class="col-2 align-items-start" ><span th:text="${cartPartsMap.get(article.getKey()).price.multiply(article.getValue())}">{total}</span> EUR</div>
                         <div class="col-1 align-items-start" >
                             <form
-                                    th:action="@{/cart/remove-item/{partCode}(partCode=${article.getKey().partCode})}"
+                                    th:action="@{/cart/remove-item/{partCode}(partCode=${article.getKey()})}"
                                     th:method="delete">
                                 <button class="btn btn-link">
                                     <i class="bi bi-x-lg link-danger"></i>
@@ -63,7 +64,7 @@
                         <div class="col-3"></div>
                         <div class="col-2"></div>
                         <div class="col-2 fw-bold" >Total: </div>
-                        <div class="col-2 fw-bold" ><span th:text="${@userSession.cart.getTotalPrice()}">{total}</span> EUR</div>
+                        <div class="col-2 fw-bold" ><span th:text="${cartTotal}">{total}</span> EUR</div>
                         <div class="col-1"></div>
                     </div>
 

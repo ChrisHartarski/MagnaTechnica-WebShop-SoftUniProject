@@ -7,11 +7,14 @@ import bg.magna.websop.service.PartService;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CartController {
@@ -32,10 +35,19 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String viewCart() {
+    public String viewCart(Model model) {
         if (!userSession.isUserWithUserRoleLoggedIn()) {
             return "redirect:/";
         }
+
+        Map<String, Part> cartPartsMap = partService.createCartPartsMap();
+        BigDecimal cartTotal = partService.getCartTotalPrice();
+
+
+        model.addAttribute("cartPartsMap", cartPartsMap);
+        model.addAttribute("cartTotal", cartTotal);
+
+
         return "cart";
     }
 
@@ -45,8 +57,7 @@ public class CartController {
             return "redirect:/";
         }
 
-        Part part = partService.getPartByPartCode(partCode);
-        userSession.getCart().getPartsAndQuantities().remove(part);
+        userSession.getCart().getPartsAndQuantities().remove(partCode);
 
         return "redirect:/cart";
     }

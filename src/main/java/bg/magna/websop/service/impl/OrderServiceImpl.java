@@ -2,32 +2,38 @@ package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.entity.Order;
+import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.OrderService;
+import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserSession userSession;
     private final UserService userService;
+    private final PartService partService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserSession userSession, UserService userService) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserSession userSession, UserService userService, PartService partService) {
         this.orderRepository = orderRepository;
         this.userSession = userSession;
         this.userService = userService;
+        this.partService = partService;
     }
 
     @Override
     public void addOrder(OrderDataDTO orderData) {
         Order order = new Order();
-        order.setPartsAndQuantities(userSession.getCart().getPartsAndQuantities());
+        order.setPartsAndQuantities(createPartsAndQuantitiesMapFromCart(userSession.getCart().getPartsAndQuantities()));
         order.setUser(userService.getUserById(userSession.getId()));
         order.setDeliveryAddress(orderData.getDeliveryAddress());
         order.setCreatedOn(Instant.now());
@@ -49,5 +55,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getDeliveredOrders() {
         return orderRepository.findAllByDeliveredOnNotNull();
+    }
+
+    private Map<Part,Integer> createPartsAndQuantitiesMapFromCart(Map<String,Integer> cartMap) {
+        Map<Part, Integer> orderMap = new HashMap<>();
+        cartMap.forEach((partCode, quantity) -> orderMap.put(partService.getPartByPartCode(partCode), quantity));
+        return orderMap;
     }
 }

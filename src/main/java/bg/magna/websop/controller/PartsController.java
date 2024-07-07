@@ -80,18 +80,12 @@ public class PartsController {
     @PostMapping("/add-to-cart/{partCode}")
     public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity) {
         Cart cart = userSession.getCart();
-        Part part = partService.getPartByPartCode(partCode);
 
-
-
-        if (cart.getPartsAndQuantities().containsKey(part)) {
-            cart.getPartsAndQuantities().put(part, cart.getPartsAndQuantities().get(part) + quantity);
+        if (cart.getPartsAndQuantities().containsKey(partCode)) {
+            cart.getPartsAndQuantities().put(partCode, cart.getPartsAndQuantities().get(partCode) + quantity);
         } else {
-            cart.getPartsAndQuantities().put(part, quantity);
+            cart.getPartsAndQuantities().put(partCode, quantity);
         }
-
-//        part.setQuantity(part.getQuantity() - quantity);
-//        partService.savePartToDB(part);
 
         return "redirect:/web-shop";
     }

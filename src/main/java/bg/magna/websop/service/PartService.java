@@ -5,6 +5,7 @@ import bg.magna.websop.model.dto.FullPartDTO;
 import bg.magna.websop.model.entity.Part;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +28,9 @@ public interface PartService {
 
     void savePartToDB(Part part);
 
-    void removeQuantitiesFromParts(Map<Part, Integer> partsAndQuantities);
+    void removeQuantitiesFromParts(Map<String, Integer> partsAndQuantities);
+
+    Map<String, Part> createCartPartsMap();
+
+    BigDecimal getCartTotalPrice();
 }
