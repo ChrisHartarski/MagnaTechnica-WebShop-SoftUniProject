@@ -1,32 +1,34 @@
 package bg.magna.websop.controller;
 
 import bg.magna.websop.model.dto.LoginUserDTO;
-import bg.magna.websop.model.dto.RegisterUserDTO;
+import bg.magna.websop.model.dto.UserDTO;
+import bg.magna.websop.model.enums.UserRole;
+import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final CompanyService companyService;
     private final UserSession userSession;
 
-    public UserController(UserService userService, UserSession userSession) {
+    public UserController(UserService userService, CompanyService companyService, UserSession userSession) {
         this.userService = userService;
+        this.companyService = companyService;
         this.userSession = userSession;
     }
 
     @ModelAttribute("registerData")
-    public RegisterUserDTO registerUserDTO() {
-        return new RegisterUserDTO();
+    public UserDTO registerUserDTO() {
+        return new UserDTO();
     }
 
     @ModelAttribute("loginData")
@@ -35,20 +37,25 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String viewRegister() {
+    public String viewRegister(Model model) {
         if(userSession.isUserWithUserRoleLoggedIn()) {
             return "redirect:/";
         }
+
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid RegisterUserDTO registerData,
+    public String registerUser(@Valid UserDTO registerData,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
         if(userSession.isUserWithUserRoleLoggedIn()) {
             return "redirect:/";
+        }
+
+        if(!userSession.isAdminLoggedIn()) {
+            registerData.setUserRole(UserRole.USER);
         }
 
         if(bindingResult.hasErrors()) {
@@ -66,6 +73,12 @@ public class UserController {
         if(userService.userEmailExists(registerData.getEmail())) {
             redirectAttributes.addFlashAttribute("registerData", registerData);
             redirectAttributes.addFlashAttribute("emailExists", true);
+            return "redirect:/users/register";
+        }
+
+        if(!companyService.companyExists(registerData.getCompanyName())) {
+            redirectAttributes.addFlashAttribute("registerData", registerData);
+            redirectAttributes.addFlashAttribute("companyDoesNotExist", true);
             return "redirect:/users/register";
         }
 
@@ -114,5 +127,13 @@ public class UserController {
 
         userService.logoutUser();
         return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String viewEditUser(@PathVariable String id) {
+        if(userSession.isUserWithUserRoleLoggedIn()) {
+            return "redirect:/";
+        }
+        return "edit-user";
     }
 }

@@ -116,4 +116,12 @@ public class User {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 }

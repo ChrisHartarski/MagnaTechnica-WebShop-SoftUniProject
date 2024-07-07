@@ -26,4 +26,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Company getCompanyByName(String name) {
         return companyRepository.getByName(name);
     }
+
+    @Override
+    public boolean companyExists(String companyName) {
+        return companyRepository.existsByName(companyName);
+    }
 }

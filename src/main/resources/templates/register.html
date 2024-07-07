@@ -46,21 +46,28 @@
                                     <!-- Confirm Password input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="confirmPassword" type="password" placeholder="confirm password" th:field="*{confirmPassword}" />
-                                        <label for="confirm-password">Confirm password</label>
+                                        <label for="confirmPassword">Confirm password</label>
                                         <small th:errors="*{confirmPassword}" class="text-danger">Confirm password input error!</small>
                                         <small th:if="${passwordsDoNotMatch}" class="text-danger">Passwords do not match!</small>
                                     </div>
                                     <!-- First Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="firstName" type="text" placeholder="Enter your first name..." th:field="*{firstName}"/>
-                                        <label for="name">First name</label>
+                                        <label for="firstName">First name</label>
                                         <small th:errors="*{firstName}" class="text-danger">First name input errors!</small>
                                     </div>
                                     <!-- Last Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="lastName" type="text" placeholder="Enter your last name..." th:field="*{lastName}"/>
-                                        <label for="name">Last name</label>
+                                        <label for="lastName">Last name</label>
                                         <small th:errors="*{lastName}" class="text-danger">Last name input errors!</small>
+                                    </div>
+                                    <!-- Company Name input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="companyName" type="text" placeholder="Enter company name..." th:field="*{companyName}"/>
+                                        <label for="companyName">Company name</label>
+                                        <small th:errors="*{companyName}" class="text-danger">Company name input errors!</small>
+                                        <small th:if="${companyDoesNotExist}" class="text-danger">Company does not exist in database! Please <a class="link-danger" th:href="@{/company/add}">add company</a> first!</small>
                                     </div>
                                     <!-- Phone number input-->
                                     <div class="form-floating mb-3">
@@ -70,15 +77,11 @@
                                     </div>
                                     <!-- User role input-->
                                     <div th:if="${@userSession.isAdminLoggedIn()}" class="form-floating mb-3">
-<!--                                        <input class="form-control" id="phone" type="text" placeholder="(123) 456-7890" th:field="*{phone}"/>-->
                                         <select class="form-select" id="userRole" name="userRole" th:field="*{userRole}">
-                                            <option value="">Select user role</option>
-                                            <option value="USER">User</option>
+                                            <option value="USER" selected>User</option>
                                             <option value="ADMIN">Administrator</option>
                                         </select>
                                         <label for="userRole">User role</label>
-
-                                        <small th:errors="*{userRole}" class="text-danger">User Role input errors!</small>
                                     </div>
 
                                     <!-- Submit Button-->

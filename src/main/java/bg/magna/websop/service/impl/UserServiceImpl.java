@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
         if(user.getUserRole() == null) {
             user.setUserRole(UserRole.USER);
         }
+        user.setCompany(companyService.getCompanyByName(registerData.getCompanyName()));
         saveUserToDB(user);
     }
 

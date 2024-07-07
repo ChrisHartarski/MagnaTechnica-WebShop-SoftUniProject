@@ -6,4 +6,6 @@ public interface CompanyService {
     void addfirstTwoCompanies();
 
     Company getCompanyByName(String name);
+
+    boolean companyExists(String companyName);
 }

@@ -3,7 +3,7 @@ package bg.magna.websop.model.dto;
 import bg.magna.websop.model.enums.UserRole;
 import jakarta.validation.constraints.*;
 
-public class RegisterUserDTO {
+public class UserDTO {
     @NotEmpty(message = "{email.notEmpty}")
     @Email(message = "{email.invalid}")
     private String email;
@@ -24,13 +24,16 @@ public class RegisterUserDTO {
     @Size(min = 2, max = 40, message = "{lastName.length}")
     private String lastName;
 
+    @NotEmpty(message = "{companyName.notEmpty}")
+    @Size(min = 2, max = 40, message = "{companyName.length}")
+    private String companyName;
+
     @Pattern(regexp = "[\\+]?\\d{6,15}", message = "{phone.pattern}")
     private String phone;
 
-    @NotNull(message = "{userRole.select}")
     private UserRole userRole;
 
-    public RegisterUserDTO() {
+    public UserDTO() {
     }
 
     public String getEmail() {
@@ -71,6 +74,14 @@ public class RegisterUserDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getPhone() {
