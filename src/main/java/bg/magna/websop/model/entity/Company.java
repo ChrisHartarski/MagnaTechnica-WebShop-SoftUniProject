@@ -18,10 +18,10 @@ public class Company {
     private String name;
 
     @Column(name = "vat_number", nullable = false, unique = true)
-    private String VATNumber;
+    private String vatNumber;
 
     @Column(name = "registered_address", nullable = false)
-    private String RegisteredAddress;
+    private String registeredAddress;
 
     @Column(nullable = false)
     private String phone;
@@ -40,8 +40,8 @@ public class Company {
     public Company(String name, String VATNumber, String registeredAddress, String phone, String email) {
         super();
         this.name = name;
-        this.VATNumber = VATNumber;
-        RegisteredAddress = registeredAddress;
+        this.vatNumber = VATNumber;
+        this.registeredAddress = registeredAddress;
         this.phone = phone;
         this.email = email;
     }
@@ -62,20 +62,20 @@ public class Company {
         this.name = name;
     }
 
-    public String getVATNumber() {
-        return VATNumber;
+    public String getVatNumber() {
+        return vatNumber;
     }
 
-    public void setVATNumber(String VATNumber) {
-        this.VATNumber = VATNumber;
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
     }
 
     public String getRegisteredAddress() {
-        return RegisteredAddress;
+        return registeredAddress;
     }
 
     public void setRegisteredAddress(String registeredAddress) {
-        RegisteredAddress = registeredAddress;
+        this.registeredAddress = registeredAddress;
     }
 
     public String getPhone() {
@@ -92,5 +92,13 @@ public class Company {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<User> employees) {
+        this.employees = employees;
     }
 }

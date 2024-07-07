@@ -1,8 +1,10 @@
 package bg.magna.websop.service.impl;
 
+import bg.magna.websop.model.dto.AddCompanyDTO;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.repository.CompanyRepository;
 import bg.magna.websop.service.CompanyService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
+    private final ModelMapper modelMapper;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ModelMapper modelMapper) {
         this.companyRepository = companyRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -30,5 +34,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public boolean companyExists(String companyName) {
         return companyRepository.existsByName(companyName);
+    }
+
+    @Override
+    public boolean companyWithVATExists(String vatNumber) {
+        return companyRepository.existsByVatNumber(vatNumber);
+    }
+
+    @Override
+    public void addCompany(AddCompanyDTO companyData) {
+        companyRepository.saveAndFlush(modelMapper.map(companyData, Company.class));
     }
 }
