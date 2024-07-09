@@ -1,9 +1,6 @@
 package bg.magna.websop.service.impl;
 
-import bg.magna.websop.model.dto.EditUserDTO;
-import bg.magna.websop.model.dto.LoginUserDTO;
-import bg.magna.websop.model.dto.UserDTO;
-import bg.magna.websop.model.dto.UserEmailDTO;
+import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
@@ -117,6 +114,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getReferenceById(userSession.getId());
         modelMapper.map(userData, user);
         userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void updateUserPassword(UserPasswordDTO userData) {
+        User user = userRepository.getReferenceById(userSession.getId());
+        user.setPassword(userData.getPassword());
+        saveUserToDB(user);
     }
 
     private User getUserByEmailAndPassword(LoginUserDTO loginData) {

@@ -1,9 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.dto.EditUserDTO;
-import bg.magna.websop.model.dto.LoginUserDTO;
-import bg.magna.websop.model.dto.UserDTO;
-import bg.magna.websop.model.dto.UserEmailDTO;
+import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
@@ -171,9 +168,10 @@ public class UserController {
 
     @GetMapping("/edit/email/{id}")
     public String viewEditUserEmail(@PathVariable String id, Model model) {
-//        if(!userSession.isUserLoggedIn()) {
-//            return "redirect:/";
-//        }
+
+        if(!userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
 
         UserDTO userData = userService.getCurrentUserData();
         model.addAttribute("userData", userData);
@@ -187,9 +185,9 @@ public class UserController {
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
-//        if(!userSession.isUserLoggedIn()) {
-//            return "redirect:/";
-//        }
+        if(!userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
@@ -204,6 +202,47 @@ public class UserController {
         }
 
         userService.updateUserEmail(userData);
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/password/{id}")
+    public String viewEditUserPassoword(@PathVariable String id, Model model) {
+
+        if(!userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("userPasswordData", new UserPasswordDTO());
+
+        return "edit-user-password";
+    }
+
+    @PostMapping("/edit/password/{id}")
+    public String editUserPassword(@PathVariable String id,
+                                @Valid UserPasswordDTO userPasswordData,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+
+        if(!userSession.isUserLoggedIn()) {
+            return "redirect:/";
+        }
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordData", bindingResult);
+            return "redirect:/users/edit/password/{id}";
+        }
+
+        if(!userService.isValidUser(new LoginUserDTO(userSession.getEmail(), userPasswordData.getCurrentPassword()))) {
+            redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
+            return "redirect:/users/edit/password/{id}";
+        }
+
+        if(!userPasswordData.getPassword().equals(userPasswordData.getConfirmPassword())){
+            redirectAttributes.addFlashAttribute("passwordsDoNotMatch", true);
+            return "redirect:/users/edit/password/{id}";
+        }
+
+        userService.updateUserPassword(userPasswordData);
         return "redirect:/";
     }
 }

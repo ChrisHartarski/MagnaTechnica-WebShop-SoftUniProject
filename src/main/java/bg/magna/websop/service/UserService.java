@@ -1,9 +1,6 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.dto.EditUserDTO;
-import bg.magna.websop.model.dto.LoginUserDTO;
-import bg.magna.websop.model.dto.UserDTO;
-import bg.magna.websop.model.dto.UserEmailDTO;
+import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 
@@ -23,4 +20,5 @@ public interface UserService {
     UserDTO getCurrentUserData();
     void editUserData(EditUserDTO userData);
     void updateUserEmail(UserEmailDTO userData);
+    void updateUserPassword(UserPasswordDTO userData);
 }
