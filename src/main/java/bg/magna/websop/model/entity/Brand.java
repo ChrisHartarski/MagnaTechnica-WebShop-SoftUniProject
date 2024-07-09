@@ -12,11 +12,15 @@ public class Brand {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(name = "logo_url")
+    private String logoURL;
+
     public Brand() {
     }
 
-    public Brand(String name) {
+    public Brand(String name, String logoURL) {
         this.name = name;
+        this.logoURL = logoURL;
     }
 
     public long getId() {
@@ -33,5 +37,13 @@ public class Brand {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLogoURL() {
+        return logoURL;
+    }
+
+    public void setLogoURL(String logoURL) {
+        this.logoURL = logoURL;
     }
 }

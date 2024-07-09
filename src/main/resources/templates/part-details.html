@@ -23,7 +23,15 @@
                 <div class="container px-5">
                     <div class="card-header">
                         <h2 class="fw-bolder fs-5" th:text="${part.partCode}">Spare Part Code</h2>
-                        <div class="text-muted mb-4" th:text="${part.brandName}">{part Brand name}</div>
+                        <div class="mb-2">
+                            <div>
+                                <img class="img-height50" th:src="${part.brandLogo}" th:alt="${part.brandName}"/>
+                            </div>
+                            <div th:if="${part.brandLogo==null}">
+                                <div class="text-muted mb-0" th:text="${part.brandName}"></div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div>

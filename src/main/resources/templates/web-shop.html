@@ -32,7 +32,14 @@
                                 </div>
                                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                     <div class="pb-3">
-                                        <p class="text-muted mb-0" th:text="${part.brand.name}"></p>
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <img class="img-height20" th:src="${part.brand.logoURL}" th:alt="${part.brand.name}"/>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="text-muted mb-0" th:text="${part.brand.name}"></div>
+                                            </div>
+                                        </div>
                                         <div class="h5 card-title mb-3"><span th:text="${part.partCode}"></span></div>
                                         <p class="card-text mb-0"><span th:text="${part.descriptionEn}"></span></p>
                                     </div>

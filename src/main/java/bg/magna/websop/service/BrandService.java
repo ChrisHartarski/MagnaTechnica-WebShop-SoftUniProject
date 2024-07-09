@@ -10,5 +10,5 @@ public interface BrandService {
     List<String> getAllBrandNames();
     Brand getBrandByName(String brandName);
     void initializeMockBrands();
-    void addBrand(String name);
+    void addBrand(String name, String logoURL);
 }

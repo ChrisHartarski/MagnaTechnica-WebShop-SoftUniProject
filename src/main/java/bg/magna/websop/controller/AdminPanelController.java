@@ -89,7 +89,7 @@ public class AdminPanelController {
             return "redirect:/brands/add";
         }
 
-        brandService.addBrand(brandData.getName());
+        brandService.addBrand(brandData.getName(), brandData.getLogoURL());
         return "redirect:/admin-panel";
     }
 

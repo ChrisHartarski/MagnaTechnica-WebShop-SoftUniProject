@@ -20,7 +20,7 @@
             <section class="py-5">
                 <div class="container px-5">
 
-                    <!-- Login form-->
+                    <!-- Add Brand form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
                             <h1 class="fw-bolder">Add Brand</h1>
@@ -37,6 +37,12 @@
                                         <label for="brandName">Brand name</label>
                                         <small th:errors="*{name}" class="text-danger">Email invalid!</small>
                                         <small th:if="${brandExists}" class="text-danger">Brand with this name already exists!</small>
+                                    </div>
+                                    <!-- LogoURL input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="logoURL" type="text" placeholder="logoURL" th:field="*{logoURL}"/>
+                                        <label for="logoURL">Logo URL</label>
+                                        <small th:errors="*{logoURL}" class="text-danger">Logo URL invalid!</small>
                                     </div>
 
                                     <!-- Add Brand Button-->

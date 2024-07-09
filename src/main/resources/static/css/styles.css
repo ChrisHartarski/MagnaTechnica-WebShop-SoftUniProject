@@ -634,6 +634,20 @@ progress {
   height: auto;
 }
 
+.img-height20 {
+  max-height: 20px;
+  max-width: 50px;
+  width: auto;
+  height: auto;
+}
+
+.img-height50 {
+  max-height: 50px;
+  max-width: 100px;
+  width: auto;
+  height: auto;
+}
+
 .figure {
   display: inline-block;
 }

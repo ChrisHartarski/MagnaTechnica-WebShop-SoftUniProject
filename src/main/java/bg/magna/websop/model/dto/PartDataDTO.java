@@ -25,6 +25,10 @@ public class PartDataDTO {
     @Size(max = 250, message = "{imageURL.length}")
     private String imageURL;
 
+    @Pattern(regexp = "^http[s]?:\\/\\/.[-a-zA-Z0-9@:%._\\+~#=]{2,100}\\.[a-z]{2,6}\\b[-a-zA-Z0-9@:%_\\+.~#?&\\/=]*$", message = "{imageURL.invalid}")
+    @Size(max = 250, message = "{imageURL.length}")
+    private String brandLogo;
+
     @NotEmpty(message = "{brand.name.notEmpty}")
     @Size(min = 2, max = 40, message = "{brand.name.length}")
     private String brandName;
@@ -86,6 +90,14 @@ public class PartDataDTO {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public String getBrandLogo() {
+        return brandLogo;
+    }
+
+    public void setBrandLogo(String brandLogo) {
+        this.brandLogo = brandLogo;
     }
 
     public String getBrandName() {
