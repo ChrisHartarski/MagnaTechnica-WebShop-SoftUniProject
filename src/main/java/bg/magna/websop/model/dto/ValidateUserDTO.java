@@ -3,7 +3,7 @@ package bg.magna.websop.model.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-public class LoginUserDTO {
+public class ValidateUserDTO {
     @NotEmpty(message = "{email.notEmpty}")
     @Email(message = "{email.invalid}")
     private String email;
@@ -11,10 +11,10 @@ public class LoginUserDTO {
     @NotEmpty(message = "{password.notEmpty}")
     private String password;
 
-    public LoginUserDTO() {
+    public ValidateUserDTO() {
     }
 
-    public LoginUserDTO(String email, String password) {
+    public ValidateUserDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

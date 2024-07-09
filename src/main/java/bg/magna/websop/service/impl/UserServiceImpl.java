@@ -1,7 +1,6 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.dto.*;
-import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.model.entity.User;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
@@ -66,12 +65,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isValidUser(LoginUserDTO loginData) {
+    public boolean isValidUser(ValidateUserDTO loginData) {
         return getUserByEmailAndPassword(loginData) != null;
     }
 
     @Override
-    public void loginUser(LoginUserDTO loginData) {
+    public void loginUser(ValidateUserDTO loginData) {
         userSession.login(getUserByEmailAndPassword(loginData));
     }
 
@@ -123,7 +122,7 @@ public class UserServiceImpl implements UserService {
         saveUserToDB(user);
     }
 
-    private User getUserByEmailAndPassword(LoginUserDTO loginData) {
+    private User getUserByEmailAndPassword(ValidateUserDTO loginData) {
         return userRepository.getUserByEmail(loginData.getEmail())
                 .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))
                 .orElse(null);

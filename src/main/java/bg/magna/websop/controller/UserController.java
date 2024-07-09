@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @ModelAttribute("loginData")
-    public LoginUserDTO loginUserDTO() {
-        return new LoginUserDTO();
+    public ValidateUserDTO loginUserDTO() {
+        return new ValidateUserDTO();
     }
 
     @GetMapping("/register")
@@ -94,7 +94,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@Valid LoginUserDTO loginData,
+    public String loginUser(@Valid ValidateUserDTO loginData,
                             BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {
 
@@ -232,7 +232,7 @@ public class UserController {
             return "redirect:/users/edit/password/{id}";
         }
 
-        if(!userService.isValidUser(new LoginUserDTO(userSession.getEmail(), userPasswordData.getCurrentPassword()))) {
+        if(!userService.isValidUser(new ValidateUserDTO(userSession.getEmail(), userPasswordData.getCurrentPassword()))) {
             redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
             return "redirect:/users/edit/password/{id}";
         }

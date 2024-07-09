@@ -11,8 +11,8 @@ public interface UserService {
     void addAdminUser();
     void addFirstUser();
     void registerUser(UserDTO registerData);
-    boolean isValidUser(LoginUserDTO loginData);
-    void loginUser(LoginUserDTO loginData);
+    boolean isValidUser(ValidateUserDTO loginData);
+    void loginUser(ValidateUserDTO loginData);
     void logoutUser();
     long getUserCount();
     long getUserCountByRole(UserRole userRole);
