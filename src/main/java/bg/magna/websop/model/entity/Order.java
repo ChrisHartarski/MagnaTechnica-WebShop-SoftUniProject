@@ -2,9 +2,11 @@ package bg.magna.websop.model.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "orders")
@@ -108,5 +110,21 @@ public class Order {
 
     public int getSize() {
         return getPartsAndQuantities().size();
+    }
+
+    public boolean containsPart(String partCode) {
+        return (getPartsAndQuantities().keySet().stream()
+                .map(Part::getPartCode)
+                .anyMatch(p -> p.equals(partCode)));
+    }
+
+    public BigDecimal getTotal() {
+        return getPartsAndQuantities().entrySet().stream()
+                .map(entry -> {
+                    Part part = entry.getKey();
+                    Integer quantity = entry.getValue();
+                    return part.getPrice().multiply(BigDecimal.valueOf(quantity));
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
