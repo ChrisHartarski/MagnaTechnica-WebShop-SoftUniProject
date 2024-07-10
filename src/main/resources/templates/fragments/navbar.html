@@ -26,9 +26,9 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/web-shop}">Spare Parts</a></li>
+                    <li class="nav-item" th:if="${@userSession.isAdminLoggedIn()}"><a class="nav-link" th:href="@{/orders/all}">Orders</a></li>
                     <li class="nav-item" th:if="${@userSession.isAdminLoggedIn()}"><a class="nav-link" th:href="@{/admin-panel}">Admin Panel</a></li>
-<!--                    <li class="nav-item"><a class="nav-link" href="faq.html">Service</a></li>-->
-                    <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
+                    <li class="nav-item" th:if="${@userSession.isUserWithUserRoleLoggedIn()}"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
                     <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/users/register}">Register</a></li>
                     <li class="nav-item" th:unless="${@userSession.isUserLoggedIn()}"><a class="nav-link" th:href="@{/users/login}">Login</a></li>
                     <li class="nav-item dropdown" th:if="${@userSession.isUserLoggedIn()}">

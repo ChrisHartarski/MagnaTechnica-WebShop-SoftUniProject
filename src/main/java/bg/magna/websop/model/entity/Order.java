@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "orders")
@@ -118,7 +117,7 @@ public class Order {
                 .anyMatch(p -> p.equals(partCode)));
     }
 
-    public BigDecimal getTotal() {
+    public BigDecimal getTotalPrice() {
         return getPartsAndQuantities().entrySet().stream()
                 .map(entry -> {
                     Part part = entry.getKey();
@@ -126,5 +125,13 @@ public class Order {
                     return part.getPrice().multiply(BigDecimal.valueOf(quantity));
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private boolean isDispatched() {
+        return this.dispatchedOn != null;
+    }
+
+    private boolean isDelivered() {
+        return this.deliveredOn != null;
     }
 }

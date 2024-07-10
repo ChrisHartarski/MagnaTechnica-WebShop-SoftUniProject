@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+
+            <!-- Orders section -->
+            <section class="py-5">
+                <div class="container px-5">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder">Orders</h1>
+                    </div>
+                    <small th:if="${alreadyDispatchedOrDelivered}" class="bg-danger">Cannot delete order <span th:text="${orderId}">{order id}</span>! Order is already dispatched or delivered.</small>
+                    <!-- Awaiting orders section -->
+                    <section class="py-3">
+                        <div class="h2 pb-2">Awaiting orders</div>
+                        <div class="row gx-5">
+                            <div th:each="awaitingOrder : ${awaitingOrders}" class="col-lg-3 mb-5">
+                                <div class="card h-100 shadow border-0">
+                                    <div class="card-header p-4">
+                                        <div class="h5 card-title">
+                                            Order number:
+                                            <a class="link-primary" th:href="@{/orders/{id}(id=${awaitingOrder.id})}" th:text="${awaitingOrder.id}">{order id}</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="row">
+                                            <div class="text-body">
+                                                User: <span th:text="${awaitingOrder.userFullName}"></span>
+                                            </div>
+                                            <div class="text-muted">
+                                                Company: <span th:text="${awaitingOrder.userCompanyName}"></span>
+                                            </div>
+                                            <div class="text-body mt-2 mb-2">
+                                                Created On: <span th:text="${#dates.format(awaitingOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class="fw-bold mt-2">
+                                                Order total: <span th:text="${awaitingOrder.totalPrice}"></span> EUR
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                        <div class="mt-3 align-items-center justify-content-between row" th:if="${@userSession.isAdminLoggedIn()}">
+                                            <div class="col-6">
+                                                <form
+                                                        th:action="@{/orders/dispatch/{id}(id=${awaitingOrder.id})}"
+                                                        th:method="post">
+                                                    <button class="btn btn-warning" type="submit">Dispatch Order</button>
+                                                </form>
+                                            </div>
+                                            <div class="col-6">
+                                                <form
+                                                        th:action="@{/orders/delete/{id}(id=${awaitingOrder.id})}"
+                                                        th:method="delete">
+                                                    <button class="btn btn-danger" type="submit">Delete Order</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Dispatched orders section -->
+                    <section class="py-3">
+                        <div class="h2 pb-2">Dispatched orders</div>
+                        <div class="row gx-5">
+                            <div th:each="dispatchedOrder : ${dispatchedOrders}" class="col-lg-3 mb-5">
+                                <div class="card h-100 shadow border-0">
+                                    <div class="card-header p-4">
+                                        <div class="h5 card-title">
+                                            Order number:
+                                            <a class="link-primary" th:href="@{/orders/{id}(id=${dispatchedOrder.id})}" th:text="${dispatchedOrder.id}">{order id}</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="row">
+                                            <div class="text-body">
+                                                User: <span th:text="${dispatchedOrder.userFullName}"></span>
+                                            </div>
+                                            <div class="text-muted">
+                                                Company: <span th:text="${dispatchedOrder.userCompanyName}"></span>
+                                            </div>
+                                            <div class="text-body mt-2 mb-2">
+                                                Created On: <span th:text="${#dates.format(dispatchedOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class="fw-bold mt-2">
+                                                Order total: <span th:text="${dispatchedOrder.totalPrice}"></span> EUR
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                        <div class="text-body">
+                                            Order dispatched on <span th:text="${#dates.format(dispatchedOrder.dispatchedOn, 'dd-MM-yyyy')}">{delivery date}</span>
+                                        </div>
+                                        <div class="mt-3 align-items-center justify-content-between row" th:if="${@userSession.isAdminLoggedIn()}">
+                                            <form
+                                                    th:action="@{/orders/deliver/{id}(id=${dispatchedOrder.id})}"
+                                                    th:method="post">
+                                                <button class="btn btn-warning" type="submit">Deliver Order</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Delivered orders section -->
+                    <section class="py-3">
+                        <div class="h2 pb-2">Delivered orders</div>
+                        <div class="row gx-5">
+                            <div th:each="deliveredOrder : ${deliveredOrders}" class="col-lg-3 mb-5">
+                                <div class="card h-100 shadow border-0">
+                                    <div class="card-header p-4">
+                                        <div class="h5 card-title">
+                                            Order number:
+                                            <a class="link-primary" th:href="@{/orders/{id}(id=${deliveredOrder.id})}" th:text="${deliveredOrder.id}">{order id}</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="row">
+                                            <div class="text-body">
+                                                User: <span th:text="${deliveredOrder.userFullName}"></span>
+                                            </div>
+                                            <div class="text-muted">
+                                                Company: <span th:text="${deliveredOrder.userCompanyName}"></span>
+                                            </div>
+                                            <div class="text-body mt-2 mb-2">
+                                                Created On: <span th:text="${#dates.format(deliveredOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </div>
+                                            <div class="fw-bold mt-2">
+                                                Order total: <span th:text="${deliveredOrder.totalPrice}"></span> EUR
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                        <div class="text-body">
+                                            Order delivered on <span th:text="${#dates.format(deliveredOrder.deliveredOn, 'dd-MM-yyyy')}">{delivery date}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
