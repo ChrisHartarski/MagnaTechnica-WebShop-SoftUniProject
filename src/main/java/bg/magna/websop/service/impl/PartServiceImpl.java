@@ -132,7 +132,7 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public Map<String, Part> createCartPartsMap() {
+    public Map<String, Part> createPartCodeMap() {
         Map<String, Part> cartPartsMap = new HashMap<>();
         Set<String> partCodes = userSession.getCart().getPartsAndQuantities().keySet();
         partCodes.forEach(partCode -> cartPartsMap.put(partCode, getPartByPartCode(partCode)));
@@ -141,7 +141,7 @@ public class PartServiceImpl implements PartService {
 
     @Override
     public BigDecimal getCartTotalPrice() {
-        Map<String, Part> cartPartsMap = createCartPartsMap();
+        Map<String, Part> cartPartsMap = createPartCodeMap();
         Map<String, Integer> cartPartsAndQuantities = userSession.getCart().getPartsAndQuantities();
 
         return cartPartsMap.entrySet().stream()

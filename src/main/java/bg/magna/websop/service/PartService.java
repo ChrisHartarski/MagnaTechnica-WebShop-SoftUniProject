@@ -34,7 +34,7 @@ public interface PartService {
 
     void removeQuantitiesFromParts(Map<String, Integer> partsAndQuantities);
 
-    Map<String, Part> createCartPartsMap();
+    Map<String, Part> createPartCodeMap();
 
     BigDecimal getCartTotalPrice();
 }

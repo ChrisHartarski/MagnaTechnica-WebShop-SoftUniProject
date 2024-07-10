@@ -40,7 +40,7 @@ public class CartController {
             return "redirect:/";
         }
 
-        Map<String, Part> cartPartsMap = partService.createCartPartsMap();
+        Map<String, Part> cartPartsMap = partService.createPartCodeMap();
         BigDecimal cartTotal = partService.getCartTotalPrice();
 
 

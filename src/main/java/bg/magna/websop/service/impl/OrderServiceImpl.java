@@ -1,5 +1,6 @@
 package bg.magna.websop.service.impl;
 
+import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
@@ -112,6 +113,12 @@ public class OrderServiceImpl implements OrderService {
     public boolean currentUserOwnsOrder(long orderId) {
         String userId = orderRepository.getReferenceById(orderId).getUser().getId();
         return userId.equals(userSession.getId());
+    }
+
+    @Override
+    public FullOrderDTO getFullOrderDTO(long id) {
+        Order order = orderRepository.getReferenceById(id);
+        return modelMapper.map(order, FullOrderDTO.class);
     }
 
     private Map<Part,Integer> createPartsAndQuantitiesMapFromCart(Map<String,Integer> cartMap) {

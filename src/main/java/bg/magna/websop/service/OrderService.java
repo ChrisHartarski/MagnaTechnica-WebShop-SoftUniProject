@@ -1,5 +1,6 @@
 package bg.magna.websop.service;
 
+import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
@@ -28,4 +29,6 @@ public interface OrderService {
     boolean deleteOrder(long id);
 
     boolean currentUserOwnsOrder(long orderId);
+
+    FullOrderDTO getFullOrderDTO(long id);
 }

@@ -2,6 +2,7 @@ package bg.magna.websop.model.dto;
 
 import bg.magna.websop.model.entity.Part;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class FullOrderDTO {
     private Instant deliveredOn;
     private String deliveryAddress;
     private String notes;
+    private BigDecimal totalPrice;
 
     public FullOrderDTO() {
     }
@@ -98,5 +100,13 @@ public class FullOrderDTO {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

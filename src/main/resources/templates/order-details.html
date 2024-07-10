@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+
+            <!-- Order Details Section -->
+            <section class="py-5">
+                <div class="container px-5">
+                    <div class="card-header">
+                        <h1 class="text-center fw-bolder fs-5">Order Details</h1>
+                        <div class="text-body" >Order Number: <span th:text="${order.id}">{Order number}</span></div>
+                        <div class="text-muted" >User: <span th:text="${@userSession.getFullName()}">{User name}</span></div>
+                        <div class="text-muted mb-4" >Company: <span th:text="${@userSession.companyName}">{User company name}</span></div>
+                    </div>
+
+                    <div class="h5 fw-bold">Order Items:</div>
+                    <div class="row gx-5">
+                        <div class="col-2 fw-bold align-items-start" >Part code</div>
+                        <div class="col-3 fw-bold align-items-start" >Description</div>
+                        <div class="col-2 fw-bold align-items-start" >Quantity</div>
+                        <div class="col-2 fw-bold align-items-start" >Price</div>
+                        <div class="col-2 fw-bold align-items-start" >Total</div>
+                        <div class="col-1 align-items-start" > </div>
+                    </div>
+
+                    <div class="row gx-5" th:each="article : ${order.partsAndQuantities}">
+
+                        <div class="col-2 align-items-start link-primary">
+                            <a th:href="@{/parts/{partCode}(partCode=${article.getKey().partCode})}">
+                                <span th:text="${article.getKey().partCode}">{partCode}</span>
+                            </a>
+                        </div>
+                        <div class="col-3 align-items-start" th:text="${article.getKey().descriptionEn}">{descriptionEn}</div>
+                        <div class="col-2 align-items-start" th:text="${article.getValue()}">{quantity}</div>
+                        <div class="col-2 align-items-start" ><span th:text="${article.getKey().price}">{price}</span> EUR</div>
+                        <div class="col-2 align-items-start" ><span th:text="${article.getKey().price.multiply(article.getValue())}">{total}</span> EUR</div>
+                        <div class="col-1 align-items-start" ></div>
+                    </div>
+
+                    <div class="row gx-5">
+                        <div class="col-2"></div>
+                        <div class="col-3"></div>
+                        <div class="col-2"></div>
+                        <div class="col-2 fw-bold" >Total: </div>
+                        <div class="col-2 fw-bold" ><span th:text="${order.totalPrice}">{total}</span> EUR</div>
+                        <div class="col-1"></div>
+                    </div>
+
+                    <div class="h5 fw-bold mt-3">Order details:</div>
+                    <div class="text-body">Created on: <span th:text="${#dates.format(order.createdOn,'dd-MM-yyyy HH:mm')}">{created on}</span></div>
+                    <div class="text-body">Dispatched on: <span th:text="${#dates.format(order.dispatchedOn,'dd-MM-yyyy HH:mm')}">{dispatched on}</span></div>
+                    <div class="text-body">Delivered on: <span th:text="${#dates.format(order.deliveredOn,'dd-MM-yyyy HH:mm')}">{delivered on}</span></div>
+                    <div class="text-body">Delivery address: <span th:text="${order.deliveryAddress}">{delivery address}</span></div>
+                    <div class="text-body">Notes: <span th:text="${order.notes}">{notes}</span></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
