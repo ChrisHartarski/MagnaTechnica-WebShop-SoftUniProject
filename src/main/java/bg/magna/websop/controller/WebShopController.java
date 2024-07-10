@@ -1,11 +1,11 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.dto.ShortPartDataDTO;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.service.PartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class WebShopController {
     @GetMapping("/web-shop")
     public String viewWebShop(Model model) {
 
-        List<Part> parts = partService.getAllParts();
+        List<ShortPartDataDTO> parts = partService.getAllShortPartDTOs();
         model.addAttribute("parts", parts);
 
         return "web-shop";

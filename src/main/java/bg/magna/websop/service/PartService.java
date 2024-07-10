@@ -1,6 +1,7 @@
 package bg.magna.websop.service;
 
 import bg.magna.websop.model.dto.PartDataDTO;
+import bg.magna.websop.model.dto.ShortPartDataDTO;
 import bg.magna.websop.model.entity.Part;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public interface PartService {
 
     void deletePart(String partCode);
 
-    List<Part> getAllParts();
+    List<ShortPartDataDTO> getAllShortPartDTOs();
 
     void initializeMockParts() throws IOException;
 

@@ -1,6 +1,7 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.dto.PartDataDTO;
+import bg.magna.websop.model.dto.ShortPartDataDTO;
 import bg.magna.websop.model.entity.Brand;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.PartRepository;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PartServiceImpl implements PartService {
@@ -77,8 +79,10 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public List<Part> getAllParts() {
-        return partRepository.findAll();
+    public List<ShortPartDataDTO> getAllShortPartDTOs() {
+        return partRepository.findAll().stream()
+                .map(part -> modelMapper.map(part, ShortPartDataDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
