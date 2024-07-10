@@ -35,7 +35,7 @@
                         <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, <span th:text="${@userSession.firstName}">user</span>!</span></a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                             <li><a class="dropdown-item" th:href="@{/users/edit/{id}(id=${@userSession.id})}">Update profile</a></li>
-                            <li th:if="${@userSession.isUserWithUserRoleLoggedIn()}"><a class="dropdown-item" href="blog-home.html">View orders</a></li>
+                            <li th:if="${@userSession.isUserWithUserRoleLoggedIn()}"><a class="dropdown-item" th:href="@{/orders/all}">View orders</a></li>
                             <li>
                                 <form th:action="@{/users/logout}"
                                       th:method="post">

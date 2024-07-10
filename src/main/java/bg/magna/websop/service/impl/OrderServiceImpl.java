@@ -76,6 +76,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId) {
+        return orderRepository.findAllByUserId(userId).stream()
+                .map(order -> modelMapper.map(order, ShortOrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void dispatchOrder(long id) {
         Order order = orderRepository.getReferenceById(id);
         order.setDispatchedOn(Instant.now());
@@ -99,6 +106,12 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.deleteById(id);
         return orderRepository.findById(id).isEmpty();
+    }
+
+    @Override
+    public boolean currentUserOwnsOrder(long orderId) {
+        String userId = orderRepository.getReferenceById(orderId).getUser().getId();
+        return userId.equals(userSession.getId());
     }
 
     private Map<Part,Integer> createPartsAndQuantitiesMapFromCart(Map<String,Integer> cartMap) {

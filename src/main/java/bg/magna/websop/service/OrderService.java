@@ -5,7 +5,6 @@ import bg.magna.websop.model.dto.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface OrderService {
@@ -21,9 +20,12 @@ public interface OrderService {
 
     List<ShortOrderDTO> getAllShortOrderDTOs();
 
+    List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId);
+
     void dispatchOrder(long id);
 
     void deliverOrder(long id);
-
     boolean deleteOrder(long id);
+
+    boolean currentUserOwnsOrder(long orderId);
 }

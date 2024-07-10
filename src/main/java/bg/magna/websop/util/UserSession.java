@@ -13,6 +13,7 @@ public class UserSession {
     private String email = "";
     private String firstName = "";
     private String lastName = "";
+    private String companyName = "";
     private UserRole userRole = UserRole.USER;
     private Cart cart;
 
@@ -40,6 +41,7 @@ public class UserSession {
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.companyName = user.getCompany().getName();
         this.userRole = user.getUserRole();
         this.cart = new Cart();
     }
@@ -49,6 +51,7 @@ public class UserSession {
         this.email = "";
         this.firstName = "";
         this.lastName = "";
+        this.companyName = "";
         this.userRole = UserRole.USER;
         this.cart = new Cart();
     };
@@ -74,6 +77,10 @@ public class UserSession {
     }
 
     public String getFullName() {return getFirstName() + " " + getLastName();}
+
+    public String getCompanyName() {
+        return companyName;
+    }
 
     public UserRole getUserRole() {
         return userRole;

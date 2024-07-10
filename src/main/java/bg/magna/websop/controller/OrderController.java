@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/orders")
@@ -24,11 +24,18 @@ public class OrderController {
 
     @GetMapping("/all")
     public String viewAllOrders(Model model) {
-        if(!userSession.isAdminLoggedIn()) {
+        if (!userSession.isUserLoggedIn()) {
             return "redirect:/";
         }
 
-        List<ShortOrderDTO> orders = orderService.getAllShortOrderDTOs();
+        List<ShortOrderDTO> orders = new ArrayList<>();
+
+        if(userSession.isAdminLoggedIn()) {
+            orders = orderService.getAllShortOrderDTOs();
+        } else {
+            orders = orderService.getAllShortOrderDTOsByUser(userSession.getId());
+        }
+
         List<ShortOrderDTO> awaitingOrders = orders.stream()
                         .filter(order -> order.getDispatchedOn() == null)
                                 .toList();
@@ -69,7 +76,9 @@ public class OrderController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteOrder(@PathVariable long id, RedirectAttributes redirectAttributes) {
-        if (!userSession.isAdminLoggedIn()) {
+
+
+        if (!userSession.isAdminLoggedIn() && !orderService.currentUserOwnsOrder(id)) {
             return "redirect:/";
         }
 
@@ -78,6 +87,7 @@ public class OrderController {
             redirectAttributes.addFlashAttribute("alreadyDispatchedOrDelivered", true);
             redirectAttributes.addFlashAttribute("orderId", id);
         }
+
         return "redirect:/orders/all";
     }
 }
