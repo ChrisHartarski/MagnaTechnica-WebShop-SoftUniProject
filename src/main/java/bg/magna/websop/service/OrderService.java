@@ -1,5 +1,6 @@
 package bg.magna.websop.service;
 
+import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
@@ -9,7 +10,7 @@ import bg.magna.websop.model.entity.Part;
 import java.util.List;
 
 public interface OrderService {
-    void addOrder(OrderDataDTO orderData);
+    void addOrder(OrderDataDTO orderData, String userId);
 
     List<Order> getAwaitingOrders();
 
@@ -28,7 +29,7 @@ public interface OrderService {
     void deliverOrder(long id);
     boolean deleteOrder(long id);
 
-    boolean currentUserOwnsOrder(long orderId);
+    boolean currentUserOwnsOrder(long orderId, MagnaUserDetails userDetails);
 
     FullOrderDTO getFullOrderDTO(long id);
 }

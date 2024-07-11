@@ -1,9 +1,11 @@
 package bg.magna.websop.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class MagnaUserDetails extends User {
     private final String id;
@@ -37,5 +39,11 @@ public class MagnaUserDetails extends User {
 
     public String getCompanyName() {
         return companyName;
+    }
+
+    public boolean isAdmin() {
+        return getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(role -> role.equals("ROLE_ADMIN"));
     }
 }

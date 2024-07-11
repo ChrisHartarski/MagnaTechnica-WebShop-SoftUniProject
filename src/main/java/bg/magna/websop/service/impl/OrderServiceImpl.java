@@ -1,5 +1,6 @@
 package bg.magna.websop.service.impl;
 
+import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
@@ -11,6 +12,7 @@ import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,24 +24,20 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final UserSession userSession;
     private final UserService userService;
-    private final PartService partService;
     private final ModelMapper modelMapper;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserSession userSession, UserService userService, PartService partService, ModelMapper modelMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
-        this.userSession = userSession;
         this.userService = userService;
-        this.partService = partService;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public void addOrder(OrderDataDTO orderData) {
+    public void addOrder(OrderDataDTO orderData, String userId) {
         Order order = new Order();
-        order.setPartsAndQuantities(createPartsAndQuantitiesMapFromCart(userSession.getCart().getPartsAndQuantities()));
-        order.setUser(userService.getUserById(userSession.getId()));
+        order.setPartsAndQuantities(userService.getUserById(userId).getCart());
+        order.setUser(userService.getUserById(userId));
         order.setDeliveryAddress(orderData.getDeliveryAddress());
         order.setCreatedOn(Instant.now());
         order.setNotes(orderData.getNotes());
@@ -110,20 +108,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean currentUserOwnsOrder(long orderId) {
+    public boolean currentUserOwnsOrder(long orderId, MagnaUserDetails userDetails) {
         String userId = orderRepository.getReferenceById(orderId).getUser().getId();
-        return userId.equals(userSession.getId());
+        return userId.equals(userDetails.getId());
     }
 
     @Override
     public FullOrderDTO getFullOrderDTO(long id) {
         Order order = orderRepository.getReferenceById(id);
         return modelMapper.map(order, FullOrderDTO.class);
-    }
-
-    private Map<Part,Integer> createPartsAndQuantitiesMapFromCart(Map<String,Integer> cartMap) {
-        Map<Part, Integer> orderMap = new HashMap<>();
-        cartMap.forEach((partCode, quantity) -> orderMap.put(partService.getPartByPartCode(partCode), quantity));
-        return orderMap;
     }
 }

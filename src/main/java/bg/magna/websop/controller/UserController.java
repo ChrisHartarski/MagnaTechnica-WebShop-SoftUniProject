@@ -1,11 +1,13 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,23 +39,17 @@ public class UserController {
 
     @GetMapping("/register")
     public String viewRegister(Model model) {
-        if(userSession.isUserWithUserRoleLoggedIn()) {
-            return "redirect:/";
-        }
 
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(@Valid UserDTO userData,
+                               @AuthenticationPrincipal MagnaUserDetails userDetails,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
-        if(userSession.isUserWithUserRoleLoggedIn()) {
-            return "redirect:/";
-        }
-
-        if(!userSession.isAdminLoggedIn()) {
+        if(!userDetails.isAdmin()) {
             userData.setUserRole(UserRole.USER);
         }
 
@@ -85,56 +81,10 @@ public class UserController {
         return "redirect:/users/login";
     }
 
-    @GetMapping("/login")
-    public String viewLogin() {
-        if(userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
-        return "loginUser";
-    }
-
-    @PostMapping("/login")
-    public String loginUser(@Valid ValidateUserDTO loginData,
-                            BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes) {
-
-        if(userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
-
-        if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("loginData", loginData);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.loginData", bindingResult);
-            return "redirect:/users/login";
-        }
-
-        if(!userService.isValidUser(loginData)) {
-            redirectAttributes.addFlashAttribute("loginData", loginData);
-            redirectAttributes.addFlashAttribute("wrongUsernameOrPassword", true);
-            return "redirect:/users/login";
-        }
-
-        userService.loginUser(loginData);
-        return "redirect:/web-shop";
-    }
-
-    @PostMapping("/logout")
-    public String logout(){
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
-
-        userService.logoutUser();
-        return "redirect:/";
-    }
-
     @GetMapping("/edit/{id}")
     public String viewEditUser(@PathVariable String id, Model model) {
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
 
-        UserDTO userData = userService.getCurrentUserData();
+        UserDTO userData = userService.getCurrentUserData(id);
         model.addAttribute("userData", userData);
 
         return "edit-user";
@@ -146,9 +96,6 @@ public class UserController {
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
@@ -162,18 +109,14 @@ public class UserController {
             return "redirect:/users/edit/{id}";
         }
 
-        userService.editUserData(userData);
+        userService.editUserData(userData, id);
         return "redirect:/";
     }
 
     @GetMapping("/edit/email/{id}")
     public String viewEditUserEmail(@PathVariable String id, Model model) {
 
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
-
-        UserDTO userData = userService.getCurrentUserData();
+        UserDTO userData = userService.getCurrentUserData(id);
         model.addAttribute("userData", userData);
 
         return "edit-user-email";
@@ -184,10 +127,6 @@ public class UserController {
                                 @Valid UserEmailDTO userData,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
-
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
@@ -201,16 +140,12 @@ public class UserController {
             return "redirect:/users/edit/email/{id}";
         }
 
-        userService.updateUserEmail(userData);
+        userService.updateUserEmail(userData, id);
         return "redirect:/";
     }
 
     @GetMapping("/edit/password/{id}")
     public String viewEditUserPassoword(@PathVariable String id, Model model) {
-
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
 
         model.addAttribute("userPasswordData", new UserPasswordDTO());
 
@@ -222,10 +157,6 @@ public class UserController {
                                 @Valid UserPasswordDTO userPasswordData,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
-
-        if(!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordData", bindingResult);
@@ -242,7 +173,7 @@ public class UserController {
             return "redirect:/users/edit/password/{id}";
         }
 
-        userService.updateUserPassword(userPasswordData);
+        userService.updateUserPassword(userPasswordData, id);
         return "redirect:/";
     }
 }

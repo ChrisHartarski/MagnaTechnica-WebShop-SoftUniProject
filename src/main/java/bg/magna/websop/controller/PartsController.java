@@ -1,12 +1,16 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.PartDataDTO;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
+import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.Cart;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +20,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/parts")
 public class PartsController {
-    private final UserSession userSession;
+    private final UserService userService;
     private final BrandService brandService;
     private final PartService partService;
     private final OrderService orderService;
 
-    public PartsController(UserSession userSession, BrandService brandService, PartService partService, OrderService orderService) {
-        this.userSession = userSession;
+    public PartsController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
+        this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
         this.orderService = orderService;
@@ -35,9 +39,6 @@ public class PartsController {
 
     @GetMapping("/add")
     public String viewAddPart(Model model) {
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         model.addAttribute("allBrands", brandService.getAllBrandNames());
 
@@ -48,10 +49,6 @@ public class PartsController {
     public String addPart(@Valid PartDataDTO partData,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
-
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("partData", partData);
@@ -79,13 +76,13 @@ public class PartsController {
     }
 
     @PostMapping("/add-to-cart/{partCode}")
-    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity) {
-        Cart cart = userSession.getCart();
+    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+        UserEntity user = userService.getUserById(userDetails.getId());
 
-        if (cart.getPartsAndQuantities().containsKey(partCode)) {
-            cart.getPartsAndQuantities().put(partCode, cart.getPartsAndQuantities().get(partCode) + quantity);
+        if (user.getCart().containsKey(partService.getPartByPartCode(partCode))) {
+            user.getCart().put(partService.getPartByPartCode(partCode), user.getCart().get(partService.getPartByPartCode(partCode)) + quantity);
         } else {
-            cart.getPartsAndQuantities().put(partCode, quantity);
+            user.getCart().put(partService.getPartByPartCode(partCode), quantity);
         }
 
         return "redirect:/web-shop";
@@ -93,9 +90,6 @@ public class PartsController {
 
     @GetMapping("/edit/{partCode}")
     public String viewEditPart(@PathVariable String partCode, Model model) {
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         PartDataDTO partDataDTO = partService.getPartDTOFromPartCode(partCode);
 
@@ -111,10 +105,6 @@ public class PartsController {
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
 
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
-
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("partData", partData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.partData", bindingResult);
@@ -129,9 +119,6 @@ public class PartsController {
     @DeleteMapping("/delete/{partCode}")
     public String deletePart(@PathVariable String partCode,
                              RedirectAttributes redirectAttributes) {
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         if (orderService.partIsInExistingOrder(partService.getPartByPartCode(partCode))) {
             redirectAttributes.addFlashAttribute("partInExistingOrder", true);

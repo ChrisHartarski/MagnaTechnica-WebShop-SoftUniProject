@@ -1,11 +1,13 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.util.UserSession;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,27 +21,20 @@ import java.util.Map;
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
-    private final PartService partService;
-    private final UserSession userSession;
 
-    public OrderController(OrderService orderService, PartService partService, UserSession userSession) {
+    public OrderController(OrderService orderService, UserSession userSession) {
         this.orderService = orderService;
-        this.partService = partService;
-        this.userSession = userSession;
     }
 
     @GetMapping("/all")
-    public String viewAllOrders(Model model) {
-        if (!userSession.isUserLoggedIn()) {
-            return "redirect:/";
-        }
+    public String viewAllOrders(Model model, @AuthenticationPrincipal MagnaUserDetails userDetails) {
 
         List<ShortOrderDTO> orders = new ArrayList<>();
 
-        if(userSession.isAdminLoggedIn()) {
+        if(userDetails.isAdmin()) {
             orders = orderService.getAllShortOrderDTOs();
         } else {
-            orders = orderService.getAllShortOrderDTOsByUser(userSession.getId());
+            orders = orderService.getAllShortOrderDTOsByUser(userDetails.getId());
         }
 
         List<ShortOrderDTO> awaitingOrders = orders.stream()
@@ -62,9 +57,6 @@ public class OrderController {
 
     @PostMapping("/dispatch/{id}")
     public String dispatchOrder(@PathVariable long id) {
-        if (!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         orderService.dispatchOrder(id);
         return "redirect:/orders/all";
@@ -72,18 +64,17 @@ public class OrderController {
 
     @PostMapping("/deliver/{id}")
     public String deliverOrder(@PathVariable long id) {
-        if (!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         orderService.deliverOrder(id);
         return "redirect:/orders/all";
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteOrder(@PathVariable long id, RedirectAttributes redirectAttributes) {
+    public String deleteOrder(@PathVariable long id,
+                              @AuthenticationPrincipal MagnaUserDetails userDetails,
+                              RedirectAttributes redirectAttributes) {
 
-        if (!userSession.isAdminLoggedIn() && !orderService.currentUserOwnsOrder(id)) {
+        if (!userDetails.isAdmin() && !orderService.currentUserOwnsOrder(id, userDetails)) {
             return "redirect:/";
         }
 
@@ -97,8 +88,8 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public String viewOrderDetails(@PathVariable long id, Model model) {
-        if (!userSession.isAdminLoggedIn() && !orderService.currentUserOwnsOrder(id)){
+    public String viewOrderDetails(@PathVariable long id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
+        if (!userDetails.isAdmin() && !orderService.currentUserOwnsOrder(id, userDetails)){
             return "redirect:/";
         }
 

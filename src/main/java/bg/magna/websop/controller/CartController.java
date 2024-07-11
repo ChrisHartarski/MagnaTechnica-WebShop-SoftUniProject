@@ -1,11 +1,15 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.entity.Part;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
+import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +23,14 @@ import java.util.Map;
 @Controller
 public class CartController {
     private final UserSession userSession;
+    private final UserService userService;
     private final PartService partService;
     private final OrderService orderService;
 
 
-    public CartController(UserSession userSession, PartService partService, OrderService orderService) {
+    public CartController(UserSession userSession, UserService userService, PartService partService, OrderService orderService) {
         this.userSession = userSession;
+        this.userService = userService;
         this.partService = partService;
         this.orderService = orderService;
     }
@@ -35,16 +41,12 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String viewCart(Model model) {
-        if (!userSession.isUserWithUserRoleLoggedIn()) {
-            return "redirect:/";
-        }
-
-        Map<String, Part> cartPartsMap = partService.createPartCodeMap();
-        BigDecimal cartTotal = partService.getCartTotalPrice();
+    public String viewCart(Model model, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+        Map<Part, Integer> cart = userService.getUserById(userDetails.getId()).getCart();
+        BigDecimal cartTotal = partService.getCartTotalPrice(userDetails.getId());
 
 
-        model.addAttribute("cartPartsMap", cartPartsMap);
+        model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartTotal);
 
 
@@ -52,24 +54,21 @@ public class CartController {
     }
 
     @DeleteMapping("/cart/remove-item/{partCode}")
-    public String deletePartFromCart(@PathVariable String partCode) {
-        if (!userSession.isUserWithUserRoleLoggedIn()) {
-            return "redirect:/";
-        }
+    public String deletePartFromCart(@PathVariable String partCode, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+        UserEntity user = userService.getUserById(userDetails.getId());
+        user.getCart().remove(partService.getPartByPartCode(partCode));
+        userService.saveUserToDB(user);
 
-        userSession.getCart().getPartsAndQuantities().remove(partCode);
+//        userSession.getCart().getPartsAndQuantities().remove(partCode);
 
         return "redirect:/cart";
     }
 
     @PostMapping("/orders/add")
     public String addOrder(@Valid OrderDataDTO orderData,
+                           @AuthenticationPrincipal MagnaUserDetails userDetails,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
-
-        if (!userSession.isUserWithUserRoleLoggedIn()) {
-            return "redirect:/";
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("orderData", orderData);
@@ -77,9 +76,10 @@ public class CartController {
             return "redirect:/cart";
         }
 
-        orderService.addOrder(orderData);
-        partService.removeQuantitiesFromParts(userSession.getCart().getPartsAndQuantities());
-        userSession.getCart().setPartsAndQuantities(new HashMap<>());
+        orderService.addOrder(orderData, userDetails.getId());
+        UserEntity user = userService.getUserById(userDetails.getId());
+        partService.removeQuantitiesFromParts(user.getCart());
+        userService.emptyUserCart(user);
 
         return "redirect:/web-shop";
     }

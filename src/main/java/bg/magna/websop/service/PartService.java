@@ -32,9 +32,7 @@ public interface PartService {
 
     void savePartToDB(Part part);
 
-    void removeQuantitiesFromParts(Map<String, Integer> partsAndQuantities);
+    void removeQuantitiesFromParts(Map<Part, Integer> partsAndQuantities);
 
-    Map<String, Part> createPartCodeMap();
-
-    BigDecimal getCartTotalPrice();
+    BigDecimal getCartTotalPrice(String userId);
 }

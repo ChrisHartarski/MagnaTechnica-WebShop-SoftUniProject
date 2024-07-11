@@ -23,14 +23,12 @@ public class AdminPanelController {
     private final UserService userService;
     private final BrandService brandService;
     private final PartService partService;
-    private final UserSession userSession;
     private final OrderService orderService;
 
-    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, UserSession userSession, OrderService orderService) {
+    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
-        this.userSession = userSession;
         this.orderService = orderService;
     }
 
@@ -41,9 +39,6 @@ public class AdminPanelController {
 
     @GetMapping("/admin-panel")
     public String viewAdminPanel(Model model) {
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         model.addAttribute("usersCount", userService.getUserCount());
         model.addAttribute("adminRolesCount", userService.getUserCountByRole(UserRole.ADMIN));
@@ -62,9 +57,7 @@ public class AdminPanelController {
 
     @GetMapping("/brands/add")
     public String viewAddBrand() {
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
+
         return "add-brand";
     }
 
@@ -72,9 +65,6 @@ public class AdminPanelController {
     public String addBrand(@Valid AddBrandDTO brandData,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
-        if(!userSession.isAdminLoggedIn()) {
-            return "redirect:/";
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandData", brandData);

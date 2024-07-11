@@ -7,6 +7,7 @@ import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
+import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
@@ -24,15 +25,15 @@ import java.util.stream.Collectors;
 public class PartServiceImpl implements PartService {
     private final PartRepository partRepository;
     private final BrandService brandService;
-    private final UserSession userSession;
+    private final UserService userService;
     private final ModelMapper modelMapper;
     private final Gson gson;
     private static final String PARTS_JSON_FILE_PATH = "src/main/resources/data/parts.json";
 
-    public PartServiceImpl(PartRepository partRepository, BrandService brandService, UserSession userSession, ModelMapper modelMapper, Gson gson) {
+    public PartServiceImpl(PartRepository partRepository, BrandService brandService, UserService userService, ModelMapper modelMapper, Gson gson) {
         this.partRepository = partRepository;
         this.brandService = brandService;
-        this.userSession = userSession;
+        this.userService = userService;
         this.modelMapper = modelMapper;
         this.gson = gson;
     }
@@ -114,7 +115,7 @@ public class PartServiceImpl implements PartService {
 
     @Override
     public Part getPartByPartCode(String partCode) {
-        return partRepository.getByPartCode(partCode);
+        return partRepository.findByPartCode(partCode).orElseThrow(() -> new IllegalArgumentException("No such part exists"));
     }
 
     @Override
@@ -123,31 +124,22 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public void removeQuantitiesFromParts(Map<String, Integer> partsAndQuantities) {
-        partsAndQuantities.forEach((partCode, quantity) -> {
-            Part part = getPartByPartCode(partCode);
+    public void removeQuantitiesFromParts(Map<Part, Integer> partsAndQuantities) {
+        partsAndQuantities.forEach((part, quantity) -> {
             part.setQuantity(part.getQuantity() - quantity);
             savePartToDB(part);
         });
     }
 
     @Override
-    public Map<String, Part> createPartCodeMap() {
-        Map<String, Part> cartPartsMap = new HashMap<>();
-        Set<String> partCodes = userSession.getCart().getPartsAndQuantities().keySet();
-        partCodes.forEach(partCode -> cartPartsMap.put(partCode, getPartByPartCode(partCode)));
-        return cartPartsMap;
-    }
-
-    @Override
-    public BigDecimal getCartTotalPrice() {
-        Map<String, Part> cartPartsMap = createPartCodeMap();
-        Map<String, Integer> cartPartsAndQuantities = userSession.getCart().getPartsAndQuantities();
-
-        return cartPartsMap.entrySet().stream()
-                .map(entry ->
-                    entry.getValue().getPrice()
-                            .multiply(BigDecimal.valueOf(cartPartsAndQuantities.get(entry.getKey()))))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal getCartTotalPrice(String userId) {
+        return userService.getUserById(userId).getCart()
+                .entrySet().stream()
+                .map(entry -> {
+                    Part part = entry.getKey();
+                    Integer quantity = entry.getValue();
+                    return part.getPrice().multiply(BigDecimal.valueOf(quantity));
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
