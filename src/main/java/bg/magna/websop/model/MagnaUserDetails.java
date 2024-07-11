@@ -1,11 +1,9 @@
 package bg.magna.websop.model;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class MagnaUserDetails extends User {
     private final String id;

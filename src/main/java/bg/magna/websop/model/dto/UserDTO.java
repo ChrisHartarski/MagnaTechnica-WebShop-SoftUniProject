@@ -31,7 +31,7 @@ public class UserDTO {
     @Pattern(regexp = "[\\+]?\\d{6,15}", message = "{phone.pattern}")
     private String phone;
 
-    private UserRole userRole;
+    private UserRole userRole = UserRole.USER;
 
     public UserDTO() {
     }

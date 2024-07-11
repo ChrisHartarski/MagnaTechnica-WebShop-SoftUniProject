@@ -49,9 +49,6 @@ public class UserController {
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
-        if(!userDetails.isAdmin()) {
-            userData.setUserRole(UserRole.USER);
-        }
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
@@ -79,6 +76,11 @@ public class UserController {
 
         userService.registerUser(userData);
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/login")
+    public String viewLogin() {
+        return "loginUser";
     }
 
     @GetMapping("/edit/{id}")
