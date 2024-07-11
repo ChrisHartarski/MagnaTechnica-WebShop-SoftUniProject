@@ -4,8 +4,6 @@ import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
-import bg.magna.websop.util.Cart;
-import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

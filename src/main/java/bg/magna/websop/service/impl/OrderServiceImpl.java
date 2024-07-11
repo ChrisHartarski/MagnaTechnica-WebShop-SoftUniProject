@@ -9,7 +9,6 @@ import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
