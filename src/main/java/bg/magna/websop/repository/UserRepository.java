@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserEntityRepository extends JpaRepository<UserEntity, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
     boolean existsByEmail(String email);
     Optional<UserEntity> getUserByEmail(String email);
     List<UserEntity> findAllByUserRole(UserRole userRole);
+    Optional<UserEntity> findByEmail(String email);
 }

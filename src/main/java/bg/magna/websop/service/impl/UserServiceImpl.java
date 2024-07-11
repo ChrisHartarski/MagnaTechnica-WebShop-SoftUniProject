@@ -3,23 +3,23 @@ package bg.magna.websop.service.impl;
 import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
-import bg.magna.websop.repository.UserEntityRepository;
+import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.CompanyService;
-import bg.magna.websop.service.UserEntityService;
+import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserEntityServiceImpl implements UserEntityService {
-    private final UserEntityRepository userRepository;
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
     private final CompanyService companyService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserSession userSession;
 
-    public UserEntityServiceImpl(UserEntityRepository userRepository, CompanyService companyService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
+    public UserServiceImpl(UserRepository userRepository, CompanyService companyService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
         this.userRepository = userRepository;
         this.companyService = companyService;
         this.passwordEncoder = passwordEncoder;

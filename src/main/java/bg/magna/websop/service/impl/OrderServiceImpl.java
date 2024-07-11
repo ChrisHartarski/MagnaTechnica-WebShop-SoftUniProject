@@ -8,7 +8,7 @@ import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
-import bg.magna.websop.service.UserEntityService;
+import bg.magna.websop.service.UserService;
 import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserSession userSession;
-    private final UserEntityService userService;
+    private final UserService userService;
     private final PartService partService;
     private final ModelMapper modelMapper;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserSession userSession, UserEntityService userService, PartService partService, ModelMapper modelMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserSession userSession, UserService userService, PartService partService, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
         this.userSession = userSession;
         this.userService = userService;

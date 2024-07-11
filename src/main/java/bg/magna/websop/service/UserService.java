@@ -4,7 +4,7 @@ import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
 
-public interface UserEntityService {
+public interface UserService {
     boolean userRepositoryIsEmpty();
     boolean userEmailExists(String email);
     void saveUserToDB(UserEntity user);
