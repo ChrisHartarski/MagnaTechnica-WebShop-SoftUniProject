@@ -7,6 +7,7 @@ import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
+import bg.magna.websop.util.UserSession;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

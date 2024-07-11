@@ -4,6 +4,7 @@ import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
