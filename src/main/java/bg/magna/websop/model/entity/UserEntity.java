@@ -4,7 +4,9 @@ import bg.magna.websop.model.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "users")
@@ -32,6 +34,13 @@ public class UserEntity {
     @Column(nullable = false)
     private UserRole userRole;
 
+    @ElementCollection
+    @MapKeyJoinColumn(name = "part_id")
+    @JoinTable(name = "user_carts",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "cart_quantity")
+    private Map<Part, Integer> cart;
+
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
@@ -39,6 +48,7 @@ public class UserEntity {
     private Company company;
 
     public UserEntity() {
+        this.cart = new HashMap<>();
         this.orders = new ArrayList<>();
     }
 
@@ -108,6 +118,14 @@ public class UserEntity {
         this.userRole = userRole;
     }
 
+    public Map<Part, Integer> getCart() {
+        return cart;
+    }
+
+    public void setCart(Map<Part, Integer> cart) {
+        this.cart = cart;
+    }
+
     public List<Order> getOrders() {
         return orders;
     }
@@ -126,5 +144,13 @@ public class UserEntity {
 
     public String getFullName() {
         return getFirstName() + " " + getLastName();
+    }
+
+    public int getCartSize() {
+        return getCart().size();
+    }
+
+    public void emptyCart() {
+        setCart(new HashMap<>());
     }
 }
