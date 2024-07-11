@@ -22,7 +22,7 @@ public class Order {
     private Map<Part, Integer> partsAndQuantities;
 
     @ManyToOne
-    private User user;
+    private UserEntity user;
 
     @Column(name = "delivery_address", nullable = false)
     private String deliveryAddress;
@@ -59,11 +59,11 @@ public class Order {
         this.partsAndQuantities = partsAndQuantities;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

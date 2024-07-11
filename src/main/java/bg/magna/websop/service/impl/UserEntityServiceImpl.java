@@ -1,25 +1,25 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.dto.*;
-import bg.magna.websop.model.entity.User;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
-import bg.magna.websop.repository.UserRepository;
+import bg.magna.websop.repository.UserEntityRepository;
 import bg.magna.websop.service.CompanyService;
-import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.UserEntityService;
 import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+public class UserEntityServiceImpl implements UserEntityService {
+    private final UserEntityRepository userRepository;
     private final CompanyService companyService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserSession userSession;
 
-    public UserServiceImpl(UserRepository userRepository, CompanyService companyService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
+    public UserEntityServiceImpl(UserEntityRepository userRepository, CompanyService companyService, PasswordEncoder passwordEncoder, ModelMapper modelMapper, UserSession userSession) {
         this.userRepository = userRepository;
         this.companyService = companyService;
         this.passwordEncoder = passwordEncoder;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUserToDB(User user) {
+    public void saveUserToDB(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
 
@@ -46,17 +46,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addAdminUser() {
-        saveUserToDB(new User("admin@mail", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd.")));
+        saveUserToDB(new UserEntity("admin@mail", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd.")));
     }
 
     @Override
     public void addFirstUser() {
-        saveUserToDB(new User("user01@mail", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1")));
+        saveUserToDB(new UserEntity("user01@mail", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1")));
     }
 
     @Override
     public void registerUser(UserDTO registerData) {
-        User user = modelMapper.map(registerData, User.class);
+        UserEntity user = modelMapper.map(registerData, UserEntity.class);
         if(user.getUserRole() == null) {
             user.setUserRole(UserRole.USER);
         }
@@ -90,19 +90,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String id) {
+    public UserEntity getUserById(String id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
     public UserDTO getCurrentUserData() {
-        User user = userRepository.getReferenceById(userSession.getId());
+        UserEntity user = userRepository.getReferenceById(userSession.getId());
         return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
     public void editUserData(EditUserDTO userData) {
-        User user = userRepository.getReferenceById(userSession.getId());
+        UserEntity user = userRepository.getReferenceById(userSession.getId());
         modelMapper.map(userData, user);
         user.setCompany(companyService.getCompanyByName(userData.getCompanyName()));
         userRepository.saveAndFlush(user);
@@ -110,19 +110,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserEmail(UserEmailDTO userData) {
-        User user = userRepository.getReferenceById(userSession.getId());
+        UserEntity user = userRepository.getReferenceById(userSession.getId());
         modelMapper.map(userData, user);
         userRepository.saveAndFlush(user);
     }
 
     @Override
     public void updateUserPassword(UserPasswordDTO userData) {
-        User user = userRepository.getReferenceById(userSession.getId());
+        UserEntity user = userRepository.getReferenceById(userSession.getId());
         user.setPassword(userData.getPassword());
         saveUserToDB(user);
     }
 
-    private User getUserByEmailAndPassword(ValidateUserDTO loginData) {
+    private UserEntity getUserByEmailAndPassword(ValidateUserDTO loginData) {
         return userRepository.getUserByEmail(loginData.getEmail())
                 .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))
                 .orElse(null);

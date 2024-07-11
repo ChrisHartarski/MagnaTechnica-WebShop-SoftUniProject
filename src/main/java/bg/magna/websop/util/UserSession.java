@@ -1,6 +1,6 @@
 package bg.magna.websop.util;
 
-import bg.magna.websop.model.entity.User;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public class UserSession {
     }
 
     @Transactional
-    public void login(User user){
+    public void login(UserEntity user){
         this.id = user.getId();
         this.email = user.getEmail();
         this.firstName = user.getFirstName();

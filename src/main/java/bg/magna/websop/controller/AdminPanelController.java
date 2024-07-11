@@ -5,14 +5,13 @@ import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
-import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.UserEntityService;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,13 +20,13 @@ import java.io.IOException;
 
 @Controller
 public class AdminPanelController {
-    private final UserService userService;
+    private final UserEntityService userService;
     private final BrandService brandService;
     private final PartService partService;
     private final UserSession userSession;
     private final OrderService orderService;
 
-    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, UserSession userSession, OrderService orderService) {
+    public AdminPanelController(UserEntityService userService, BrandService brandService, PartService partService, UserSession userSession, OrderService orderService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;

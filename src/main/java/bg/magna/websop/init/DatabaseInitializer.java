@@ -1,19 +1,18 @@
 package bg.magna.websop.init;
 
-import bg.magna.websop.model.entity.User;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.CompanyService;
-import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.UserEntityService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
     private final BrandService brandService;
-    private final UserService userService;
+    private final UserEntityService userService;
     private final CompanyService companyService;
 
-    public DatabaseInitializer(BrandService brandService, UserService userService, CompanyService companyService) {
+    public DatabaseInitializer(BrandService brandService, UserEntityService userService, CompanyService companyService) {
         this.brandService = brandService;
         this.userService = userService;
         this.companyService = companyService;

@@ -30,7 +30,7 @@ public class Company {
     private String email;
 
     @OneToMany(mappedBy = "company")
-    private Set<User> employees;
+    private Set<UserEntity> employees;
 
 
     public Company() {
@@ -94,11 +94,11 @@ public class Company {
         this.email = email;
     }
 
-    public Set<User> getEmployees() {
+    public Set<UserEntity> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<User> employees) {
+    public void setEmployees(Set<UserEntity> employees) {
         this.employees = employees;
     }
 }

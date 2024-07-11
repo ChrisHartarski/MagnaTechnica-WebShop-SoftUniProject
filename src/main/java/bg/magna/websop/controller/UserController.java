@@ -3,7 +3,7 @@ package bg.magna.websop.controller;
 import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.CompanyService;
-import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.UserEntityService;
 import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -15,11 +15,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private final UserService userService;
+    private final UserEntityService userService;
     private final CompanyService companyService;
     private final UserSession userSession;
 
-    public UserController(UserService userService, CompanyService companyService, UserSession userSession) {
+    public UserController(UserEntityService userService, CompanyService companyService, UserSession userSession) {
         this.userService = userService;
         this.companyService = companyService;
         this.userSession = userSession;

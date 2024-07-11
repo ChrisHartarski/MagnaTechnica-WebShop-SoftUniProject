@@ -1,7 +1,6 @@
 package bg.magna.websop.model.entity;
 
 import bg.magna.websop.model.enums.UserRole;
-import bg.magna.websop.util.Cart;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -39,11 +38,11 @@ public class User {
     @ManyToOne
     private Company company;
 
-    public User() {
+    public UserEntity() {
         this.orders = new ArrayList<>();
     }
 
-    public User(String email, String password, String firstName, String lastName, UserRole userRole, Company company) {
+    public UserEntity(String email, String password, String firstName, String lastName, UserRole userRole, Company company) {
         super();
         this.email = email;
         this.password = password;
