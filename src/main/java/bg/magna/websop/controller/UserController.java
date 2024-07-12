@@ -84,9 +84,10 @@ public class UserController {
     }
 
     @GetMapping("/edit/{id}")
-    public String viewEditUser(@PathVariable String id, Model model) {
+    public String viewEditUser(@PathVariable String id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
 
-        UserDTO userData = userService.getCurrentUserData(id);
+        UserDTO userData = userService.getCurrentUserData(userDetails.getId());
+        model.addAttribute("currentUserDetails", userDetails);
         model.addAttribute("userData", userData);
 
         return "edit-user";

@@ -28,16 +28,16 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form
                                     th:method="post"
-                                    th:action="@{/users/edit/{id}(id=${@userSession.id})}"
+                                    th:action="@{/users/edit/{id}(id=${currentUserDetails.id})}"
                                     th:object="${userData}">
 
                                     <h5 class="fw-bold">Email: <span th:text="*{email}"></span></h5>
 
                                     <!-- Email change button-->
-                                    <a class="btn btn-warning" th:href="@{/users/edit/email/{id}(id=${@userSession.id})}">Change email</a>
+                                    <a class="btn btn-warning" th:href="@{/users/edit/email/{id}(id=${currentUserDetails.id})}">Change email</a>
 
                                     <!-- Password change button-->
-                                    <a class="btn btn-warning" th:href="@{/users/edit/password/{id}(id=${@userSession.id})}">Change password</a>
+                                    <a class="btn btn-warning" th:href="@{/users/edit/password/{id}(id=${currentUserDetails.id})}">Change password</a>
 
                                     <!-- First Name input-->
                                     <div class="form-floating mb-3 mt-3">
@@ -83,6 +83,6 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <script src="/js/scripts.js"></script>
     </body>
 </html>
