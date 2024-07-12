@@ -8,7 +8,6 @@ import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.util.UserSession;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

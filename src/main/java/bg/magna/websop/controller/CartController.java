@@ -7,7 +7,6 @@ import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,19 +16,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class CartController {
-    private final UserSession userSession;
     private final UserService userService;
     private final PartService partService;
     private final OrderService orderService;
 
 
-    public CartController(UserSession userSession, UserService userService, PartService partService, OrderService orderService) {
-        this.userSession = userSession;
+    public CartController(UserService userService, PartService partService, OrderService orderService) {
         this.userService = userService;
         this.partService = partService;
         this.orderService = orderService;

@@ -2,10 +2,8 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.MagnaUserDetails;
 import bg.magna.websop.model.dto.*;
-import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.util.UserSession;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,12 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
     private final UserService userService;
     private final CompanyService companyService;
-    private final UserSession userSession;
 
-    public UserController(UserService userService, CompanyService companyService, UserSession userSession) {
+    public UserController(UserService userService, CompanyService companyService) {
         this.userService = userService;
         this.companyService = companyService;
-        this.userSession = userSession;
     }
 
     @ModelAttribute("userData")
@@ -160,6 +156,7 @@ public class UserController {
     @PostMapping("/edit/password/{id}")
     public String editUserPassword(@PathVariable String id,
                                 @Valid UserPasswordDTO userPasswordData,
+                                @AuthenticationPrincipal MagnaUserDetails userDetails,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
@@ -168,7 +165,7 @@ public class UserController {
             return "redirect:/users/edit/password/{id}";
         }
 
-        if(!userService.isValidUser(new ValidateUserDTO(userSession.getEmail(), userPasswordData.getCurrentPassword()))) {
+        if(!userService.isValidUser(new ValidateUserDTO(userDetails.getUsername(), userPasswordData.getCurrentPassword()))) {
             redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
             return "redirect:/users/edit/password/{id}";
         }

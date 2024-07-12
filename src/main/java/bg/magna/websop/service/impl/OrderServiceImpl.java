@@ -8,15 +8,11 @@ import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.OrderService;
-import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.util.UserSession;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
