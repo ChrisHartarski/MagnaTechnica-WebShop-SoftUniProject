@@ -101,7 +101,7 @@ public class UserController {
         return "edit-user";
     }
 
-    @PostMapping("/edit")
+    @PatchMapping("/edit")
     public String editUser(@AuthenticationPrincipal CurrentUserDetails userDetails,
                            @Valid EditUserDTO userData,
                            BindingResult bindingResult,
@@ -135,7 +135,7 @@ public class UserController {
         return "edit-user-email";
     }
 
-    @PostMapping("/edit/email")
+    @PatchMapping("/edit/email")
     public String editUserEmail(@AuthenticationPrincipal CurrentUserDetails userDetails,
                                 @Valid UserEmailDTO userData,
                                 BindingResult bindingResult,
@@ -169,7 +169,7 @@ public class UserController {
         return "edit-user-password";
     }
 
-    @PostMapping("/edit/password")
+    @PatchMapping("/edit/password")
     public String editUserPassword(@Valid UserPasswordDTO userPasswordData,
                                 @AuthenticationPrincipal CurrentUserDetails userDetails,
                                 BindingResult bindingResult,
