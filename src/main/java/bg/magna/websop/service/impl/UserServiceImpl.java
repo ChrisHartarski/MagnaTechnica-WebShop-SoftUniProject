@@ -87,6 +87,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with email: " + email + ", does not exist!"));
+    }
+
+    @Override
     public UserDTO getCurrentUserData(String id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such user exists!"));
         return modelMapper.map(user, UserDTO.class);

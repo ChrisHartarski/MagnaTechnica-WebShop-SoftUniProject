@@ -61,8 +61,6 @@ public class CartController {
         user.getCart().remove(partService.getPartByPartCode(partCode));
         userService.saveUserToDB(user);
 
-//        userSession.getCart().getPartsAndQuantities().remove(partCode);
-
         return "redirect:/cart";
     }
 

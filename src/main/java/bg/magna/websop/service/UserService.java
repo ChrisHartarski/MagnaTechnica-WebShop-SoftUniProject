@@ -16,9 +16,11 @@ public interface UserService {
     long getUserCount();
     long getUserCountByRole(UserRole userRole);
     UserEntity getUserById(String id);
+    UserEntity getUserByEmail(String email);
     UserDTO getCurrentUserData(String id);
     void editUserData(EditUserDTO userData, String userId);
     void updateUserEmail(UserEmailDTO userData, String userId);
     void updateUserPassword(UserPasswordDTO userData, String userId);
+
     void emptyUserCart(UserEntity user);
 }
