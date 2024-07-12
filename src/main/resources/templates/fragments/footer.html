@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -20,12 +21,8 @@
         <div class="row align-items-center justify-content-between flex-column flex-sm-row">
             <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Magna Technica Ltd. 2024</div></div>
             <div class="col-auto">
-                <a th:if="${@userSession.isAdminLoggedIn()}" class="link-light small" th:href="@{/admin-panel}">Admin Panel</a>
-                <span th:if="${@userSession.isAdminLoggedIn()}" class="text-white mx-1">&middot;</span>
-<!--                <a class="link-light small" href="#!">Privacy</a>-->
-<!--                <span class="text-white mx-1">&middot;</span>-->
-<!--                <a class="link-light small" href="#!">Terms</a>-->
-<!--                <span class="text-white mx-1">&middot;</span>-->
+                <a sec:authorize="hasRole('ADMIN')" class="link-light small" th:href="@{/admin-panel}">Admin Panel</a>
+                <span sec:authorize="hasRole('ADMIN')" class="text-white mx-1">&middot;</span>
                 <a class="link-light small" th:href="@{/contact}">Contact</a>
                 <span class="text-white mx-1">&middot;</span>
                 <a class="link-light small" th:href="@{https://www.facebook.com/MagnaTechnica}">
