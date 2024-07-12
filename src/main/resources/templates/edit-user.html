@@ -28,16 +28,16 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form
                                     th:method="post"
-                                    th:action="@{/users/edit/{id}(id=${currentUserDetails.id})}"
+                                    th:action="@{/users/edit}"
                                     th:object="${userData}">
 
                                     <h5 class="fw-bold">Email: <span th:text="*{email}"></span></h5>
 
                                     <!-- Email change button-->
-                                    <a class="btn btn-warning" th:href="@{/users/edit/email/{id}(id=${currentUserDetails.id})}">Change email</a>
+                                    <a class="btn btn-warning" th:href="@{/users/edit/email}">Change email</a>
 
                                     <!-- Password change button-->
-                                    <a class="btn btn-warning" th:href="@{/users/edit/password/{id}(id=${currentUserDetails.id})}">Change password</a>
+                                    <a class="btn btn-warning" th:href="@{/users/edit/password}">Change password</a>
 
                                     <!-- First Name input-->
                                     <div class="form-floating mb-3 mt-3">

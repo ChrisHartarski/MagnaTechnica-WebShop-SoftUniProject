@@ -6,6 +6,7 @@ import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.helper.UserHelperService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

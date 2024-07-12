@@ -5,6 +5,7 @@ import bg.magna.websop.model.dto.*;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final UserHelperService userHelperService;
     private final CompanyService companyService;
 
-    public UserController(UserService userService, CompanyService companyService) {
+    public UserController(UserService userService, UserHelperService userHelperService, CompanyService companyService) {
         this.userService = userService;
+        this.userHelperService = userHelperService;
         this.companyService = companyService;
     }
 
@@ -88,8 +91,8 @@ public class UserController {
         return "loginUser";
     }
 
-    @GetMapping("/edit/{id}")
-    public String viewEditUser(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+    @GetMapping("/edit")
+    public String viewEditUser(@AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
 
         model.addAttribute("currentUserDetails", userDetails);
         UserDTO userData = userService.getCurrentUserData(userDetails.getId());
@@ -98,8 +101,8 @@ public class UserController {
         return "edit-user";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editUser(@PathVariable String id,
+    @PostMapping("/edit")
+    public String editUser(@AuthenticationPrincipal CurrentUserDetails userDetails,
                            @Valid EditUserDTO userData,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
@@ -108,21 +111,22 @@ public class UserController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
-            return "redirect:/users/edit/{id}";
+            return "redirect:/users/edit";
         }
 
         if(!companyService.companyExists(userData.getCompanyName())) {
             redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("companyDoesNotExist", true);
-            return "redirect:/users/edit/{id}";
+            return "redirect:/users/edit";
         }
 
-        userService.editUserData(userData, id);
+        userService.editUserData(userData, userDetails.getId());
+        userHelperService.updateAuthentication(userDetails.getId());
         return "redirect:/";
     }
 
-    @GetMapping("/edit/email/{id}")
-    public String viewEditUserEmail(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+    @GetMapping("/edit/email")
+    public String viewEditUserEmail(@AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
 
         model.addAttribute("currentUserDetails", userDetails);
         UserDTO userData = userService.getCurrentUserData(userDetails.getId());
@@ -131,8 +135,8 @@ public class UserController {
         return "edit-user-email";
     }
 
-    @PostMapping("/edit/email/{id}")
-    public String editUserEmail(@PathVariable String id,
+    @PostMapping("/edit/email")
+    public String editUserEmail(@AuthenticationPrincipal CurrentUserDetails userDetails,
                                 @Valid UserEmailDTO userData,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
@@ -140,21 +144,22 @@ public class UserController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
-            return "redirect:/users/edit/email/{id}";
+            return "redirect:/users/edit/email";
         }
 
         if(userService.userEmailExists(userData.getEmail())) {
             redirectAttributes.addFlashAttribute("userData", userData);
             redirectAttributes.addFlashAttribute("emailExists", true);
-            return "redirect:/users/edit/email/{id}";
+            return "redirect:/users/edit/email";
         }
 
-        userService.updateUserEmail(userData, id);
+        userService.updateUserEmail(userData, userDetails.getId());
+        userHelperService.updateAuthentication(userDetails.getId());
         return "redirect:/";
     }
 
-    @GetMapping("/edit/password/{id}")
-    public String viewEditUserPassoword(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+    @GetMapping("/edit/password")
+    public String viewEditUserPassoword(@AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
 
         model.addAttribute("currentUserDetails", userDetails);
         UserEntity user = userService.getUserById(userDetails.getId());
@@ -164,31 +169,31 @@ public class UserController {
         return "edit-user-password";
     }
 
-    @PostMapping("/edit/password/{id}")
-    public String editUserPassword(@PathVariable String id,
-                                @Valid UserPasswordDTO userPasswordData,
+    @PostMapping("/edit/password")
+    public String editUserPassword(@Valid UserPasswordDTO userPasswordData,
                                 @AuthenticationPrincipal CurrentUserDetails userDetails,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordData", bindingResult);
-            return "redirect:/users/edit/password/{id}";
+            return "redirect:/users/edit/password";
         }
 
         UserEntity user = userService.getUserById(userDetails.getId());
 
         if(!userService.isValidUser(new ValidateUserDTO(user.getEmail(), userPasswordData.getCurrentPassword()))) {
             redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
-            return "redirect:/users/edit/password/{id}";
+            return "redirect:/users/edit/password";
         }
 
         if(!userPasswordData.getPassword().equals(userPasswordData.getConfirmPassword())){
             redirectAttributes.addFlashAttribute("passwordsDoNotMatch", true);
-            return "redirect:/users/edit/password/{id}";
+            return "redirect:/users/edit/password";
         }
 
-        userService.updateUserPassword(userPasswordData, id);
+        userService.updateUserPassword(userPasswordData, userDetails.getId());
+        userHelperService.updateAuthentication(userDetails.getId());
         return "redirect:/";
     }
 }

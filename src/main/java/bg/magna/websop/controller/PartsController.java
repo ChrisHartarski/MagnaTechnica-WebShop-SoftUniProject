@@ -7,6 +7,7 @@ import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/parts")
 public class PartsController {
     private final UserService userService;
+    private final UserHelperService userHelperService;
     private final BrandService brandService;
     private final PartService partService;
     private final OrderService orderService;
 
-    public PartsController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
+    public PartsController(UserService userService, UserHelperService userHelperService, BrandService brandService, PartService partService, OrderService orderService) {
         this.userService = userService;
+        this.userHelperService = userHelperService;
         this.brandService = brandService;
         this.partService = partService;
         this.orderService = orderService;
