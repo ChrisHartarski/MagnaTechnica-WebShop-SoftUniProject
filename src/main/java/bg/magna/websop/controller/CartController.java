@@ -45,7 +45,7 @@ public class CartController {
         Map<Part, Integer> cart = userService.getUserById(userDetails.getId()).getCart();
         BigDecimal cartTotal = partService.getCartTotalPrice(userDetails.getId());
 
-
+        model.addAttribute("userDetails", userDetails);
         model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartTotal);
 
