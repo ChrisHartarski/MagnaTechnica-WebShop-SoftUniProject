@@ -24,8 +24,8 @@
                     <div class="card-header">
                         <h1 class="text-center fw-bolder fs-5">Order Details</h1>
                         <div class="text-body" >Order Number: <span th:text="${order.id}">{Order number}</span></div>
-                        <div class="text-muted" >User: <span th:text="${@userSession.getFullName()}">{User name}</span></div>
-                        <div class="text-muted mb-4" >Company: <span th:text="${@userSession.companyName}">{User company name}</span></div>
+                        <div class="text-muted" >User: <span th:text="${order.userFullName}">{User name}</span></div>
+                        <div class="text-muted mb-4" >Company: <span th:text="${order.userCompanyName}">{User company name}</span></div>
                     </div>
 
                     <div class="h5 fw-bold">Order Items:</div>
