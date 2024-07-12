@@ -2,6 +2,7 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.*;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
 import jakarta.validation.Valid;
@@ -156,7 +157,8 @@ public class UserController {
     public String viewEditUserPassoword(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
 
         model.addAttribute("currentUserDetails", userDetails);
-        UserPasswordDTO userPasswordDTO = new UserPasswordDTO(userDetails.getUsername());
+        UserEntity user = userService.getUserById(userDetails.getId());
+        UserPasswordDTO userPasswordDTO = new UserPasswordDTO(user.getEmail());
         model.addAttribute("userPasswordData", userPasswordDTO);
 
         return "edit-user-password";
@@ -174,7 +176,9 @@ public class UserController {
             return "redirect:/users/edit/password/{id}";
         }
 
-        if(!userService.isValidUser(new ValidateUserDTO(userDetails.getUsername(), userPasswordData.getCurrentPassword()))) {
+        UserEntity user = userService.getUserById(userDetails.getId());
+
+        if(!userService.isValidUser(new ValidateUserDTO(user.getEmail(), userPasswordData.getCurrentPassword()))) {
             redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
             return "redirect:/users/edit/password/{id}";
         }

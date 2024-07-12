@@ -38,10 +38,16 @@ public class CartController {
 
     @GetMapping("/cart")
     public String viewCart(Model model, @AuthenticationPrincipal CurrentUserDetails userDetails) {
-        Map<Part, Integer> cart = userService.getUserById(userDetails.getId()).getCart();
+
+        UserEntity user = userService.getUserById(userDetails.getId());
+
+        String userFullName = user.getFullName();
+        String userEmail = user.getEmail();
+        Map<Part, Integer> cart = user.getCart();
         BigDecimal cartTotal = partService.getCartTotalPrice(userDetails.getId());
 
-        model.addAttribute("userDetails", userDetails);
+        model.addAttribute("userFullName", userFullName);
+        model.addAttribute("userEmail", userEmail);
         model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartTotal);
 

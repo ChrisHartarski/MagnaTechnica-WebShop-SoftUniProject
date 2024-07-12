@@ -35,6 +35,7 @@
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Welcome,
+                            <span>{user Full name}</span>
 <!--                            <span th:text="${@userDetailsService.loadCurrentUserByUsername(principal.getUsername()).firstName}">user</span>-->
                             !
                         </a>
