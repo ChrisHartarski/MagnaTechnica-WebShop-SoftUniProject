@@ -1,6 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.MagnaUserDetails;
+import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.model.entity.UserEntity;
@@ -37,7 +37,7 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String viewCart(Model model, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+    public String viewCart(Model model, @AuthenticationPrincipal CurrentUserDetails userDetails) {
         Map<Part, Integer> cart = userService.getUserById(userDetails.getId()).getCart();
         BigDecimal cartTotal = partService.getCartTotalPrice(userDetails.getId());
 
@@ -50,7 +50,7 @@ public class CartController {
     }
 
     @DeleteMapping("/cart/remove-item/{partCode}")
-    public String deletePartFromCart(@PathVariable String partCode, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+    public String deletePartFromCart(@PathVariable String partCode, @AuthenticationPrincipal CurrentUserDetails userDetails) {
         UserEntity user = userService.getUserById(userDetails.getId());
         user.getCart().remove(partService.getPartByPartCode(partCode));
         userService.saveUserToDB(user);
@@ -62,7 +62,7 @@ public class CartController {
 
     @PostMapping("/orders/add")
     public String addOrder(@Valid OrderDataDTO orderData,
-                           @AuthenticationPrincipal MagnaUserDetails userDetails,
+                           @AuthenticationPrincipal CurrentUserDetails userDetails,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 

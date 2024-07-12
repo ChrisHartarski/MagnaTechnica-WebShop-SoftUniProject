@@ -1,7 +1,7 @@
 package bg.magna.websop.config;
 
 import bg.magna.websop.repository.UserRepository;
-import bg.magna.websop.service.impl.MagnaUserDetailsService;
+import bg.magna.websop.service.impl.CurrentUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 .loginPage("/users/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/web-shop")
+                                .defaultSuccessUrl("/web-shop", true)
                                 .failureForwardUrl("/users/login-error"))
                 .logout(logout ->
                         logout
@@ -44,8 +44,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MagnaUserDetailsService userDetailsService(UserRepository userRepository) {
-        return new MagnaUserDetailsService(userRepository);
+    public CurrentUserDetailsService userDetailsService(UserRepository userRepository) {
+        return new CurrentUserDetailsService(userRepository);
     }
 
     @Bean

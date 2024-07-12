@@ -5,14 +5,14 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-public class MagnaUserDetails extends User {
+public class CurrentUserDetails extends User {
     private final String id;
     private final String firstName;
     private final String lastName;
     private final String companyName;
     private final int cartSize;
 
-    public MagnaUserDetails(String email, String password, Collection<? extends GrantedAuthority> authorities, String id, String firstName, String lastName, String companyName, int cartSize) {
+    public CurrentUserDetails(String email, String password, Collection<? extends GrantedAuthority> authorities, String id, String firstName, String lastName, String companyName, int cartSize) {
         super(email, password, authorities);
         this.id = id;
         this.firstName = firstName;

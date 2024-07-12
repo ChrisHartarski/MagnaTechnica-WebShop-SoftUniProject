@@ -1,6 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.MagnaUserDetails;
+import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
 import bg.magna.websop.service.OrderService;
@@ -23,7 +23,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public String viewAllOrders(Model model, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+    public String viewAllOrders(Model model, @AuthenticationPrincipal CurrentUserDetails userDetails) {
 
         List<ShortOrderDTO> orders = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class OrderController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteOrder(@PathVariable long id,
-                              @AuthenticationPrincipal MagnaUserDetails userDetails,
+                              @AuthenticationPrincipal CurrentUserDetails userDetails,
                               RedirectAttributes redirectAttributes) {
 
         if (!userDetails.isAdmin() && !orderService.currentUserOwnsOrder(id, userDetails)) {
@@ -85,7 +85,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public String viewOrderDetails(@PathVariable long id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
+    public String viewOrderDetails(@PathVariable long id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
         if (!userDetails.isAdmin() && !orderService.currentUserOwnsOrder(id, userDetails)){
             return "redirect:/";
         }

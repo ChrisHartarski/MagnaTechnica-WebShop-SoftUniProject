@@ -1,6 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.MagnaUserDetails;
+import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.*;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
@@ -41,7 +41,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@Valid UserDTO userData,
-                               @AuthenticationPrincipal MagnaUserDetails userDetails,
+                               @AuthenticationPrincipal CurrentUserDetails userDetails,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
@@ -79,11 +79,19 @@ public class UserController {
         return "loginUser";
     }
 
-    @GetMapping("/edit/{id}")
-    public String viewEditUser(@PathVariable String id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
+    @GetMapping("/login-error")
+    public String viewLoginError(Model model) {
 
-        UserDTO userData = userService.getCurrentUserData(userDetails.getId());
+        model.addAttribute("wrongUsernameOrPassword", true);
+
+        return "loginUser";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String viewEditUser(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+
         model.addAttribute("currentUserDetails", userDetails);
+        UserDTO userData = userService.getCurrentUserData(userDetails.getId());
         model.addAttribute("userData", userData);
 
         return "edit-user";
@@ -113,10 +121,10 @@ public class UserController {
     }
 
     @GetMapping("/edit/email/{id}")
-    public String viewEditUserEmail(@PathVariable String id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
+    public String viewEditUserEmail(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
 
-        UserDTO userData = userService.getCurrentUserData(id);
         model.addAttribute("currentUserDetails", userDetails);
+        UserDTO userData = userService.getCurrentUserData(userDetails.getId());
         model.addAttribute("userData", userData);
 
         return "edit-user-email";
@@ -145,10 +153,11 @@ public class UserController {
     }
 
     @GetMapping("/edit/password/{id}")
-    public String viewEditUserPassoword(@PathVariable String id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
+    public String viewEditUserPassoword(@PathVariable String id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
 
         model.addAttribute("currentUserDetails", userDetails);
-        model.addAttribute("userPasswordData", new UserPasswordDTO());
+        UserPasswordDTO userPasswordDTO = new UserPasswordDTO(userDetails.getUsername());
+        model.addAttribute("userPasswordData", userPasswordDTO);
 
         return "edit-user-password";
     }
@@ -156,7 +165,7 @@ public class UserController {
     @PostMapping("/edit/password/{id}")
     public String editUserPassword(@PathVariable String id,
                                 @Valid UserPasswordDTO userPasswordData,
-                                @AuthenticationPrincipal MagnaUserDetails userDetails,
+                                @AuthenticationPrincipal CurrentUserDetails userDetails,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 

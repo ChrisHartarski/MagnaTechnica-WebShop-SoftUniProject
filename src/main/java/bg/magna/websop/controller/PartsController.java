@@ -1,6 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.MagnaUserDetails;
+import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.BrandService;
@@ -74,7 +74,7 @@ public class PartsController {
     }
 
     @PostMapping("/add-to-cart/{partCode}")
-    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity, @AuthenticationPrincipal MagnaUserDetails userDetails) {
+    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity, @AuthenticationPrincipal CurrentUserDetails userDetails) {
         UserEntity user = userService.getUserById(userDetails.getId());
 
         if (user.getCart().containsKey(partService.getPartByPartCode(partCode))) {

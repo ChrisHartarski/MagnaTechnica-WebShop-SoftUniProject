@@ -1,6 +1,6 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.MagnaUserDetails;
+import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
@@ -29,7 +29,7 @@ public interface OrderService {
     void deliverOrder(long id);
     boolean deleteOrder(long id);
 
-    boolean currentUserOwnsOrder(long orderId, MagnaUserDetails userDetails);
+    boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails);
 
     FullOrderDTO getFullOrderDTO(long id);
 }

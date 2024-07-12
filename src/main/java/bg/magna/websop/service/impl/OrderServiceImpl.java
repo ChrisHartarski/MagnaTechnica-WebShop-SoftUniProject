@@ -1,6 +1,6 @@
 package bg.magna.websop.service.impl;
 
-import bg.magna.websop.model.MagnaUserDetails;
+import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean currentUserOwnsOrder(long orderId, MagnaUserDetails userDetails) {
+    public boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails) {
         String userId = orderRepository.getReferenceById(orderId).getUser().getId();
         return userId.equals(userDetails.getId());
     }

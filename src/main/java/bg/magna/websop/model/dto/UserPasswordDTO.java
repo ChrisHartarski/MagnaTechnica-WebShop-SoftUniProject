@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
 public class UserPasswordDTO {
+    @Email
+    private String email;
 
     @NotEmpty(message = "{password.notEmpty}")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*_)(?!.*\\W)(?!.* ).{8,}$", message = "{password.pattern}")
@@ -19,6 +21,18 @@ public class UserPasswordDTO {
     private String confirmPassword;
 
     public UserPasswordDTO() {
+    }
+
+    public UserPasswordDTO(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCurrentPassword() {
