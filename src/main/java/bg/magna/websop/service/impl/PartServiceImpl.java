@@ -143,4 +143,10 @@ public class PartServiceImpl implements PartService {
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    @Override
+    public void increaseQuantity(Part part, Integer quantity) {
+        part.increaseQuantity(quantity);
+        savePartToDB(part);
+    }
 }

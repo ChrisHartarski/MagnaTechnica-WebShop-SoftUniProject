@@ -117,6 +117,11 @@ public class OrderServiceImpl implements OrderService {
         return modelMapper.map(order, FullOrderDTO.class);
     }
 
+    @Override
+    public Order getOrderById(long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such order exists!"));
+    }
+
     private void fillOrderWithCartItems(Order order, Map<Part, Integer> cart) {
         cart.forEach((key, value) -> {
             order.getPartsAndQuantities().put(key, value);

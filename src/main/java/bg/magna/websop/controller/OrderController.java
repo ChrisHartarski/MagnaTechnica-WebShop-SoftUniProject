@@ -3,9 +3,13 @@ package bg.magna.websop.controller;
 import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.FullOrderDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
+import bg.magna.websop.model.entity.Order;
+import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.service.OrderService;
+import bg.magna.websop.service.PartService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -17,9 +21,11 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final PartService partService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, PartService partService) {
         this.orderService = orderService;
+        this.partService = partService;
     }
 
     @GetMapping("/all")
@@ -67,6 +73,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Transactional
     public String deleteOrder(@PathVariable long id,
                               @AuthenticationPrincipal CurrentUserDetails userDetails,
                               RedirectAttributes redirectAttributes) {
@@ -75,8 +82,11 @@ public class OrderController {
             return "redirect:/";
         }
 
+        Order order = orderService.getOrderById(id);
         boolean orderDeleted = orderService.deleteOrder(id);
-        if (!orderDeleted) {
+        if (orderDeleted) {
+            order.getPartsAndQuantities().forEach(partService::increaseQuantity);
+        } else {
             redirectAttributes.addFlashAttribute("alreadyDispatchedOrDelivered", true);
             redirectAttributes.addFlashAttribute("orderId", id);
         }

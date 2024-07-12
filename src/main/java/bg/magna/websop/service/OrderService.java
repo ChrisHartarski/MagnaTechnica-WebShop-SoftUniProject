@@ -32,4 +32,6 @@ public interface OrderService {
     boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails);
 
     FullOrderDTO getFullOrderDTO(long id);
+
+    Order getOrderById(long id);
 }

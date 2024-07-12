@@ -142,4 +142,8 @@ public class Part {
     public void setSuitableFor(String suitableFor) {
         this.suitableFor = suitableFor;
     }
+
+    public void increaseQuantity(int quantity) {
+        setQuantity(getQuantity() + quantity);
+    }
 }
