@@ -11,6 +11,7 @@ import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -30,9 +31,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void addOrder(OrderDataDTO orderData, String userId) {
         Order order = new Order();
-        order.setPartsAndQuantities(userService.getUserById(userId).getCart());
+        fillOrderWithCartItems(order, userService.getUserById(userId).getCart());
         order.setUser(userService.getUserById(userId));
         order.setDeliveryAddress(orderData.getDeliveryAddress());
         order.setCreatedOn(Instant.now());
@@ -113,5 +115,11 @@ public class OrderServiceImpl implements OrderService {
     public FullOrderDTO getFullOrderDTO(long id) {
         Order order = orderRepository.getReferenceById(id);
         return modelMapper.map(order, FullOrderDTO.class);
+    }
+
+    private void fillOrderWithCartItems(Order order, Map<Part, Integer> cart) {
+        cart.forEach((key, value) -> {
+            order.getPartsAndQuantities().put(key, value);
+        });
     }
 }

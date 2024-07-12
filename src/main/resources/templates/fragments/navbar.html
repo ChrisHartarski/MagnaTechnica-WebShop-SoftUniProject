@@ -33,9 +33,15 @@
                     <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/users/register}">Register</a></li>
                     <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" th:href="@{/users/login}">Login</a></li>
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">Welcome, <span th:text="${@userSession.firstName}">user</span>!</span></a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Welcome,
+<!--                            <span th:text="${@userDetailsService.loadCurrentUserByUsername(principal.getUsername()).firstName}">user</span>-->
+                            !
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
-                            <li><a class="dropdown-item" th:href="@{/users/edit/{id}(id=${@userSession.id})}">Update profile</a></li>
+                            <li><a class="dropdown-item" th:href="@{/}">
+<!--                                   th:href="@{/users/edit/{id}(id=${@userDetailsService.loadCurrentUserByUsername(principal.getUsername()).id})}"-->
+                            Update profile</a></li>
                             <li sec:authorize="hasRole('USER')"><a class="dropdown-item" th:href="@{/orders/all}">View orders</a></li>
                             <li>
                                 <form th:action="@{/users/logout}"
@@ -45,14 +51,17 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item" th:if="${@userSession.isUserWithUserRoleLoggedIn()}">
+                    <li class="nav-item" sec:authorize="hasRole('USER')">
                         <form class="d-flex"
                             th:method="get"
                             th:action="@{/cart}">
                             <button class="btn btn-outline-warning" type="submit">
                                 <i class="bi-cart-fill me-1"></i>
                                 Cart
-                                <span class="badge bg-dark text-warning ms-1 rounded-pill" th:text="${@userSession.cart.size}"></span>
+                                <span class="badge bg-dark text-warning ms-1 rounded-pill"
+                                      th:text="0">
+<!--                                      th:text="${@userDetailsService.loadCurrentUserByUsername(principal.username).cartSize}"-->
+                                </span>
                             </button>
                         </form>
                     </li>

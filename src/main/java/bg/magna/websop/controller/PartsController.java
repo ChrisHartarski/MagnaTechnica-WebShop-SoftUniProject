@@ -83,6 +83,8 @@ public class PartsController {
             user.getCart().put(partService.getPartByPartCode(partCode), quantity);
         }
 
+        userService.saveUserToDB(user);
+
         return "redirect:/web-shop";
     }
 

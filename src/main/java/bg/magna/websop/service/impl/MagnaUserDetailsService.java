@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +21,15 @@ public class MagnaUserDetailsService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .map(MagnaUserDetailsService::mapUserToUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " was not found!"));
+    }
+
+    @Transactional
+    public MagnaUserDetails loadCurrentUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .map(MagnaUserDetailsService::mapUserToUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " was not found!"));
@@ -34,7 +43,8 @@ public class MagnaUserDetailsService implements UserDetailsService {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getCompany().getName()
+                user.getCompany().getName(),
+                user.getCartSize()
         );
     }
 

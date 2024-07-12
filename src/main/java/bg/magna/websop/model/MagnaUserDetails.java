@@ -10,13 +10,15 @@ public class MagnaUserDetails extends User {
     private final String firstName;
     private final String lastName;
     private final String companyName;
+    private final int cartSize;
 
-    public MagnaUserDetails(String email, String password, Collection<? extends GrantedAuthority> authorities, String id, String firstName, String lastName, String companyName) {
+    public MagnaUserDetails(String email, String password, Collection<? extends GrantedAuthority> authorities, String id, String firstName, String lastName, String companyName, int cartSize) {
         super(email, password, authorities);
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.companyName = companyName;
+        this.cartSize = cartSize;
     }
 
     public String getId() {
@@ -37,6 +39,10 @@ public class MagnaUserDetails extends User {
 
     public String getCompanyName() {
         return companyName;
+    }
+
+    public int getCartSize() {
+        return cartSize;
     }
 
     public boolean isAdmin() {
