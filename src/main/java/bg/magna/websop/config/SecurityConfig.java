@@ -20,7 +20,7 @@ public class SecurityConfig {
                                 //grant access to static resources
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 //grant access to pages
-                                .requestMatchers("/", "/web-shop", "/company/", "/contact", "/users/login", "users/register").permitAll()
+                                .requestMatchers("/", "/web-shop", "/company/", "/contact", "/users/login", "/users/login-error", "users/register").permitAll()
                                 //grant access only to admin users
                                 .requestMatchers("/admin-panel", "/brands/add", "/admin-panel/initializeMockDB", "/orders/dispatch/", "/orders/deliver/", "/parts/add", "/parts/edit/", "/parts/delete/").hasRole("ADMIN")
                                 //grant access only to normal users
@@ -34,7 +34,8 @@ public class SecurityConfig {
                                 .usernameParameter("email")
                                 .passwordParameter("password")
                                 .defaultSuccessUrl("/web-shop", true)
-                                .failureForwardUrl("/users/login-error"))
+                                .failureUrl("/users/login-error")
+                )
                 .logout(logout ->
                         logout
                                 .logoutUrl("/users/logout")
