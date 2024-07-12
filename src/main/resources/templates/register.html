@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -76,7 +77,7 @@
                                         <small th:errors="*{phone}" class="text-danger">Phone number input errors!</small>
                                     </div>
                                     <!-- User role input-->
-                                    <div th:if="${@userSession.isAdminLoggedIn()}" class="form-floating mb-3">
+                                    <div sec:authorize="hasRole('ADMIN')" class="form-floating mb-3">
                                         <select class="form-select" id="userRole" name="userRole" th:field="*{userRole}">
                                             <option value="USER" selected>User</option>
                                             <option value="ADMIN">Administrator</option>
