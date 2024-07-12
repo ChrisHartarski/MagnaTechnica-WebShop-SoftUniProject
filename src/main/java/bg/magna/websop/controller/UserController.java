@@ -117,9 +117,10 @@ public class UserController {
     }
 
     @GetMapping("/edit/email/{id}")
-    public String viewEditUserEmail(@PathVariable String id, Model model) {
+    public String viewEditUserEmail(@PathVariable String id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
 
         UserDTO userData = userService.getCurrentUserData(id);
+        model.addAttribute("currentUserDetails", userDetails);
         model.addAttribute("userData", userData);
 
         return "edit-user-email";
@@ -148,8 +149,9 @@ public class UserController {
     }
 
     @GetMapping("/edit/password/{id}")
-    public String viewEditUserPassoword(@PathVariable String id, Model model) {
+    public String viewEditUserPassoword(@PathVariable String id, @AuthenticationPrincipal MagnaUserDetails userDetails, Model model) {
 
+        model.addAttribute("currentUserDetails", userDetails);
         model.addAttribute("userPasswordData", new UserPasswordDTO());
 
         return "edit-user-password";
