@@ -1,4 +1,4 @@
-package bg.magna.websop.service.impl;
+package bg.magna.websop.service.helper;
 
 import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.entity.UserEntity;
