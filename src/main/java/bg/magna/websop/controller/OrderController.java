@@ -48,6 +48,7 @@ public class OrderController {
                         .filter(order -> order.getDeliveredOn() != null)
                                 .toList();
 
+        model.addAttribute("userDetails", userDetails);
         model.addAttribute("awaitingOrders", awaitingOrders);
         model.addAttribute("dispatchedOrders", dispatchedOrders);
         model.addAttribute("deliveredOrders", deliveredOrders);
