@@ -38,9 +38,6 @@ public class UserHelperService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-
-
-
     private static CurrentUserDetails mapUserToUserDetails(UserEntity user) {
         return new CurrentUserDetails(
                 user.getEmail(),
