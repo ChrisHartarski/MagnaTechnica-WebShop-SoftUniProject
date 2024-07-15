@@ -81,7 +81,7 @@
                                 th:action="@{/cart/add-order}"
                                 th:method="post"
                                 th:object="${orderData}">
-                             Delivery address input
+                            <!-- Delivery address input-->
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="deliveryAddress" type="text" placeholder="Delivery Address" th:field="*{deliveryAddress}"/>
                                 <label for="deliveryAddress" th:text="#{cart_delivery_address}">Delivery address</label>
