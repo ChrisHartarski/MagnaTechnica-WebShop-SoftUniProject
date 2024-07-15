@@ -45,7 +45,6 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@Valid UserDTO userData,
-                               @AuthenticationPrincipal CurrentUserDetails userDetails,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
