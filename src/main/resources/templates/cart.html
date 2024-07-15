@@ -25,10 +25,10 @@
                         <h2 class="fw-bolder fs-5" th:text="#{cart_title}">Shopping cart</h2>
                         <div class="text-muted" >
                             <span th:text="#{cart_user_full_name} + ': '">User: </span>
-                            <span th:text="${userFullName}">User name</span></div>
+                            <span th:text="${@userHelperService.getCurrentUserDetails().fullName}">User name</span></div>
                         <div class="text-muted mb-4" >
                             <span th:text="#{cart_email} + ': '">Email: </span>
-                            <span th:text="${userEmail}">User email</span></div>
+                            <span th:text="${@userHelperService.getCurrentUserDetails().username}">User email</span></div>
                     </div>
 
                     <h5 class="fw-bold" th:text="#{cart_cart_items_title} + ':'">Cart Items:</h5>
@@ -41,7 +41,7 @@
                         <div class="col-1 align-items-start" > </div>
                     </div>
 
-                    <div class="row gx-5" th:each="article : ${cart}">
+                    <div class="row gx-5" th:each="article : ${@userServiceImpl.getUserById(@userHelperService.getCurrentUserDetails().getId()).cart}">
 
                         <div class="col-2 align-items-start link-primary">
                             <a th:href="@{/parts/{partCode}(partCode=${article.getKey().partCode})}">
@@ -71,17 +71,17 @@
                         <div class="col-3"></div>
                         <div class="col-2"></div>
                         <div class="col-2 fw-bold" th:text="#{cart_final_total} + ': '">Total: </div>
-                        <div class="col-2 fw-bold" ><span th:text="${cartTotal}">{total}</span> EUR</div>
+                        <div class="col-2 fw-bold" ><span th:text="${@partServiceImpl.getCartTotalPrice(@userHelperService.getCurrentUserDetails().getId())}">{total}</span> EUR</div>
                         <div class="col-1"></div>
                     </div>
                     <small class="text-danger" th:if="${cartEmpty}" th:text="#{cart_empty_error}">Cannot place order. The cart is empty!</small>
 
                     <div class="mt-4 mb-4">
                         <form
-                                th:action="@{/cart}"
+                                th:action="@{/cart/add-order}"
                                 th:method="post"
                                 th:object="${orderData}">
-                            <!-- Delivery address input-->
+                             Delivery address input
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="deliveryAddress" type="text" placeholder="Delivery Address" th:field="*{deliveryAddress}"/>
                                 <label for="deliveryAddress" th:text="#{cart_delivery_address}">Delivery address</label>
@@ -93,7 +93,6 @@
                                 <label for="notes" th:text="#{cart_notes}">Notes</label>
                                 <small th:errors="*{notes}" class="text-danger">Notes invalid!</small>
                             </div>
-
                             <!-- Submit order Button-->
                             <div class="d-grid">
                                 <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{cart_submit_order_button}">Submit Order</button>

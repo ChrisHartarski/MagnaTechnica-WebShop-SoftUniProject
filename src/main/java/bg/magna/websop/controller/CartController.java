@@ -2,33 +2,31 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.OrderDataDTO;
-import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.math.BigDecimal;
-import java.util.Map;
 
 @Controller
 public class CartController {
     private final UserService userService;
     private final PartService partService;
     private final OrderService orderService;
+    private final UserHelperService userHelperService;
 
 
-    public CartController(UserService userService, PartService partService, OrderService orderService) {
+    public CartController(UserService userService, PartService partService, OrderService orderService, UserHelperService userHelperService) {
         this.userService = userService;
         this.partService = partService;
         this.orderService = orderService;
+        this.userHelperService = userHelperService;
     }
 
     @ModelAttribute("orderData")
@@ -37,29 +35,13 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String viewCart(Model model, @AuthenticationPrincipal CurrentUserDetails userDetails) {
-
-        UserEntity user = userService.getUserById(userDetails.getId());
-
-        String userFullName = user.getFullName();
-        String userEmail = user.getEmail();
-        Map<Part, Integer> cart = user.getCart();
-        BigDecimal cartTotal = partService.getCartTotalPrice(userDetails.getId());
-
-        model.addAttribute("userFullName", userFullName);
-        model.addAttribute("userEmail", userEmail);
-        model.addAttribute("cart", cart);
-        model.addAttribute("cartTotal", cartTotal);
-        if(!model.containsAttribute("orderData")) {
-            model.addAttribute("orderData", new OrderDataDTO());
-        }
+    public String viewCart() {
 
         return "cart";
     }
 
-    @PostMapping("/cart")
+    @PostMapping("/cart/add-order")
     public String addOrder(@Valid OrderDataDTO orderData,
-                           @AuthenticationPrincipal CurrentUserDetails userDetails,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 
@@ -69,7 +51,7 @@ public class CartController {
             return "redirect:/cart";
         }
 
-        UserEntity user = userService.getUserById(userDetails.getId());
+        UserEntity user = userService.getUserById(userHelperService.getCurrentUserDetails().getId());
 
         if(user.getCart().isEmpty()) {
             redirectAttributes.addFlashAttribute("cartEmpty", true);
