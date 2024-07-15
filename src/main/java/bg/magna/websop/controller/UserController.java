@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String viewRegister(Model model) {
+    public String viewRegister() {
 
         return "register";
     }

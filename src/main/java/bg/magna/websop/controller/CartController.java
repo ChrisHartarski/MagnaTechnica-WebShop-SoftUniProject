@@ -32,7 +32,7 @@ public class CartController {
     }
 
     @ModelAttribute("orderData")
-    public OrderDataDTO orderDataDTO() {
+    public OrderDataDTO orderData() {
         return new OrderDataDTO();
     }
 
@@ -50,9 +50,37 @@ public class CartController {
         model.addAttribute("userEmail", userEmail);
         model.addAttribute("cart", cart);
         model.addAttribute("cartTotal", cartTotal);
-
+        if(!model.containsAttribute("orderData")) {
+            model.addAttribute("orderData", new OrderDataDTO());
+        }
 
         return "cart";
+    }
+
+    @PostMapping("/cart")
+    public String addOrder(@Valid OrderDataDTO orderData,
+                           @AuthenticationPrincipal CurrentUserDetails userDetails,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderData", bindingResult);
+            redirectAttributes.addFlashAttribute("orderData", orderData);
+            return "redirect:/cart";
+        }
+
+        UserEntity user = userService.getUserById(userDetails.getId());
+
+        if(user.getCart().isEmpty()) {
+            redirectAttributes.addFlashAttribute("cartEmpty", true);
+            return "redirect:/cart";
+        }
+
+        orderService.addOrder(orderData, user.getId());
+        partService.removeQuantitiesFromParts(user.getCart());
+        userService.emptyUserCart(user);
+
+        return "redirect:/web-shop";
     }
 
     @DeleteMapping("/cart/remove-item/{partCode}")
@@ -62,25 +90,5 @@ public class CartController {
         userService.saveUserToDB(user);
 
         return "redirect:/cart";
-    }
-
-    @PostMapping("/orders/add")
-    public String addOrder(@Valid OrderDataDTO orderData,
-                           @AuthenticationPrincipal CurrentUserDetails userDetails,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
-
-        if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("orderData", orderData);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderData", bindingResult);
-            return "redirect:/cart";
-        }
-
-        orderService.addOrder(orderData, userDetails.getId());
-        UserEntity user = userService.getUserById(userDetails.getId());
-        partService.removeQuantitiesFromParts(user.getCart());
-        userService.emptyUserCart(user);
-
-        return "redirect:/web-shop";
     }
 }

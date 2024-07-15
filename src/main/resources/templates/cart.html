@@ -22,18 +22,22 @@
             <section class="py-5">
                 <div class="container px-5">
                     <div class="card-header">
-                        <h2 class="fw-bolder fs-5">Shopping cart</h2>
-                        <div class="text-muted" >User: <span th:text="${userFullName}">User name</span></div>
-                        <div class="text-muted mb-4" >Email: <span th:text="${userEmail}">User email</span></div>
+                        <h2 class="fw-bolder fs-5" th:text="#{cart_title}">Shopping cart</h2>
+                        <div class="text-muted" >
+                            <span th:text="#{cart_user_full_name} + ': '">User: </span>
+                            <span th:text="${userFullName}">User name</span></div>
+                        <div class="text-muted mb-4" >
+                            <span th:text="#{cart_email} + ': '">Email: </span>
+                            <span th:text="${userEmail}">User email</span></div>
                     </div>
 
-                    <h5 class="fw-bold">Cart Items:</h5>
+                    <h5 class="fw-bold" th:text="#{cart_cart_items_title} + ':'">Cart Items:</h5>
                     <div class="row gx-5">
-                        <div class="col-2 fw-bold align-items-start" >Part code</div>
-                        <div class="col-3 fw-bold align-items-start" >Description</div>
-                        <div class="col-2 fw-bold align-items-start" >Quantity</div>
-                        <div class="col-2 fw-bold align-items-start" >Price</div>
-                        <div class="col-2 fw-bold align-items-start" >Total</div>
+                        <div class="col-2 fw-bold align-items-start" th:text="#{cart_part_code}">Part code</div>
+                        <div class="col-3 fw-bold align-items-start" th:text="#{cart_description}">Description</div>
+                        <div class="col-2 fw-bold align-items-start" th:text="#{cart_quantity}">Quantity</div>
+                        <div class="col-2 fw-bold align-items-start" th:text="#{cart_price}">Price</div>
+                        <div class="col-2 fw-bold align-items-start" th:text="#{cart_total}">Total</div>
                         <div class="col-1 align-items-start" > </div>
                     </div>
 
@@ -44,7 +48,10 @@
                                 <span th:text="${article.getKey().partCode}">{partCode}</span>
                             </a>
                         </div>
-                        <div class="col-3 align-items-start" th:text="${article.getKey().descriptionEn}">{descriptionEn}</div>
+                        <div class="col-3 align-items-start">
+                            <span th:if="${#locale.toString()} == 'en_US'" th:text="${article.getKey().descriptionEn}">{Description}</span>
+                            <span th:if="${#locale.toString()} == 'bg_BG'" th:text="${article.getKey().descriptionBg}">{Description}</span>
+                        </div>
                         <div class="col-2 align-items-start" th:text="${article.getValue()}">{quantity}</div>
                         <div class="col-2 align-items-start" ><span th:text="${article.getKey().price}">{price}</span> EUR</div>
                         <div class="col-2 align-items-start" ><span th:text="${article.getKey().price.multiply(article.getValue())}">{total}</span> EUR</div>
@@ -63,32 +70,33 @@
                         <div class="col-2"></div>
                         <div class="col-3"></div>
                         <div class="col-2"></div>
-                        <div class="col-2 fw-bold" >Total: </div>
+                        <div class="col-2 fw-bold" th:text="#{cart_final_total} + ': '">Total: </div>
                         <div class="col-2 fw-bold" ><span th:text="${cartTotal}">{total}</span> EUR</div>
                         <div class="col-1"></div>
                     </div>
+                    <small class="text-danger" th:if="${cartEmpty}" th:text="#{cart_empty_error}">Cannot place order. The cart is empty!</small>
 
                     <div class="mt-4 mb-4">
                         <form
-                                th:action="@{/orders/add}"
+                                th:action="@{/cart}"
                                 th:method="post"
                                 th:object="${orderData}">
                             <!-- Delivery address input-->
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="deliveryAddress" type="text" placeholder="Delivery Address" th:field="*{deliveryAddress}"/>
-                                <label for="deliveryAddress">Delivery address</label>
+                                <label for="deliveryAddress" th:text="#{cart_delivery_address}">Delivery address</label>
                                 <small th:errors="*{deliveryAddress}" class="text-danger">Delivery address invalid!</small>
                             </div>
                             <!-- Notes input-->
                             <div class="form-floating mb-3">
                                 <input class="form-control" id="notes" type="text" placeholder="Notes" th:field="*{notes}"/>
-                                <label for="notes">Notes</label>
+                                <label for="notes" th:text="#{cart_notes}">Notes</label>
                                 <small th:errors="*{notes}" class="text-danger">Notes invalid!</small>
                             </div>
 
                             <!-- Submit order Button-->
                             <div class="d-grid">
-                                <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit Order</button>
+                                <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{cart_submit_order_button}">Submit Order</button>
                             </div>
                         </form>
                     </div>

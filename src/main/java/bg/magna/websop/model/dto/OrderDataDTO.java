@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class OrderDataDTO {
-    @Size(max = 200, message = "{order.deliveryAddress.length}")
+    @Size(min = 5, max = 200, message = "{order.deliveryAddress.length}")
     @NotEmpty(message = "{order.deliveryAddress.notEmpty}")
     private String deliveryAddress;
 
