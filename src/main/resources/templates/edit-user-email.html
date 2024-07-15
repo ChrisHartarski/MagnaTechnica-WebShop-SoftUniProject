@@ -23,7 +23,7 @@
                     <!-- Login form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Change email</h1>
+                            <h1 class="fw-bolder" th:text="#{edit_user_email_title}">Change email</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -32,24 +32,18 @@
                                     th:method="patch"
                                     th:object="${userData}">
 
-                                    <h5 class="fw-bold mb-3">Current email: <span th:text="*{email}"></span></h5>
+                                    <h5 class="fw-bold mb-3" th:text="#{edit_user_email_current_email} + ': '">Current email: <span th:text="*{email}"></span></h5>
                                     <!-- Email address input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="email" type="email" placeholder="name@example.com" th:field="*{email}"/>
-                                        <label for="email">Email address</label>
+                                        <label for="email" th:text="#{register_email}">Email address</label>
                                         <small th:errors="*{email}" class="text-danger">Email invalid!</small>
-                                        <small th:if="${emailExists}" class="text-danger">User with this email already exists!</small>
+                                        <small th:if="${emailExists}" class="text-danger" th:text="#{register_email_exists_error}">User with this email already exists!</small>
                                     </div>
-                                    <!-- Password input-->
-<!--                                    <div class="form-floating mb-3">-->
-<!--                                        <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}" />-->
-<!--                                        <label for="password">Password</label>-->
-<!--                                        <small th:errors="*{password}" class="text-danger">Password invalid!</small>-->
-<!--                                    </div>-->
 
                                     <!-- Login Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit email</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{edit_user_email_button}">Submit email</button>
                                     </div>
                                 </form>
                             </div>
