@@ -41,31 +41,41 @@
 
 
                     <div class="row gx-5">
-                        <div class="col-2">Description: </div>
-                        <div class="col-8" th:text="${part.descriptionEn}">{part Description}</div>
+                        <div class="col-2" th:text="#{part_description} + ': '">Description: </div>
+                        <div th:if="${#locale.toString() == 'en_US'}" class="col-8" th:text="${part.descriptionEn}">{part Description}</div>
+                        <div th:if="${#locale.toString() == 'bg_BG'}"class="col-8" th:text="${part.descriptionBg}">{part Description}</div>
                     </div>
                     <div class="row gx-5">
-                        <div class="col-2">Size: </div>
+                        <div class="col-2" th:text="#{part_size} + ': '">Size: </div>
                         <div class="col-8" th:text="${part.size}">{part Size}</div>
                     </div>
                     <div class="row gx-5">
-                        <div class="col-2">Weight: </div>
-                        <div class="col-8" th:text="${part.weight}">{part Weight}</div>
+                        <div class="col-2" th:text="#{part_weight} + ': '">Weight: </div>
+                        <div class="col-8" th:text="${part.weight} + ' kg'">{part Weight}</div>
                     </div>
                     <div class="row gx-5">
-                        <div class="col-2">Suitable for: </div>
+                        <div class="col-2" th:text="#{part_suitable_for} + ': '">Suitable for: </div>
                         <div class="col-8" th:text="${part.suitableFor}">{part Suitable for}</div>
                     </div>
                     <div class="row gx-5">
-                        <div class="col-2">More info: </div>
+                        <div class="col-2" th:text="#{part_more_info} + ': '">More info: </div>
                         <div class="col-8" th:text="${part.moreInfo}">{part More info}</div>
                     </div>
                     <div class="small mt-4">
-                        <div sec:authorize="isAuthenticated()" class="fw-bold">Price:
+                        <div sec:authorize="isAuthenticated()" class="fw-bold">
+                            <span th:text="#{part_price} + ': '">Price:</span>
                             <span th:text="${part.price}"></span> EUR
                         </div>
-                        <div sec:authorize="!isAuthenticated()" class="fw-bold"> To view prices <a th:href="@{/loginUser}">login</a> or <a th:href="@{/register}">register</a>.</div>
-                        <div sec:authorize="isAuthenticated()" class="text-muted">Available: <span th:text="${part.quantity}"></span></div>
+                        <div sec:authorize="!isAuthenticated()" class="fw-bold">
+                            <span th:text="' ' + #{webshop_not_logged_message_part1} + ' '"> To view prices </span>
+                            <a th:href="@{/users/login}" th:text="#{webshop_login_link}">login</a>
+                            <span th:text="' ' + #{webshop_not_logged_message_part2} + ' '"> or </span>
+                            <a th:href="@{/users/register}" th:text="#{webshop_register_link}">register</a>
+                            <span>.</span>
+                        </div>
+                        <div sec:authorize="isAuthenticated()" class="text-muted">
+                            <span th:text="#{part_available} + ': '">Available: </span>
+                            <span th:text="${part.quantity}"></span></div>
                     </div>
                 </div>
             </section>
