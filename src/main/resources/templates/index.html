@@ -24,11 +24,11 @@
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-8 col-xl-7 col-xxl-6">
                             <div class="my-5 text-center text-xl-start">
-                                <h1 class="display-5 fw-bolder text-white mb-2">Your trusted partner in farming and agriculture</h1>
-                                <p class="lead fw-normal text-white-50 mb-4">For over 15 years we offer a wide range of spare parts for various agricultural machinery and equipment!</p>
+                                <h1 class="display-5 fw-bolder text-white mb-2" th:text="#{index_header_main}">Your trusted partner in farming and agriculture</h1>
+                                <p class="lead fw-normal text-white-50 mb-4" th:text="#{index_header_subheader}">This is only a demo website. All parts and prices are fictional in nature. Placed orders will not be submitted for delivery.</p>
                                 <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-warning btn-lg px-4 me-sm-3" th:href="@{/web-shop}">To WebShop</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="#team">Our Team</a>
+                                    <a class="btn btn-warning btn-lg px-4 me-sm-3" th:href="@{/web-shop}" th:text="#{index_to_webshop_button}">To WebShop</a>
+                                    <a class="btn btn-outline-light btn-lg px-4" href="#team" th:text="#{index_our_team_button}">Our Team</a>
                                 </div>
                             </div>
                         </div>
@@ -43,28 +43,28 @@
             <section class="py-5" id="features">
                 <div class="container px-5 my-5">
                     <div class="row gx-5">
-                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to fix your machines.</h2></div>
+                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0" th:text="#{index_advantages_header}">A better way to fix your machines.</h2></div>
                         <div class="col-lg-8">
                             <div class="row gx-5 row-cols-1 row-cols-md-2">
                                 <div class="col mb-5 h-100">
                                     <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-building"></i></div>
-                                    <h2 class="h5"><span th:text="${@brandServiceImpl.getCount()}">Many</span> different brands</h2>
-                                    <p class="mb-0">We offer parts by wide variety of leading manufacturers.</p>
+                                    <h2 class="h5"><span th:text="${@brandServiceImpl.getCount()} + ' ' + #{index_advantages_brands}">Many different brands</span></h2>
+                                    <p class="mb-0" th:text="#{index_advantages_brands_subtext}">We offer parts by wide variety of leading manufacturers.</p>
                                 </div>
                                 <div class="col mb-5 h-100">
                                     <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-gear"></i></div>
-                                    <h2 class="h5"><span th:text="${@partServiceImpl.getCount()}">Many</span> articles on stock</h2>
-                                    <p class="mb-0">In-house storage ensures quick dispatch and fast delivery.</p>
+                                    <h2 class="h5" th:text="${@partServiceImpl.getCount()} + ' ' + #{index_advantages_articles}" >Many articles on stock</h2>
+                                    <p class="mb-0" th:text="#{index_advantages_articles_subtext}">In-house storage ensures quick dispatch and fast delivery.</p>
                                 </div>
                                 <div class="col mb-5 mb-md-0 h-100">
                                     <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-truck"></i></div>
-                                    <h2 class="h5">Same day dispatch</h2>
-                                    <p class="mb-0">All orders until 16pm are dispatched on the same day.</p>
+                                    <h2 class="h5" th:text="#{index_advantages_delivery}">Same day dispatch</h2>
+                                    <p class="mb-0" th:text="#{index_advantages_delivery_subtext}">All orders until 16pm are dispatched on the same day.</p>
                                 </div>
                                 <div class="col h-100">
                                     <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-tools"></i></div>
-                                    <h2 class="h5">High quality service</h2>
-                                    <p class="mb-0">We provide quality service by highly trained professionals.</p>
+                                    <h2 class="h5" th:text="#{index_advantages_service}">High quality service</h2>
+                                    <p class="mb-0" th:text="#{index_advantages_service_subtext}">We provide quality service by highly trained professionals.</p>
                                 </div>
                             </div>
                         </div>
@@ -76,8 +76,8 @@
             <section class="py-5 bg-light" id="team">
                 <div class="container px-5 my-5">
                     <div class="text-center">
-                        <h2 class="fw-bolder">Our team</h2>
-                        <p class="lead fw-normal text-muted mb-5">Dedicated to quality and your success</p>
+                        <h2 class="fw-bolder" th:text="#{index_our_team_header}">Our team</h2>
+                        <p class="lead fw-normal text-muted mb-5" th:text="#{index_our_team_header_subtext}">Dedicated to quality and your success</p>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-4 mb-5 mb-5 mb-xl-0">
@@ -86,9 +86,9 @@
                             </div>
                         </div>
                         <div class="col-8 mb-2 mb-2 mb-xl-0">
-                            <h5 class="fw-bolder">Christopher Hartarski</h5>
-                            <div class="fst-italic text-muted">Sales & Marketing Manager</div>
-                            <div class="text-dark">An economist by education, with interests in marketing, Christopher Hartarski is with the task of reaching you with up-to-date information and providing you with products that will improve the efficiency of your farm. He is also in charge of logistics and marketing, you have to thank him for this wonderful website!</div>
+                            <h5 class="fw-bolder" th:text="#{index_our_team_chris_name}">Christopher Hartarski</h5>
+                            <div class="fst-italic text-muted" th:text="#{index_our_team_chris_position}">Sales & Marketing Manager</div>
+                            <div class="text-dark" th:text="#{index_our_team_chris_text}">An economist by education, with interests in marketing, Christopher Hartarski is with the task of reaching you with up-to-date information and providing you with products that will improve the efficiency of your farm. He is also in charge of logistics and marketing, you have to thank him for this wonderful website!</div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -98,9 +98,9 @@
                             </div>
                         </div>
                         <div class="col-8 mb-2 mb-2 mb-xl-0">
-                            <h5 class="fw-bolder">Petio Hartarski</h5>
-                            <div class="fst-italic text-muted">Service Manager</div>
-                            <div class="text-dark">Petio Hartarski is the most experienced member in our team and the heart of Magna Technica. He has been working in the field of agricultural machinery for more than 20 years.  For him there are no secrets in the branch as well as impossible tasks. He will definitely find solution to any problem.</div>
+                            <h5 class="fw-bolder" th:text="#{index_our_team_petio_name}">Petio Hartarski</h5>
+                            <div class="fst-italic text-muted" th:text="#{index_our_team_petio_position}">Service Manager</div>
+                            <div class="text-dark" th:text="#{index_our_team_petio_text}">Petio Hartarski is the most experienced member in our team and the heart of Magna Technica. He has been working in the field of agricultural machinery for more than 20 years.  For him there are no secrets in the branch as well as impossible tasks. He will definitely find solution to any problem.</div>
                         </div>
                     </div>
                 </div>

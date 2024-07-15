@@ -23,7 +23,7 @@
                     <!-- Register form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Register</h1>
+                            <h1 class="fw-bolder" th:text="#{register_title}">Register</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -34,60 +34,64 @@
                                     <!-- Email address input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="email" type="email" placeholder="name@example.com" th:field="*{email}" />
-                                        <label for="email">Email address</label>
+                                        <label for="email" th:text="#{register_email}">Email address</label>
                                         <small th:errors="*{email}" class="text-danger">Email input error!</small>
-                                        <small th:if="${emailExists}" class="text-danger">User with this email already exists!</small>
+                                        <small th:if="${emailExists}" class="text-danger" th:text="#{register_email_exists_error}">User with this email already exists!</small>
                                     </div>
                                     <!-- Password input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}" />
-                                        <label for="password">Password</label>
+                                        <label for="password" th:text="#{register_password}">Password</label>
                                         <small th:errors="*{password}" class="text-danger">Password input error!</small>
                                     </div>
                                     <!-- Confirm Password input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="confirmPassword" type="password" placeholder="confirm password" th:field="*{confirmPassword}" />
-                                        <label for="confirmPassword">Confirm password</label>
+                                        <label for="confirmPassword" th:text="#{register_confirm_password}">Confirm password</label>
                                         <small th:errors="*{confirmPassword}" class="text-danger">Confirm password input error!</small>
-                                        <small th:if="${passwordsDoNotMatch}" class="text-danger">Passwords do not match!</small>
+                                        <small th:if="${passwordsDoNotMatch}" class="text-danger" th:text="#{register_password_not_match_error}">Passwords do not match!</small>
                                     </div>
                                     <!-- First Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="firstName" type="text" placeholder="Enter your first name..." th:field="*{firstName}"/>
-                                        <label for="firstName">First name</label>
+                                        <label for="firstName" th:text="#{register_first_name}">First name</label>
                                         <small th:errors="*{firstName}" class="text-danger">First name input errors!</small>
                                     </div>
                                     <!-- Last Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="lastName" type="text" placeholder="Enter your last name..." th:field="*{lastName}"/>
-                                        <label for="lastName">Last name</label>
+                                        <label for="lastName" th:text="#{register_last_name}">Last name</label>
                                         <small th:errors="*{lastName}" class="text-danger">Last name input errors!</small>
                                     </div>
                                     <!-- Company Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="companyName" type="text" placeholder="Enter company name..." th:field="*{companyName}"/>
-                                        <label for="companyName">Company name</label>
+                                        <label for="companyName" th:text="#{register_company_name}">Company name</label>
                                         <small th:errors="*{companyName}" class="text-danger">Company name input errors!</small>
-                                        <small th:if="${companyDoesNotExist}" class="text-danger">Company does not exist in database! Please <a class="link-danger" th:href="@{/company/add}">add company</a> first!</small>
+                                        <small th:if="${companyDoesNotExist}" class="text-danger">
+                                            <span th:text="#{register_company_not_exist_error_part1} + ' '">Company does not exist in database! Please </span>
+                                            <a class="link-danger" th:href="@{/company/add}" th:text="#{register_company_not_exist_error_part2}">add company</a>
+                                            <span>!</span>
+                                        </small>
                                     </div>
                                     <!-- Phone number input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="phone" type="text" placeholder="(123) 456-7890" th:field="*{phone}"/>
-                                        <label for="phone">Phone number</label>
+                                        <label for="phone" th:text="#{register_phone}">Phone number</label>
                                         <small th:errors="*{phone}" class="text-danger">Phone number input errors!</small>
                                     </div>
                                     <!-- User role input-->
                                     <div sec:authorize="hasRole('ADMIN')" class="form-floating mb-3">
                                         <select class="form-select" id="userRole" name="userRole" th:field="*{userRole}">
-                                            <option value="USER" selected>User</option>
-                                            <option value="ADMIN">Administrator</option>
+                                            <option value="USER" selected th:text="#{register_user_role_user}">User</option>
+                                            <option value="ADMIN" th:text="#{register_user_role_admin}">Administrator</option>
                                         </select>
-                                        <label for="userRole">User role</label>
+                                        <label for="userRole" th:text="#{register_user_role}">User role</label>
                                     </div>
 
                                     <!-- Submit Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Register</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{register_button}">Register</button>
                                     </div>
                                 </form>
                             </div>

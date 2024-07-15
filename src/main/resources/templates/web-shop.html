@@ -23,7 +23,7 @@
             <section class="py-5">
                 <div class="container px-5">
                     <div class="text-center mb-5">
-                        <h1 class="fw-bolder">Spare parts</h1>
+                        <h1 class="fw-bolder" th:text="#{webshop_title}">Spare parts</h1>
                     </div>
                     <div class="row gx-5">
                         <div th:each="part : ${parts}" class="col-lg-3 mb-5">
@@ -44,16 +44,28 @@
                                             </div>
                                         </div>
                                         <div class="h5 card-title mb-3"><span th:text="${part.partCode}"></span></div>
-                                        <p class="card-text mb-0"><span th:text="${part.descriptionEn}"></span></p>
+                                        <p class="card-text mb-0">
+                                            <span th:if="${#locale.toString()} == 'en_US'" th:text="${part.descriptionEn}"></span>
+                                            <span th:if="${#locale.toString()} == 'bg_BG'" th:text="${part.descriptionBg}"></span>
+                                        </p>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <div class="small">
-                                                <div sec:authorize="isAuthenticated()" class="fw-bold">Price:
-                                                    <span th:text="${part.price}"></span> EUR
+                                                <div sec:authorize="isAuthenticated()" class="fw-bold">
+                                                    <span th:text="#{webshop_part_price} + ': '">Price: </span>
+                                                    <span th:text="${part.price}">Price</span> EUR
                                                 </div>
-                                                <div sec:authorize="!isAuthenticated()" class="fw-bold"> To view prices <a th:href="@{/users/login}">login</a> or <a th:href="@{/users/register}">register</a>.</div>
-                                                <div sec:authorize="isAuthenticated()" class="text-muted">Available: <span th:text="${part.quantity}"></span></div>
+                                                <div sec:authorize="!isAuthenticated()" class="fw-bold">
+                                                    <span th:text="' ' + #{webshop_not_logged_message_part1} + ' '"> To view prices </span>
+                                                    <a th:href="@{/users/login}" th:text="#{webshop_login_link}">login</a>
+                                                    <span th:text="' ' + #{webshop_not_logged_message_part2} + ' '"> or </span>
+                                                    <a th:href="@{/users/register}" th:text="#{webshop_register_link}">register</a>
+                                                    <span>.</span>
+                                                </div>
+                                                <div sec:authorize="isAuthenticated()" class="text-muted">
+                                                    <span th:text="#{webshop_part_availability} + ': '">Available: </span>
+                                                    <span th:text="${part.quantity}"></span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -63,10 +75,10 @@
                                             th:method="post">
                                             <div class="form-floating mb-3 row">
                                                 <div class="col-5">
-                                                    <input class="form-control" id="quantity" type="number" th:min="1" th:max="${part.quantity}" placeholder="Quantity" th:name="quantity"/>
+                                                    <input class="form-control" id="quantity" type="number" th:min="1" th:max="${part.quantity}" th:placeholder="#{webshop_part_quantity}" th:name="quantity"/>
                                                 </div>
                                                 <div class="col-7">
-                                                    <button class="btn btn-warning" type="submit">Add to Cart</button>
+                                                    <button class="btn btn-warning" type="submit" th:text="#{webshop_add_to_cart_button}">Add to Cart</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -77,18 +89,18 @@
                                             <form
                                                     th:action="@{/parts/edit/{partCode}(partCode=${part.partCode})}"
                                                     th:method="get">
-                                                <button class="btn btn-warning" type="submit" >Modify</button>
+                                                <button class="btn btn-warning" type="submit" th:text="#{webshop_part_modify_button}">Modify</button>
                                             </form>
                                         </div>
                                         <div class="col-6">
                                             <form
                                                     th:action="@{/parts/delete/{partCode}(partCode=${part.partCode})}"
                                                     th:method="delete">
-                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                <button class="btn btn-danger" type="submit" th:text="#{webshop_part_delete_button}">Delete</button>
                                             </form>
                                         </div>
-                                        <small th:if="${part.partCode==errorPartCode}" class="text-danger">Part cannot be deleted because is already used in existing orders!</small>
-
+                                        <small th:if="${part.partCode==errorPartCode}" class="text-danger" th:text="#{webshop_cannot_delete_message}">Part cannot be deleted because is already used in existing orders!</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>

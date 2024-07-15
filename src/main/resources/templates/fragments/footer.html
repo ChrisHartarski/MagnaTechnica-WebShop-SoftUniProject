@@ -19,11 +19,15 @@
 <footer class="bg-dark py-4 mt-auto">
     <div class="container px-5">
         <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-            <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Magna Technica Ltd. 2024</div></div>
             <div class="col-auto">
-                <a sec:authorize="hasRole('ADMIN')" class="link-light small" th:href="@{/admin-panel}">Admin Panel</a>
-                <span sec:authorize="hasRole('ADMIN')" class="text-white mx-1">&middot;</span>
-                <a class="link-light small" th:href="@{/contact}">Contact</a>
+                <div class="small m-0 text-white">
+                    <span th:text="#{footer_copyright_part1}">Copyright</span>
+                    <span> © </span>
+                    <span th:text="#{footer_copyright_part2}">Magna Technica Ltd. 2024</span>
+                </div>
+            </div>
+            <div class="col-auto">
+                <a class="link-light small" th:href="@{/contact}" th:text="#{footer_contact}">Contact</a>
                 <span class="text-white mx-1">&middot;</span>
                 <a class="link-light small" th:href="@{https://www.facebook.com/MagnaTechnica}">
                     <i class="bi bi-facebook"></i>

@@ -2221,6 +2221,14 @@ textarea.form-control-lg {
   text-shadow: 0 0 0 #212529;
 }
 
+.form-select-navbar{
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.1rem;
+  font-size: 0.5rem;
+  border-radius: 0.1rem;
+}
+
 .form-select-sm {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -10883,3 +10891,6 @@ html {
   background-repeat: no-repeat;
   min-height: 15rem;
 }
+
+select#lang option[value="bg_BG"]   { background-image:url(/static/images/BG-Flag-50px.png);   }
+select#lang option[value="en_US"] { background-image:url(/static/images/uk-flag-50px.png); }
