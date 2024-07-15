@@ -23,32 +23,28 @@
                     <!-- Login form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Login</h1>
+                            <h1 class="fw-bolder" th:text="#{login_title}">Login</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
                                 <form
                                     th:action="@{/users/login}"
                                     th:method="post">
-<!--                                    th:object="${loginData}">-->
                                     <!-- Email address input-->
-                                    <small th:if="${wrongUsernameOrPassword}" class="text-danger">Incorrect username or password!</small>
+                                    <small th:if="${wrongUsernameOrPassword}" class="text-danger" th:text="#{login_error_message}">Incorrect email or password!</small>
                                     <div class="form-floating mb-3">
                                         <input class="form-control" name="email" id="email" type="email" placeholder="name@example.com"/>
-                                        <label for="email">Email address</label>
-
-<!--                                        <small th:errors="*{email}" class="text-danger">Email invalid!</small>-->
+                                        <label for="email" th:text="#{login_email}">Email address</label>
                                     </div>
                                     <!-- Password input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" name="password" id="password" type="password" placeholder="password" />
-                                        <label for="password">Password</label>
-<!--                                        <small th:errors="*{password}" class="text-danger">Password invalid!</small>-->
+                                        <label for="password" th:text="#{login_password}">Password</label>
                                     </div>
 
                                     <!-- Login Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Login</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{login_button}">Login</button>
                                     </div>
                                 </form>
                             </div>
