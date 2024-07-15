@@ -23,39 +23,51 @@
             <section class="py-5">
                 <div class="container px-5">
                     <div class="text-center mb-5">
-                        <h1 class="fw-bolder">Orders</h1>
+                        <h1 class="fw-bolder" th:text="#{orders_title}">Orders</h1>
                         <div class="text-muted mt-2" sec:authorize="hasRole('USER')">
-                            <div>User: <span th:text="${userDetails.getFullName()}">{user full name}</span></div>
-                            <div>Company: <span th:text="${userDetails.companyName}">{user company name}</span></div>
+                            <div>
+                                <span th:text="#{orders_user}">User: </span>
+                                <span th:text="${userDetails.getFullName()}">{user full name}</span></div>
+                            <div>
+                                <span th:text="#{orders_company}">Company: </span>
+                                <span th:text="${userDetails.companyName}">{user company name}</span></div>
                         </div>
                     </div>
 
-                    <small th:if="${alreadyDispatchedOrDelivered}" class="bg-danger">Cannot delete order <span th:text="${orderId}">{order id}</span>! Order is already dispatched or delivered.</small>
+                    <small th:if="${alreadyDispatchedOrDelivered}" class="bg-danger">
+                        <span th:text="#{orders_cannot_delete_error_part1}">Cannot delete order </span>
+                        <span th:text="${orderId}">{order id}</span>
+                        <span th:text="'! '#{orders_cannot_delete_error_part2} + '.'">! Order is already dispatched or delivered.</span>
+                    </small>
                     <!-- Awaiting orders section -->
                     <section class="py-3">
-                        <div class="h2 pb-2">Awaiting orders</div>
+                        <div class="h2 pb-2" th:text="#{orders_awaiting}">Awaiting orders</div>
                         <div class="row gx-5">
                             <div th:each="awaitingOrder : ${awaitingOrders}" class="col-lg-3 mb-5">
                                 <div class="card h-100 shadow border-0">
                                     <div class="card-header p-4">
                                         <div class="h5 card-title">
-                                            Order number:
+                                            <span th:text="#{orders_order_number} + ':'">Order number:</span>
                                             <a class="link-primary" th:href="@{/orders/{id}(id=${awaitingOrder.id})}" th:text="${awaitingOrder.id}">{order id}</a>
                                         </div>
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="row">
                                             <div class="text-body">
-                                                User: <span th:text="${awaitingOrder.userFullName}"></span>
+                                                <span th:text="#{orders_user} + ': '">User: </span>
+                                                <span th:text="${awaitingOrder.userFullName}"></span>
                                             </div>
                                             <div class="text-muted">
-                                                Company: <span th:text="${awaitingOrder.userCompanyName}"></span>
+                                                <span th:text="#{orders_company} + ': '">Company: </span>
+                                                <span th:text="${awaitingOrder.userCompanyName}"></span>
                                             </div>
                                             <div class="text-body mt-2 mb-2">
-                                                Created On: <span th:text="${#dates.format(awaitingOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                                <span th:text="#{orders_created_on} + ': '">Created on: </span>
+                                                <span th:text="${#dates.format(awaitingOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
                                             </div>
                                             <div class="fw-bold mt-2">
-                                                Order total: <span th:text="${awaitingOrder.totalPrice}"></span> EUR
+                                                <span th:text="#{orders_total} + ': '">Order total: </span>
+                                                <span th:text="${awaitingOrder.totalPrice}"></span> EUR
                                             </div>
                                         </div>
                                     </div>
@@ -65,14 +77,14 @@
                                                 <form
                                                         th:action="@{/orders/dispatch/{id}(id=${awaitingOrder.id})}"
                                                         th:method="post">
-                                                    <button class="btn btn-warning" type="submit">Dispatch Order</button>
+                                                    <button class="btn btn-warning" type="submit" th:text="#{orders_dispatch_order_button}">Dispatch Order</button>
                                                 </form>
                                             </div>
                                             <div class="col-6">
                                                 <form
                                                         th:action="@{/orders/delete/{id}(id=${awaitingOrder.id})}"
                                                         th:method="delete">
-                                                    <button class="btn btn-danger" type="submit">Delete Order</button>
+                                                    <button class="btn btn-danger" type="submit" th:text="#{orders_delete_order_button}">Delete Order</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -84,41 +96,46 @@
 
                     <!-- Dispatched orders section -->
                     <section class="py-3">
-                        <div class="h2 pb-2">Dispatched orders</div>
+                        <div class="h2 pb-2" th:text="#{orders_dispatched}">Dispatched orders</div>
                         <div class="row gx-5">
                             <div th:each="dispatchedOrder : ${dispatchedOrders}" class="col-lg-3 mb-5">
                                 <div class="card h-100 shadow border-0">
                                     <div class="card-header p-4">
                                         <div class="h5 card-title">
-                                            Order number:
+                                            <span th:text="#{orders_order_number} + ':'">Order number:</span>
                                             <a class="link-primary" th:href="@{/orders/{id}(id=${dispatchedOrder.id})}" th:text="${dispatchedOrder.id}">{order id}</a>
                                         </div>
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="row">
                                             <div class="text-body">
-                                                User: <span th:text="${dispatchedOrder.userFullName}"></span>
+                                                <span th:text="#{orders_user} + ': '">User: </span>
+                                                <span th:text="${dispatchedOrder.userFullName}"></span>
                                             </div>
                                             <div class="text-muted">
-                                                Company: <span th:text="${dispatchedOrder.userCompanyName}"></span>
+                                                <span th:text="#{orders_company} + ': '">Company: </span>
+                                                <span th:text="${dispatchedOrder.userCompanyName}"></span>
                                             </div>
                                             <div class="text-body mt-2 mb-2">
-                                                Created On: <span th:text="${#dates.format(dispatchedOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                                <span th:text="#{orders_created_on} + ': '">Created on: </span>
+                                                <span th:text="${#dates.format(dispatchedOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
                                             </div>
                                             <div class="fw-bold mt-2">
-                                                Order total: <span th:text="${dispatchedOrder.totalPrice}"></span> EUR
+                                                <span th:text="#{orders_total} + ': '">Order total: </span>
+                                                <span th:text="${dispatchedOrder.totalPrice}"></span> EUR
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                         <div class="text-body">
-                                            Order dispatched on <span th:text="${#dates.format(dispatchedOrder.dispatchedOn, 'dd-MM-yyyy')}">{delivery date}</span>
+                                            <span th:text="#{orders_dispatched_on_message} + ' '">Order dispatched on </span>
+                                            <span th:text="${#dates.format(dispatchedOrder.dispatchedOn, 'dd-MM-yyyy')}">{delivery date}</span>
                                         </div>
                                         <div class="mt-3 align-items-center justify-content-between row" sec:authorize="hasRole('ADMIN')">
                                             <form
                                                     th:action="@{/orders/deliver/{id}(id=${dispatchedOrder.id})}"
                                                     th:method="post">
-                                                <button class="btn btn-warning" type="submit">Deliver Order</button>
+                                                <button class="btn btn-warning" type="submit" th:text="#{orders_deliver_order_button}">Deliver Order</button>
                                             </form>
                                         </div>
                                     </div>
@@ -129,35 +146,40 @@
 
                     <!-- Delivered orders section -->
                     <section class="py-3">
-                        <div class="h2 pb-2">Delivered orders</div>
+                        <div class="h2 pb-2" th:text="#{orders_delivered}">Delivered orders</div>
                         <div class="row gx-5">
                             <div th:each="deliveredOrder : ${deliveredOrders}" class="col-lg-3 mb-5">
                                 <div class="card h-100 shadow border-0">
                                     <div class="card-header p-4">
                                         <div class="h5 card-title">
-                                            Order number:
+                                            <span th:text="#{orders_order_number} + ':'">Order number:</span>
                                             <a class="link-primary" th:href="@{/orders/{id}(id=${deliveredOrder.id})}" th:text="${deliveredOrder.id}">{order id}</a>
                                         </div>
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="row">
                                             <div class="text-body">
-                                                User: <span th:text="${deliveredOrder.userFullName}"></span>
+                                                <span th:text="#{orders_user} + ': '">User: </span>
+                                                <span th:text="${deliveredOrder.userFullName}"></span>
                                             </div>
                                             <div class="text-muted">
-                                                Company: <span th:text="${deliveredOrder.userCompanyName}"></span>
+                                                <span th:text="#{orders_company} + ': '">Company: </span>
+                                                <span th:text="${deliveredOrder.userCompanyName}"></span>
                                             </div>
                                             <div class="text-body mt-2 mb-2">
-                                                Created On: <span th:text="${#dates.format(deliveredOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                                <span th:text="#{orders_created_on} + ': '">Created on: </span>
+                                                <span th:text="${#dates.format(deliveredOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
                                             </div>
                                             <div class="fw-bold mt-2">
-                                                Order total: <span th:text="${deliveredOrder.totalPrice}"></span> EUR
+                                                <span th:text="#{orders_total} + ': '">Order total: </span>
+                                                <span th:text="${deliveredOrder.totalPrice}"></span> EUR
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                         <div class="text-body">
-                                            Order delivered on <span th:text="${#dates.format(deliveredOrder.deliveredOn, 'dd-MM-yyyy')}">{delivery date}</span>
+                                            <span th:text="#{orders_delivered_on_message} + ' '">Order delivered on </span>
+                                            <span th:text="${#dates.format(deliveredOrder.deliveredOn, 'dd-MM-yyyy')}">{delivery date}</span>
                                         </div>
                                     </div>
                                 </div>
