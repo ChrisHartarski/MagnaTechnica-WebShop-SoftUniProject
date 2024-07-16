@@ -23,7 +23,7 @@
                     <!-- Add Part form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Edit Part</h1>
+                            <h1 class="fw-bolder" th:text="#{part_edit_title}">Edit Part</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -34,76 +34,76 @@
                                     <!-- Part code input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="partCode" type="text" placeholder="Part code" th:field="*{partCode}" readonly/>
-                                        <label for="brandName">Part code</label>
+                                        <label for="brandName" th:text="#{cart_part_code}">Part code</label>
                                         <small th:errors="*{partCode}" class="text-danger">Part Code invalid!</small>
                                     </div>
                                     <!-- Quantity input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="quantity" type="number" step="1" th:min="0" placeholder="quantity" th:field="*{quantity}"/>
-                                        <label for="quantity">Quantity</label>
+                                        <label for="quantity" th:text="#{cart_quantity}">Quantity</label>
                                         <small th:errors="*{quantity}" class="text-danger">Quantity invalid!</small>
                                     </div>
                                     <!-- DescriptionEn input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="descriptionEn" type="text" placeholder="descriptionEn" th:field="*{descriptionEn}"/>
-                                        <label for="descriptionEn">Description in English</label>
+                                        <label for="descriptionEn" th:text="#{part_description_en}">Description in English</label>
                                         <small th:errors="*{descriptionEn}" class="text-danger">Description in English invalid!</small>
                                     </div>
                                     <!-- DescriptionBg input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="descriptionBg" type="text" placeholder="descriptionBg" th:field="*{descriptionBg}"/>
-                                        <label for="descriptionEn">Description in Bulgarian</label>
+                                        <label for="descriptionBg" th:text="#{part_description_bg}">Description in Bulgarian</label>
                                         <small th:errors="*{descriptionBg}" class="text-danger">Description in Bulgarian invalid!</small>
                                     </div>
                                     <!-- ImageURL input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="imageURL" type="text" placeholder="imageURL" th:field="*{imageURL}"/>
-                                        <label for="imageURL">Image URL</label>
+                                        <label for="imageURL" th:text="#{part_image_url}">Image URL</label>
                                         <small th:errors="*{imageURL}" class="text-danger">Image URL invalid!</small>
                                     </div>
                                     <!-- Brand name input-->
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="brandName" name="brandName" th:field="*{brandName}">
-                                            <option value="">Select brand name</option>
+                                            <option value="" th:text="#{part_select_brand_name}">Select brand name</option>
                                             <option th:each="brand : ${allBrands}" th:value="${brand}"><span th:text="${brand}">{brandName}</span></option>
                                         </select>
-                                        <label for="brandName">Brand name</label>
+                                        <label for="brandName" th:text="#{brand_name}">Brand name</label>
                                         <small th:errors="*{brandName}" class="text-danger">Please select brand name!</small>
                                     </div>
                                     <!-- Price input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="price" type="number" step="0.01" th:min="0" placeholder="price" th:field="*{price}"/>
-                                        <label for="price">Price in EUR</label>
+                                        <label for="price" th:text="#{part_price_in_EUR}">Price in EUR</label>
                                         <small th:errors="*{price}" class="text-danger">Price invalid!</small>
                                     </div>
                                     <!-- Size input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="size" type="text" placeholder="size" th:field="*{size}"/>
-                                        <label for="size">Part size</label>
+                                        <label for="size" th:text="#{part_size}">Part size</label>
                                         <small th:errors="*{size}" class="text-danger">Part size invalid!</small>
                                     </div>
                                     <!-- Weight input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="weight" type="number" step="0.01" th:min="0" placeholder="weight" th:field="*{weight}"/>
-                                        <label for="weight">Part weight in kg</label>
+                                        <label for="weight" th:text="#{part_weight_in_kg}">Part weight in kg</label>
                                         <small th:errors="*{weight}" class="text-danger">Part weight invalid!</small>
                                     </div>
                                     <!-- Suitable For input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="suitableFor" type="text" placeholder="suitableFor" th:field="*{suitableFor}"/>
-                                        <label for="suitableFor">Suitable For</label>
+                                        <label for="suitableFor" th:text="#{part_suitable_for}">Suitable For</label>
                                         <small th:errors="*{suitableFor}" class="text-danger">Suitable for information invalid!</small>
                                     </div>
                                     <!-- More Info input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="moreInfo" type="text" placeholder="moreInfo" th:field="*{moreInfo}"/>
-                                        <label for="moreInfo">Part information</label>
+                                        <label for="moreInfo" th:text="#{part_more_info}">Part information</label>
                                         <small th:errors="*{moreInfo}" class="text-danger">Part information invalid!</small>
                                     </div>
 
                                     <!-- Submit Part Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit Part</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{part_edit_button}">Submit Part</button>
                                     </div>
                                 </form>
                             </div>
