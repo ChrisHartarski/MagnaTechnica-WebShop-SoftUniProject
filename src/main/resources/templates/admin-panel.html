@@ -21,7 +21,7 @@
             <section class="py-5">
                 <div class="container px-5">
                     <div class="text-center mb-5">
-                        <h1 class="fw-bolder">Administration Panel</h1>
+                        <h1 class="fw-bolder" th:text="#{admin_panel_title}">Administration Panel</h1>
                     </div>
                 </div>
             </section>
@@ -30,22 +30,22 @@
             <section class="py-5">
                 <div class="bg-light rounded-3 py-3 px-2 px-md-5 mb-2" id="actions-panel">
                     <div class="text mb-2">
-                        <h3 class="fw-bolder">Admin actions</h3>
+                        <h3 class="fw-bolder" th:text="#{admin_panel_actions_title}">Admin actions</h3>
                     </div>
 
                     <div class="row  gx-2 row-cols-1 row-cols-lg-4 py-2 justify-content-center">
                         <div class="col">
-                            <a class="btn btn-warning" th:href="@{/users/register}">Register User</a>
+                            <a class="btn btn-warning" th:href="@{/users/register}" th:text="#{admin_register_user_button}">Register User</a>
                         </div>
                         <div class="col">
-                            <a class="btn btn-warning" th:href="@{/brands/add}">Add Brand</a>
+                            <a class="btn btn-warning" th:href="@{/brands/add}" th:text="#{admin_add_brand_button}">Add Brand</a>
                         </div>
                         <div class="col">
-                            <a class="btn btn-warning" th:href="@{/parts/add}">Add Part</a>
+                            <a class="btn btn-warning" th:href="@{/parts/add}" th:text="#{admin_add_part_button}">Add Part</a>
                         </div>
                         <div class="col">
                             <form th:action="@{admin-panel/initializeMockDB}" th:method="post">
-                                <button class="btn btn-warning" type="submit">Initialize Mock DB</button>
+                                <button class="btn btn-warning" type="submit" th:text="#{admin_initialize_mock_db}">Initialize Mock DB</button>
                             </form>
                         </div>
                     </div>
@@ -55,26 +55,53 @@
             <section class="py-5">
                 <div class="py-1 px-4 px-md-5 mb-2" id="data-panel">
                     <div class="text mb-5">
-                        <h3 class="fw-bolder">Admin data</h3>
+                        <h3 class="fw-bolder" th:text="#{admin_data_title}">Admin data</h3>
                     </div>
                     <div class="row gx-2 row-cols-2 row-cols-lg-2 justify-content-center">
                         <div class="col">
-                            <h5 class="fw-bolder">Users Data</h5>
+                            <h5 class="fw-bolder" th:text="#{admin_users_data_title}">Users Data</h5>
                             <ul>
-                                <li>Users count: <span th:text="${usersCount}"></span></li>
-                                <li>Admin roles: <span th:text="${adminRolesCount}"></span></li>
-                                <li>User roles: <span th:text="${userRolesCount}"></span></li>
+                                <li>
+                                    <span th:text="#{admin_users_count} + ': '">Users count: </span>
+                                    <span th:text="${usersCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_admin_roles_count} + ': '">Admin roles: </span>
+                                    <span th:text="${adminRolesCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_user_roles_count} + ': '">User roles: </span>
+                                    <span th:text="${userRolesCount}"></span>
+                                </li>
                             </ul>
                         </div>
                         <div class="col">
-                            <h5 class="fw-bolder">Parts Data</h5>
+                            <h5 class="fw-bolder" th:text="#{admin_parts_data_title}">Parts Data</h5>
                             <ul>
-                                <li>Brands count: <span th:text="${brandsCount}"></span></li>
-                                <li>Parts articles count: <span th:text="${partArticlesCount}"></span></li>
-                                <li>Total parts count: <span th:text="${totalPartsCount}"></span></li>
-                                <li>Awaiting orders count: <span th:text="${awaitingOrdersCount}"></span></li>
-                                <li>Dispatched orders count: <span th:text="${dispatchedOrdersCount}"></span></li>
-                                <li>Delivered orders count: <span th:text="${deliveredOrdersCount}"></span></li>
+                                <li>
+                                    <span th:text="#{admin_parts_brands_count} + ': '">Brands count: </span>
+                                    <span th:text="${brandsCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_parts_articles_count} + ': '">Part articles count: </span>
+                                    <span th:text="${partArticlesCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_total_parts_count} + ': '">Total parts count: </span>
+                                    <span th:text="${totalPartsCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_awaiting_orders_count} + ': '">Awaiting orders count: </span>
+                                    <span th:text="${awaitingOrdersCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_dispatched_orders_count} + ': '">Dispatched orders count: </span>
+                                    <span th:text="${dispatchedOrdersCount}"></span>
+                                </li>
+                                <li>
+                                    <span th:text="#{admin_delivered_orders_count} + ': '">Delivered orders count: </span>
+                                    <span th:text="${deliveredOrdersCount}"></span>
+                                </li>
                             </ul>
                         </div>
                     </div>
