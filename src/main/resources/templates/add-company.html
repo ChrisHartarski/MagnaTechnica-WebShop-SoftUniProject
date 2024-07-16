@@ -23,7 +23,7 @@
                     <!-- Add company form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="add-company-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Add Company</h1>
+                            <h1 class="fw-bolder" th:text="#{company_title}">Add Company</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -35,39 +35,39 @@
                                     <!-- Company name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="name" type="text" placeholder="Name" th:field="*{name}"/>
-                                        <label for="name">Company name</label>
+                                        <label for="name" th:text="#{company_name}">Company name</label>
                                         <small th:errors="*{name}" class="text-danger">Company name invalid!</small>
-                                        <small th:if="${companyExists}" class="text-danger">Company with this name already exists!</small>
+                                        <small th:if="${companyExists}" class="text-danger" th:text="#{company_name_error}">Company with this name already exists!</small>
                                     </div>
                                     <!-- Company VAT input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="vat" type="text" placeholder="VAT Number" th:field="*{vatNumber}"/>
-                                        <label for="vat">Company VAT Number</label>
+                                        <label for="vat" th:text="#{company_VAT}">Company VAT Number</label>
                                         <small th:errors="*{vatNumber}" class="text-danger">Company VAT Number invalid!</small>
-                                        <small th:if="${VATnumberExists}" class="text-danger">Company with this VAT Number already exists!</small>
+                                        <small th:if="${VATnumberExists}" class="text-danger" th:text="#{company_VAT_error}">Company with this VAT Number already exists!</small>
                                     </div>
                                     <!-- Company address input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="address" type="text" placeholder="Registered Address" th:field="*{registeredAddress}"/>
-                                        <label for="address">Company registered address</label>
+                                        <label for="address" th:text="#{company_address}">Company registered address</label>
                                         <small th:errors="*{registeredAddress}" class="text-danger">Company registered address invalid!</small>
                                     </div>
                                     <!-- Company phone input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="phone" type="text" placeholder="Phone" th:field="*{phone}"/>
-                                        <label for="phone">Company phone</label>
+                                        <label for="phone" th:text="#{company_phone}">Company phone</label>
                                         <small th:errors="*{phone}" class="text-danger">Company phone invalid!</small>
                                     </div>
                                     <!-- Company email input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="email" type="email" placeholder="Email" th:field="*{email}"/>
-                                        <label for="email">Company email</label>
+                                        <label for="email" th:text="#{company_email}">Company email</label>
                                         <small th:errors="*{email}" class="text-danger">Company email invalid!</small>
                                     </div>
 
                                     <!-- Add Brand Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Add Company</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{company_button}">Add Company</button>
                                     </div>
                                 </form>
                             </div>
