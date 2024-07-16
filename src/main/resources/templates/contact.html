@@ -23,13 +23,13 @@
                     <div class="row gx-5 row-cols-2 row-cols-lg-3 py-5 justify-content-center">
                         <div class="col">
                             <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-geo-alt"></i></div>
-                            <div class="h5 mb-2">Where to find us</div>
-                            <p class="text-muted mb-0">2 Arda str.,</p>
-                            <p class="text-muted mb-0">7000 Ruse, Bulgaria</p>
+                            <div class="h5 mb-2" th:text="#{contacts_where}">Where to find us</div>
+                            <p class="text-muted mb-0" th:text="#{contacts_where_address_line1} + ','">2 Arda str.,</p>
+                            <p class="text-muted mb-0" th:text="#{contacts_where_address_line2}">7000 Ruse, Bulgaria</p>
                         </div>
                         <div class="col">
                             <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-                            <div class="h5">Where to write</div>
+                            <div class="h5" th:text="#{contacts_write}">Where to write</div>
                             <p class="text-muted mb-0">
                                 <a class="link-secondary" th:href="@{mailto:office@magna.bg}">office@magna.bg</a>
                             </p>
@@ -39,9 +39,9 @@
                         </div>
                         <div class="col">
                             <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-telephone"></i></div>
-                            <div class="h5">Where to call</div>
-                            <p class="text-muted mb-0">(+359) 893 333 595 - sales</p>
-                            <p class="text-muted mb-0">(+359) 888 497 997 - service</p>
+                            <div class="h5" th:text="#{contacts_call}">Where to call</div>
+                            <p class="text-muted mb-0" th:text="'(+359) 893 333 595 - ' + #{contacts_call_sales}">(+359) 893 333 595 - sales</p>
+                            <p class="text-muted mb-0" th:text="'(+359) 888 497 997 - ' + #{contacts_call_service}">(+359) 888 497 997 - service</p>
                         </div>
                     </div>
 
@@ -49,8 +49,8 @@
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
                             <div class="feature bg-warning bg-gradient text-dark rounded-3 mb-3"><i class="bi bi-chat-dots"></i></div>
-                            <h1 class="fw-bolder">Contact us</h1>
-                            <p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
+                            <h1 class="fw-bolder" th:text="#{contacts_form_title}">Contact us</h1>
+                            <p class="lead fw-normal text-muted mb-0" th:text="#{contacts_form_subtitle}">We'd love to hear from you</p>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -58,32 +58,32 @@
                                     <!-- Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                        <label for="name">Full name</label>
+                                        <label for="name" th:text="#{contacts_form_full_name}">Full name</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
                                     <!-- Email address input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                                        <label for="email">Email address</label>
+                                        <label for="email" th:text="#{register_email}">Email address</label>
                                         <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                                         <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                                     </div>
                                     <!-- Phone number input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                                        <label for="phone">Phone number</label>
+                                        <label for="phone" th:text="#{register_phone}">Phone number</label>
                                         <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
                                     </div>
                                     <!-- Message input-->
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                                        <label for="message">Message</label>
+                                        <label for="message" th:text="#{contacts_form_message}">Message</label>
                                         <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                                     </div>
 
                                     <!-- Submit Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Submit</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{contacts_form_button}">Submit</button>
                                     </div>
                                 </form>
                             </div>
