@@ -23,7 +23,7 @@
                     <!-- Add Brand form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Add Brand</h1>
+                            <h1 class="fw-bolder" th:text="#{brand_title}">Add Brand</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -34,20 +34,20 @@
                                     <!-- Brand name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="brandName" type="text" placeholder="Brand name" th:field="*{name}"/>
-                                        <label for="brandName">Brand name</label>
+                                        <label for="brandName" th:text="#{brand_name}">Brand name</label>
                                         <small th:errors="*{name}" class="text-danger">Email invalid!</small>
                                         <small th:if="${brandExists}" class="text-danger">Brand with this name already exists!</small>
                                     </div>
                                     <!-- LogoURL input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="logoURL" type="text" placeholder="logoURL" th:field="*{logoURL}"/>
-                                        <label for="logoURL">Logo URL</label>
+                                        <label for="logoURL" th:text="#{brand_logo_url}">Logo URL</label>
                                         <small th:errors="*{logoURL}" class="text-danger">Logo URL invalid!</small>
                                     </div>
 
                                     <!-- Add Brand Button-->
                                     <div class="d-grid">
-                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit">Add Brand</button>
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{brand_button}">Add Brand</button>
                                     </div>
                                 </form>
                             </div>

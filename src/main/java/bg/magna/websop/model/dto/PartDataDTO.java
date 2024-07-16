@@ -30,7 +30,6 @@ public class PartDataDTO {
     private String brandLogoURL;
 
     @NotEmpty(message = "{brand.name.notEmpty}")
-    @Size(min = 2, max = 40, message = "{brand.name.length}")
     private String brandName;
 
     @NotNull(message = "{part.price.notNull}")
