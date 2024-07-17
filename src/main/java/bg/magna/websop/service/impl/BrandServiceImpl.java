@@ -6,6 +6,7 @@ import bg.magna.websop.service.BrandService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +33,17 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getBrandByName(String brandName) {
-        return brandRepository.getByName(brandName);
+    public Brand findBrandByName(String brandName) {
+        return brandRepository
+                .findByName(brandName)
+                .orElseThrow(() -> new IllegalArgumentException("Brand with name " + brandName + "does not exist."));
+    }
+
+    @Override
+    public void addBrand(String name, String logoURL) {
+        if(!brandRepository.existsByName(name)) {
+            brandRepository.saveAndFlush(new Brand(name, logoURL));
+        } else throw new IllegalArgumentException("Brand with name " + name + " already exists.");
     }
 
     @Override
@@ -47,14 +57,6 @@ public class BrandServiceImpl implements BrandService {
             addBrand("Case IH", "https://upload.wikimedia.org/wikipedia/commons/a/a5/Logo_Case_IH.png");
             addBrand("Deutz", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/DF_Logo_Neu.jpg/330px-DF_Logo_Neu.jpg");
             addBrand("Arbos", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Logo_ARBOS.png/330px-Logo_ARBOS.png");
-        }
-    }
-
-
-    @Override
-    public void addBrand(String name, String logoURL) {
-        if(!brandRepository.existsByName(name)) {
-            brandRepository.saveAndFlush(new Brand(name, logoURL));
         }
     }
 }

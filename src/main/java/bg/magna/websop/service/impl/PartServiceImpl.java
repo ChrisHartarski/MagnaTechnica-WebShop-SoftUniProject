@@ -59,7 +59,7 @@ public class PartServiceImpl implements PartService {
     @Override
     public void addPart(PartDataDTO partData) {
         Part part = modelMapper.map(partData, Part.class);
-        Brand brand = brandService.getBrandByName(partData.getBrandName());
+        Brand brand = brandService.findBrandByName(partData.getBrandName());
         part.setBrand(brand);
         partRepository.saveAndFlush(part);
     }
@@ -69,7 +69,7 @@ public class PartServiceImpl implements PartService {
         Part part = getPartByPartCode(partData.getPartCode());
 
         modelMapper.map(partData, part);
-        Brand brand = brandService.getBrandByName(partData.getBrandName());
+        Brand brand = brandService.findBrandByName(partData.getBrandName());
         part.setBrand(brand);
         partRepository.saveAndFlush(part);
     }
@@ -94,7 +94,7 @@ public class PartServiceImpl implements PartService {
                     .map(dto -> {
                         Part part = modelMapper.map(dto, Part.class);
                         part.setQuantity(20);
-                        part.setBrand(brandService.getBrandByName(dto.getBrandName()));
+                        part.setBrand(brandService.findBrandByName(dto.getBrandName()));
                         return part;
                     })
                     .forEach(p -> {
