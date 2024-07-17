@@ -10,7 +10,21 @@ import bg.magna.websop.model.entity.Part;
 import java.util.List;
 
 public interface OrderService {
+    boolean partIsInExistingOrder(Part part);
+
+    boolean deleteOrder(long id);
+
+    boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails);
+
     void addOrder(OrderDataDTO orderData, String userId);
+
+    void dispatchOrder(long id);
+
+    void deliverOrder(long id);
+
+    Order getOrderById(long id);
+
+    FullOrderDTO getFullOrderDTO(long id);
 
     List<Order> getAwaitingOrders();
 
@@ -18,20 +32,7 @@ public interface OrderService {
 
     List<Order> getDeliveredOrders();
 
-    boolean partIsInExistingOrder(Part part);
-
     List<ShortOrderDTO> getAllShortOrderDTOs();
 
     List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId);
-
-    void dispatchOrder(long id);
-
-    void deliverOrder(long id);
-    boolean deleteOrder(long id);
-
-    boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails);
-
-    FullOrderDTO getFullOrderDTO(long id);
-
-    Order getOrderById(long id);
 }

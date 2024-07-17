@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class CurrentUserDetailsServiceTest {
     private CurrentUserDetailsService toTest;
     private final static Company TEST_COMPANY = new Company("TestCompany", "TestVAT", "TestAddress", "TestPhone", "testCompany@example.com");
-    private final static UserEntity TEST_USER = new UserEntity("testUser@example.com", "password", "Test", "User", UserRole.USER, TEST_COMPANY);
+    private final static UserEntity TEST_USER = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, Map.of(new Part(), 2), new ArrayList<>(), TEST_COMPANY);
 
     @Mock
     private UserRepository userRepository;
@@ -36,8 +37,6 @@ public class CurrentUserDetailsServiceTest {
 
     @Test
     void testLoadUserByUsername_userFound() {
-        TEST_USER.setId("some UUID");
-        TEST_USER.setCart(Map.of(new Part(), 2));
 
         when(userRepository.findByEmail(TEST_USER.getEmail())).thenReturn(Optional.of(TEST_USER));
 

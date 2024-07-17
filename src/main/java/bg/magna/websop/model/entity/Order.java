@@ -3,7 +3,7 @@ package bg.magna.websop.model.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,19 +28,30 @@ public class Order {
     private String deliveryAddress;
 
     @Column(name = "created_on")
-    private Instant createdOn;
+    private LocalDateTime createdOn;
 
     @Column(name = "dispatched_on")
-    private Instant dispatchedOn;
+    private LocalDateTime dispatchedOn;
 
     @Column(name = "delivered_on")
-    private Instant deliveredOn;
+    private LocalDateTime deliveredOn;
 
     @Column
     private String notes;
 
     public Order() {
         this.partsAndQuantities = new HashMap<>();
+    }
+
+    public Order(long id, Map<Part, Integer> partsAndQuantities, UserEntity user, String deliveryAddress, LocalDateTime createdOn, LocalDateTime dispatchedOn, LocalDateTime deliveredOn, String notes) {
+        this.id = id;
+        this.partsAndQuantities = partsAndQuantities;
+        this.user = user;
+        this.deliveryAddress = deliveryAddress;
+        this.createdOn = createdOn;
+        this.dispatchedOn = dispatchedOn;
+        this.deliveredOn = deliveredOn;
+        this.notes = notes;
     }
 
     public long getId() {
@@ -75,27 +86,27 @@ public class Order {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public Instant getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Instant createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
-    public Instant getDispatchedOn() {
+    public LocalDateTime getDispatchedOn() {
         return dispatchedOn;
     }
 
-    public void setDispatchedOn(Instant dispatchedOn) {
+    public void setDispatchedOn(LocalDateTime dispatchedOn) {
         this.dispatchedOn = dispatchedOn;
     }
 
-    public Instant getDeliveredOn() {
+    public LocalDateTime getDeliveredOn() {
         return deliveredOn;
     }
 
-    public void setDeliveredOn(Instant deliveredOn) {
+    public void setDeliveredOn(LocalDateTime deliveredOn) {
         this.deliveredOn = deliveredOn;
     }
 

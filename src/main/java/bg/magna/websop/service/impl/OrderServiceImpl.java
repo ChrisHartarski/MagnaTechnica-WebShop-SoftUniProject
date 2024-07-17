@@ -13,7 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,66 +31,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
-    public void addOrder(OrderDataDTO orderData, String userId) {
-        Order order = new Order();
-        fillOrderWithCartItems(order, userService.getUserById(userId).getCart());
-        order.setUser(userService.getUserById(userId));
-        order.setDeliveryAddress(orderData.getDeliveryAddress());
-        order.setCreatedOn(Instant.now());
-        order.setNotes(orderData.getNotes());
-
-        orderRepository.saveAndFlush(order);
-    }
-
-    @Override
-    public List<Order> getAwaitingOrders() {
-        return orderRepository.findAllByDispatchedOnNull();
-    }
-
-    @Override
-    public List<Order> getDispatchedOrders() {
-        return orderRepository.findAllByDispatchedOnNotNullAndDeliveredOnNull();
-    }
-
-    @Override
-    public List<Order> getDeliveredOrders() {
-        return orderRepository.findAllByDeliveredOnNotNull();
-    }
-
-    @Override
     public boolean partIsInExistingOrder(Part part) {
         return orderRepository.findAll().stream()
                 .map(Order::getPartsAndQuantities)
                 .map(Map::keySet).anyMatch(set -> set.contains(part));
-    }
-
-    @Override
-    public List<ShortOrderDTO> getAllShortOrderDTOs() {
-        return orderRepository.findAll().stream()
-                .map(order -> modelMapper.map(order, ShortOrderDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId) {
-        return orderRepository.findAllByUserId(userId).stream()
-                .map(order -> modelMapper.map(order, ShortOrderDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void dispatchOrder(long id) {
-        Order order = orderRepository.getReferenceById(id);
-        order.setDispatchedOn(Instant.now());
-        orderRepository.saveAndFlush(order);
-    }
-
-    @Override
-    public void deliverOrder(long id) {
-        Order order = orderRepository.getReferenceById(id);
-        order.setDeliveredOn(Instant.now());
-        orderRepository.saveAndFlush(order);
     }
 
     @Override
@@ -112,14 +56,70 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
+    public void addOrder(OrderDataDTO orderData, String userId) {
+        Order order = new Order();
+        fillOrderWithCartItems(order, userService.getUserById(userId).getCart());
+        order.setUser(userService.getUserById(userId));
+        order.setDeliveryAddress(orderData.getDeliveryAddress());
+        order.setCreatedOn(LocalDateTime.now());
+        order.setNotes(orderData.getNotes());
+
+        orderRepository.saveAndFlush(order);
+    }
+
+    @Override
+    public void dispatchOrder(long id) {
+        Order order = orderRepository.getReferenceById(id);
+        order.setDispatchedOn(LocalDateTime.now());
+        orderRepository.saveAndFlush(order);
+    }
+
+    @Override
+    public void deliverOrder(long id) {
+        Order order = orderRepository.getReferenceById(id);
+        order.setDeliveredOn(LocalDateTime.now());
+        orderRepository.saveAndFlush(order);
+    }
+
+    @Override
+    public Order getOrderById(long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such order exists!"));
+    }
+
+    @Override
     public FullOrderDTO getFullOrderDTO(long id) {
         Order order = orderRepository.getReferenceById(id);
         return modelMapper.map(order, FullOrderDTO.class);
     }
 
     @Override
-    public Order getOrderById(long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such order exists!"));
+    public List<Order> getAwaitingOrders() {
+        return orderRepository.findAllByDispatchedOnNull();
+    }
+
+    @Override
+    public List<Order> getDispatchedOrders() {
+        return orderRepository.findAllByDispatchedOnNotNullAndDeliveredOnNull();
+    }
+
+    @Override
+    public List<Order> getDeliveredOrders() {
+        return orderRepository.findAllByDeliveredOnNotNull();
+    }
+
+    @Override
+    public List<ShortOrderDTO> getAllShortOrderDTOs() {
+        return orderRepository.findAll().stream()
+                .map(order -> modelMapper.map(order, ShortOrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId) {
+        return orderRepository.findAllByUserId(userId).stream()
+                .map(order -> modelMapper.map(order, ShortOrderDTO.class))
+                .collect(Collectors.toList());
     }
 
     private void fillOrderWithCartItems(Order order, Map<Part, Integer> cart) {

@@ -47,6 +47,11 @@ public class Part {
     public Part() {
     }
 
+    public Part(String partCode, int quantity) {
+        this.partCode = partCode;
+        this.quantity = quantity;
+    }
+
     public String getId() {
         return id;
     }

@@ -62,6 +62,19 @@ public class UserEntity {
         this.company = company;
     }
 
+    public UserEntity(String id, String email, String password, String firstName, String lastName, String phone, UserRole userRole, Map<Part, Integer> cart, List<Order> orders, Company company) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.userRole = userRole;
+        this.cart = cart;
+        this.orders = orders;
+        this.company = company;
+    }
+
     public String getId() {
         return id;
     }
