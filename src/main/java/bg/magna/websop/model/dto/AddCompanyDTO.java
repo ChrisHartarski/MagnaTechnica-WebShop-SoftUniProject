@@ -25,6 +25,14 @@ public class AddCompanyDTO {
     public AddCompanyDTO() {
     }
 
+    public AddCompanyDTO(String name, String vatNumber, String registeredAddress, String phone, String email) {
+        this.name = name;
+        this.vatNumber = vatNumber;
+        this.registeredAddress = registeredAddress;
+        this.phone = phone;
+        this.email = email;
+    }
+
     public String getName() {
         return name;
     }

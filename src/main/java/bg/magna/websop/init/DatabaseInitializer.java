@@ -1,6 +1,5 @@
 package bg.magna.websop.init;
 
-import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +18,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (userService.userRepositoryIsEmpty()){
-            companyService.addfirstTwoCompanies();
+            companyService.addFirstTwoCompanies();
             userService.addAdminUser();
             userService.addFirstUser();
         }

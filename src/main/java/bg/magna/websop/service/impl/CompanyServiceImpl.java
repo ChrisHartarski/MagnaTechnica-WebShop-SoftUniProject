@@ -20,18 +20,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void addfirstTwoCompanies() {
-        Company magna = new Company("Magna Technica Ltd.", "BG203779968", "Bulgaria, Ruse, 26 Solun str.", "+359 893 333 595", "office@magna.bg");
-        Company company1 = new Company("Company 1", "BG123456789", "Bulgaria, Sofia, 1 Sofia blvd.", "+359 888 888 888", "office@company1");
-        companyRepository.saveAllAndFlush(List.of(magna, company1));
-    }
-
-    @Override
-    public Company getCompanyByName(String name) {
-        return companyRepository.getByName(name);
-    }
-
-    @Override
     public boolean companyExists(String companyName) {
         return companyRepository.existsByName(companyName);
     }
@@ -42,7 +30,23 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Company getCompanyByName(String name) {
+        return companyRepository.findByName(name).orElseThrow(() -> new IllegalArgumentException("Company with name " + name + " not found"));
+    }
+
+    @Override
     public void addCompany(AddCompanyDTO companyData) {
-        companyRepository.saveAndFlush(modelMapper.map(companyData, Company.class));
+        if (!companyExists(companyData.getName())) {
+            companyRepository.saveAndFlush(modelMapper.map(companyData, Company.class));
+        } else throw new IllegalArgumentException("Company with name " + companyData.getName() + " already exists");
+    }
+
+    @Override
+    public void addFirstTwoCompanies() {
+        if (companyRepository.count() == 0) {
+            Company magna = new Company("Magna Technica Ltd.", "BG203779968", "Bulgaria, Ruse, 26 Solun str.", "+359 893 333 595", "office@magna.bg");
+            Company company1 = new Company("Company 1", "BG123456789", "Bulgaria, Sofia, 1 Sofia blvd.", "+359 888 888 888", "office@company1");
+            companyRepository.saveAllAndFlush(List.of(magna, company1));
+        }
     }
 }
