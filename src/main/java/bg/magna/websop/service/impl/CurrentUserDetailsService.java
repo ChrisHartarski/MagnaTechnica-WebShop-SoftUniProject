@@ -29,18 +29,6 @@ public class CurrentUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " was not found!"));
     }
 
-    @Transactional
-    public CurrentUserDetails loadCurrentUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .map(CurrentUserDetailsService::mapUserToUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " was not found!"));
-    }
-
-    @Transactional
-    public CurrentUserDetails loadCurrentUser(@AuthenticationPrincipal CurrentUserDetails userDetails) {
-        return userDetails;
-    }
-
     private static CurrentUserDetails mapUserToUserDetails(UserEntity user) {
         return new CurrentUserDetails(
                 user.getEmail(),
