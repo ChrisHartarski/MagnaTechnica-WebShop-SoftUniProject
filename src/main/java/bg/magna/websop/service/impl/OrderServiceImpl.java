@@ -6,6 +6,7 @@ import bg.magna.websop.model.dto.OrderDataDTO;
 import bg.magna.websop.model.dto.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.UserService;
@@ -39,7 +40,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean deleteOrder(long id) {
-        Order order = orderRepository.getReferenceById(id);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
         if (order.getDispatchedOn() != null || order.getDeliveredOn() != null) {
             return false;
@@ -51,7 +53,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails) {
-        String userId = orderRepository.getReferenceById(orderId).getUser().getId();
+        String userId = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"))
+                .getUser().getId();
+
         return userId.equals(userDetails.getId());
     }
 
@@ -59,8 +64,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void addOrder(OrderDataDTO orderData, String userId) {
         Order order = new Order();
-        fillOrderWithCartItems(order, userService.getUserById(userId).getCart());
-        order.setUser(userService.getUserById(userId));
+        UserEntity user = userService.getUserById(userId);
+        fillOrderWithCartItems(order, user.getCart());
+        order.setUser(user);
         order.setDeliveryAddress(orderData.getDeliveryAddress());
         order.setCreatedOn(LocalDateTime.now());
         order.setNotes(orderData.getNotes());
@@ -70,14 +76,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void dispatchOrder(long id) {
-        Order order = orderRepository.getReferenceById(id);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.setDispatchedOn(LocalDateTime.now());
         orderRepository.saveAndFlush(order);
     }
 
     @Override
     public void deliverOrder(long id) {
-        Order order = orderRepository.getReferenceById(id);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));;
         order.setDeliveredOn(LocalDateTime.now());
         orderRepository.saveAndFlush(order);
     }
@@ -89,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public FullOrderDTO getFullOrderDTO(long id) {
-        Order order = orderRepository.getReferenceById(id);
+        Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such order exists!")) ;
         return modelMapper.map(order, FullOrderDTO.class);
     }
 

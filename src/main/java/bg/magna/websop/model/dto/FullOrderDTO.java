@@ -3,7 +3,7 @@ package bg.magna.websop.model.dto;
 import bg.magna.websop.model.entity.Part;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class FullOrderDTO {
@@ -12,14 +12,28 @@ public class FullOrderDTO {
     private String userFullName;
     private String userCompanyName;
     private Map<Part, Integer> partsAndQuantities;
-    private Instant createdOn;
-    private Instant dispatchedOn;
-    private Instant deliveredOn;
+    private LocalDateTime createdOn;
+    private LocalDateTime dispatchedOn;
+    private LocalDateTime deliveredOn;
     private String deliveryAddress;
     private String notes;
     private BigDecimal totalPrice;
 
     public FullOrderDTO() {
+    }
+
+    public FullOrderDTO(long id, String userEmail, String userFullName, String userCompanyName, Map<Part, Integer> partsAndQuantities, LocalDateTime createdOn, LocalDateTime dispatchedOn, LocalDateTime deliveredOn, String deliveryAddress, String notes, BigDecimal totalPrice) {
+        this.id = id;
+        this.userEmail = userEmail;
+        this.userFullName = userFullName;
+        this.userCompanyName = userCompanyName;
+        this.partsAndQuantities = partsAndQuantities;
+        this.createdOn = createdOn;
+        this.dispatchedOn = dispatchedOn;
+        this.deliveredOn = deliveredOn;
+        this.deliveryAddress = deliveryAddress;
+        this.notes = notes;
+        this.totalPrice = totalPrice;
     }
 
     public long getId() {
@@ -62,27 +76,27 @@ public class FullOrderDTO {
         this.partsAndQuantities = partsAndQuantities;
     }
 
-    public Instant getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Instant createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
-    public Instant getDispatchedOn() {
+    public LocalDateTime getDispatchedOn() {
         return dispatchedOn;
     }
 
-    public void setDispatchedOn(Instant dispatchedOn) {
+    public void setDispatchedOn(LocalDateTime dispatchedOn) {
         this.dispatchedOn = dispatchedOn;
     }
 
-    public Instant getDeliveredOn() {
+    public LocalDateTime getDeliveredOn() {
         return deliveredOn;
     }
 
-    public void setDeliveredOn(Instant deliveredOn) {
+    public void setDeliveredOn(LocalDateTime deliveredOn) {
         this.deliveredOn = deliveredOn;
     }
 

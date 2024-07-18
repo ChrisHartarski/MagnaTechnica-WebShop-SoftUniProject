@@ -47,8 +47,9 @@ public class Part {
     public Part() {
     }
 
-    public Part(String partCode, int quantity) {
+    public Part(String partCode, BigDecimal price, int quantity) {
         this.partCode = partCode;
+        this.price = price;
         this.quantity = quantity;
     }
 

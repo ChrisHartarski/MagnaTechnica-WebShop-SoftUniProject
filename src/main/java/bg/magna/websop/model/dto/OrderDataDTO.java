@@ -14,6 +14,11 @@ public class OrderDataDTO {
     public OrderDataDTO() {
     }
 
+    public OrderDataDTO(String deliveryAddress, String notes) {
+        this.deliveryAddress = deliveryAddress;
+        this.notes = notes;
+    }
+
     public String getDeliveryAddress() {
         return deliveryAddress;
     }
