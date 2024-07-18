@@ -98,7 +98,7 @@ public class PartServiceImpl implements PartService {
                         return part;
                     })
                     .forEach(p -> {
-                        if(!partRepository.existsByPartCode(p.getPartCode())) {
+                        if(!partExists(p.getPartCode())) {
                             partRepository.saveAndFlush(p);
                         }
                     });
@@ -133,6 +133,12 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
+    public void increaseQuantity(Part part, Integer quantity) {
+        part.increaseQuantity(quantity);
+        savePartToDB(part);
+    }
+
+    @Override
     public BigDecimal getCartTotalPrice(String userId) {
         return userService.getUserById(userId).getCart()
                 .entrySet().stream()
@@ -142,11 +148,5 @@ public class PartServiceImpl implements PartService {
                     return part.getPrice().multiply(BigDecimal.valueOf(quantity));
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Override
-    public void increaseQuantity(Part part, Integer quantity) {
-        part.increaseQuantity(quantity);
-        savePartToDB(part);
     }
 }

@@ -19,9 +19,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BrandServiceImplTest {
     private BrandServiceImpl toTest;
-    private final static Brand TEST_BRAND_1 = new Brand("TestBrand1", "testURL1.com");
-    private final static Brand TEST_BRAND_2 = new Brand("TestBrand2", "testURL2.com");
-    private final static Brand FAKE_BRAND = new Brand("FakeBrand", "fakeURL.com");
+    private static final Brand TEST_BRAND_1 = new Brand("TestBrand1", "testURL1.com");
+    private static final Brand TEST_BRAND_2 = new Brand("TestBrand2", "testURL2.com");
+    private static final Brand FAKE_BRAND = new Brand("FakeBrand", "fakeURL.com");
 
     @Captor
     private ArgumentCaptor<Brand> brandCaptor;

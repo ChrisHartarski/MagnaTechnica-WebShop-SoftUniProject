@@ -38,8 +38,8 @@ public class OrderServiceImplTest {
     private OrderServiceImpl toTest;
     private static final Part TEST_PART_1 = new Part("TestPart1", BigDecimal.valueOf(20), 10);
     private static final Part TEST_PART_2 = new Part("TestPart2", BigDecimal.valueOf(20), 10);
-    private final static Company TEST_COMPANY = new Company("TestCompany", "TestVAT", "TestAddress", "TestPhone", "testCompany@example.com");
-    private final static UserEntity TEST_USER = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, Map.of(TEST_PART_1, 5), new ArrayList<>(), TEST_COMPANY);
+    private static final Company TEST_COMPANY = new Company("TestCompany", "TestVAT", "TestAddress", "TestPhone", "testCompany@example.com");
+    private static final UserEntity TEST_USER = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, Map.of(TEST_PART_1, 5), new ArrayList<>(), TEST_COMPANY);
     private static final Order TEST_ORDER_AWAITING = new Order(1, TEST_USER.getCart(), TEST_USER, "address", LocalDateTime.of(2024, 4, 12, 12, 35), null, null, "some notes");
     private static final Order TEST_ORDER_DISPATCHED = new Order(2, TEST_USER.getCart(), TEST_USER, "address", LocalDateTime.of(2024, 3, 10, 10, 30), LocalDateTime.of(2024, 3, 12, 10, 30), null, "some notes");
     private static final Order TEST_ORDER_DELIVERED = new Order(3, TEST_USER.getCart(), TEST_USER, "address", LocalDateTime.of(2024, 2, 5, 11, 20), LocalDateTime.of(2024, 2, 6, 10, 30), LocalDateTime.of(2024, 2, 7, 9, 45), "some notes");

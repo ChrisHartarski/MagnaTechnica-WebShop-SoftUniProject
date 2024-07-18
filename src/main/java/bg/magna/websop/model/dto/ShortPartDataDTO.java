@@ -15,6 +15,17 @@ public class ShortPartDataDTO {
     public ShortPartDataDTO() {
     }
 
+    public ShortPartDataDTO(String partCode, String imageURL, String brandName, String brandLogoURL, String descriptionEn, String descriptionBg, BigDecimal price, int quantity) {
+        this.partCode = partCode;
+        this.imageURL = imageURL;
+        this.brandName = brandName;
+        this.brandLogoURL = brandLogoURL;
+        this.descriptionEn = descriptionEn;
+        this.descriptionBg = descriptionBg;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public String getPartCode() {
         return partCode;
     }

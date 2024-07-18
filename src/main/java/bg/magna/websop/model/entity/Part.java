@@ -53,6 +53,21 @@ public class Part {
         this.quantity = quantity;
     }
 
+    public Part(String id, String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, Brand brand, BigDecimal price, String size, double weight, String moreInfo, String suitableFor) {
+        this.id = id;
+        this.partCode = partCode;
+        this.quantity = quantity;
+        this.descriptionEn = descriptionEn;
+        this.descriptionBg = descriptionBg;
+        this.imageURL = imageURL;
+        this.brand = brand;
+        this.price = price;
+        this.size = size;
+        this.weight = weight;
+        this.moreInfo = moreInfo;
+        this.suitableFor = suitableFor;
+    }
+
     public String getId() {
         return id;
     }

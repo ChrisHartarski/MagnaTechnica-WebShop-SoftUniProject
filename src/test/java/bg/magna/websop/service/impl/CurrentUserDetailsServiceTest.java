@@ -24,8 +24,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CurrentUserDetailsServiceTest {
     private CurrentUserDetailsService toTest;
-    private final static Company TEST_COMPANY = new Company("TestCompany", "TestVAT", "TestAddress", "TestPhone", "testCompany@example.com");
-    private final static UserEntity TEST_USER = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, Map.of(new Part(), 2), new ArrayList<>(), TEST_COMPANY);
+    private static final Company TEST_COMPANY = new Company("TestCompany", "TestVAT", "TestAddress", "TestPhone", "testCompany@example.com");
+    private static final UserEntity TEST_USER = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, Map.of(new Part(), 2), new ArrayList<>(), TEST_COMPANY);
 
     @Mock
     private UserRepository userRepository;
