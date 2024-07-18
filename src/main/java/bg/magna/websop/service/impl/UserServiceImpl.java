@@ -6,7 +6,6 @@ import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.service.helper.UserHelperService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,15 +35,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveUserToDB(UserEntity user) {
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
     public void encodePassAndSaveUserToDB(UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         saveUserToDB(user);
 
-    }
-
-    @Override
-    public void saveUserToDB(UserEntity user) {
-        userRepository.saveAndFlush(user);
     }
 
     @Override
