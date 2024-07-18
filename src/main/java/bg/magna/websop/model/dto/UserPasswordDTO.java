@@ -23,6 +23,13 @@ public class UserPasswordDTO {
     public UserPasswordDTO() {
     }
 
+    public UserPasswordDTO(String email, String currentPassword, String password, String confirmPassword) {
+        this.email = email;
+        this.currentPassword = currentPassword;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
+
     public UserPasswordDTO(String email) {
         this.email = email;
     }

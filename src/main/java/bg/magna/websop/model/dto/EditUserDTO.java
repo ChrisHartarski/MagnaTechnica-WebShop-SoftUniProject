@@ -23,6 +23,13 @@ public class EditUserDTO {
     public EditUserDTO() {
     }
 
+    public EditUserDTO(String firstName, String lastName, String companyName, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.companyName = companyName;
+        this.phone = phone;
+    }
+
     public String getFirstName() {
         return firstName;
     }

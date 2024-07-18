@@ -11,6 +11,10 @@ public class UserEmailDTO {
     public UserEmailDTO() {
     }
 
+    public UserEmailDTO(String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }

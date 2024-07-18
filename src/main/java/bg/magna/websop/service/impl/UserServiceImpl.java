@@ -48,12 +48,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addAdminUser() {
-        encodePassAndSaveUserToDB(new UserEntity("admin@mail", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd.")));
+        encodePassAndSaveUserToDB(new UserEntity("admin@example.com", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd.")));
     }
 
     @Override
     public void addFirstUser() {
-        encodePassAndSaveUserToDB(new UserEntity("user01@mail", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1")));
+        encodePassAndSaveUserToDB(new UserEntity("user01@example.com", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1")));
     }
 
     @Override
@@ -102,18 +102,18 @@ public class UserServiceImpl implements UserService {
         UserEntity user = getUserById(userId);
         modelMapper.map(userData, user);
         user.setCompany(companyService.getCompanyByName(userData.getCompanyName()));
-        userRepository.saveAndFlush(user);
+        saveUserToDB(user);
     }
 
     @Override
-    public void updateUserEmail(UserEmailDTO userData, String userId) {
+    public void editUserEmail(UserEmailDTO userData, String userId) {
         UserEntity user = getUserById(userId);
         modelMapper.map(userData, user);
-        userRepository.saveAndFlush(user);
+        saveUserToDB(user);
     }
 
     @Override
-    public void updateUserPassword(UserPasswordDTO userData, String userId) {
+    public void editUserPassword(UserPasswordDTO userData, String userId) {
         UserEntity user = getUserById(userId);
         user.setPassword(userData.getPassword());
         encodePassAndSaveUserToDB(user);
@@ -126,8 +126,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserEntity getUserByEmailAndPassword(ValidateUserDTO loginData) {
-        return userRepository.getUserByEmail(loginData.getEmail())
+        return userRepository.findByEmail(loginData.getEmail())
                 .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))
-                .orElse(null);
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
     }
 }

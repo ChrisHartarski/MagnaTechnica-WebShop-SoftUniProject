@@ -152,7 +152,7 @@ public class UserController {
             return "redirect:/users/edit/email";
         }
 
-        userService.updateUserEmail(userData, userDetails.getId());
+        userService.editUserEmail(userData, userDetails.getId());
         userHelperService.updateAuthentication(userDetails.getId());
         return "redirect:/";
     }
@@ -191,7 +191,7 @@ public class UserController {
             return "redirect:/users/edit/password";
         }
 
-        userService.updateUserPassword(userPasswordData, userDetails.getId());
+        userService.editUserPassword(userPasswordData, userDetails.getId());
         userHelperService.updateAuthentication(userDetails.getId());
         return "redirect:/";
     }

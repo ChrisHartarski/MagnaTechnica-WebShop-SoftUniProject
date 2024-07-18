@@ -36,6 +36,17 @@ public class UserDTO {
     public UserDTO() {
     }
 
+    public UserDTO(String email, String password, String confirmPassword, String firstName, String lastName, String companyName, String phone, UserRole userRole) {
+        this.email = email;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.companyName = companyName;
+        this.phone = phone;
+        this.userRole = userRole;
+    }
+
     public String getEmail() {
         return email;
     }
