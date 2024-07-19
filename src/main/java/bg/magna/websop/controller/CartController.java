@@ -62,7 +62,7 @@ public class CartController {
         partService.removeQuantitiesFromParts(user.getCart());
         userService.emptyUserCart(user);
 
-        return "redirect:/web-shop";
+        return "redirect:/";
     }
 
     @DeleteMapping("/cart/remove-item/{partCode}")

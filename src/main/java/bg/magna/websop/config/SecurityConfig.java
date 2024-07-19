@@ -20,11 +20,11 @@ public class SecurityConfig {
                                 //grant access to static resources
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 //grant access to pages
-                                .requestMatchers("/", "/web-shop","/parts/{partCode}", "/company/", "/contact", "/users/login", "/users/login-error", "/users/register", "/company/add").permitAll()
+                                .requestMatchers("/", "/machines", "machines/{id}", "/spare-parts","/parts/{partCode}", "/company/", "/contact", "/users/login", "/users/login-error", "/users/register", "/company/add").permitAll()
                                 //grant access only to admin users
-                                .requestMatchers("/admin-panel", "/brands/add", "/admin-panel/initializeMockDB", "/orders/dispatch/", "/orders/deliver/", "/parts/add", "/parts/edit/", "/parts/delete/").hasRole("ADMIN")
+                                .requestMatchers("/admin-panel", "/machines/add", "machines/delete/", "machines/edit/", "/brands/add", "/admin-panel/initializeMockDB", "/orders/dispatch/", "/orders/deliver/", "/parts/add", "/parts/edit/", "/parts/delete/").hasRole("ADMIN")
                                 //grant access only to normal users
-                                .requestMatchers("/cart", "/cart/remove-item/", "/orders/add").hasRole("USER")
+                                .requestMatchers("/cart", "/cart/remove-item/", "/orders/add", "machines/enquiry/").hasRole("USER")
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 .loginPage("/users/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/web-shop", true)
+                                .defaultSuccessUrl("/spare-parts", true)
                                 .failureUrl("/users/login-error")
                 )
                 .logout(logout ->

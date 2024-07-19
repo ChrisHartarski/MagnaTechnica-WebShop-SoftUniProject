@@ -85,6 +85,6 @@ public class AdminPanelController {
     public String initializeMockDB() throws IOException {
         brandService.initializeMockBrands();
         partService.initializeMockParts();
-        return "redirect:/web-shop";
+        return "redirect:/";
     }
 }

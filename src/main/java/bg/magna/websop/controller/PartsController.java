@@ -88,7 +88,7 @@ public class PartsController {
 
         userService.saveUserToDB(user);
 
-        return "redirect:/web-shop";
+        return "redirect:/spare-parts";
     }
 
     @GetMapping("/edit/{partCode}")
@@ -126,10 +126,10 @@ public class PartsController {
         if (orderService.partIsInExistingOrder(partService.getPartByPartCode(partCode))) {
             redirectAttributes.addFlashAttribute("partInExistingOrder", true);
             redirectAttributes.addFlashAttribute("errorPartCode", partCode);
-            return "redirect:/web-shop";
+            return "redirect:/spare-parts";
         }
 
         partService.deletePart(partCode);
-        return "redirect:/web-shop";
+        return "redirect:/spare-parts";
     }
 }
