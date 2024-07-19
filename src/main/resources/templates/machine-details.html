@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column h-100">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+
+            <!-- Part Details Section -->
+            <section class="py-5">
+                <div class="container px-5">
+                    <div class="card-header">
+                        <h2 class="fw-bolder fs-5" th:text="${machine.name}">Machine name</h2>
+                        <div class="mb-2">
+                            <div>
+                                <img class="img-height50" th:src="${@brandServiceImpl.findBrandByName(machine.brandName).logoURL}" th:alt="${machine.brandName}"/>
+                            </div>
+                            <div th:if="${@brandServiceImpl.findBrandByName(machine.brandName).logoURL==null}">
+                                <div class="text-muted mb-0" th:text="${part.brandName}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <img class="img-thumbnail figure-img img-auto300" th:src="${machine.imageURL}" th:alt="${machine.name}"/>
+                    </div>
+
+
+                    <div class="row gx-5">
+                        <div class="col-2 fw-bold" th:text="#{machine_technical_data} + ': '">Technical Data: </div>
+                        <div th:if="${#locale.toString() == 'en_US'}" class="col-8" th:text="${machine.descriptionEn}">{machine Description}</div>
+                        <div th:if="${#locale.toString() == 'bg_BG'}"class="col-8" th:text="${machine.descriptionBg}">{machine Description}</div>
+                    </div>
+                    <div class="row gx-5">
+                        <div class="col-2" th:text="#{machine_year} + ': '">Year: </div>
+                        <div class="col-8" th:text="${machine.year}">{machine year}</div>
+                    </div>
+                    <div class="row gx-5">
+                        <div class="col-2" th:text="#{machine_working_width} + ': '">Working width: </div>
+                        <div class="col-8" type="number" th:text="${#numbers.formatDecimal(machine.workingWidth, 1, 2)} + ' m'">{machine working width}</div>
+                    </div>
+                    <div class="row gx-5">
+                        <div class="col-2" th:text="#{machine_weight} + ': '">Weight: </div>
+                        <div class="col-8" th:text="${machine.weight} + ' kg'">{machine weight}</div>
+                    </div>
+                    <div class="row gx-5">
+                        <div class="col-2" th:text="#{machine_required_power} + ': '">Required power: </div>
+                        <div class="col-8" th:text="${machine.requiredPower} + ' hp'">{machine required power}</div>
+                    </div>
+                    <div class="row gx-5">
+                        <div class="col-2" th:text="#{machine_more_info} + ': '">More info: </div>
+                        <div class="col-8" th:text="${machine.moreInfo}">{machine more info}</div>
+                    </div>
+                    <div class="mt-3 d-flex align-items-end justify-content-between">
+                        <div class="d-flex align-items-center small">
+                            <div sec:authorize="!isAuthenticated()" class="fw-bold">
+                                <span th:text="' ' + #{machines_not_logged_message_part1} + ' '">To make an enquiry </span>
+                                <a th:href="@{/users/login}" th:text="#{webshop_login_link}">login</a>
+                                <span th:text="' ' + #{webshop_not_logged_message_part2} + ' '"> or </span>
+                                <a th:href="@{/users/register}" th:text="#{webshop_register_link}">register</a>
+                                <span>.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 align-items-center" sec:authorize="hasRole('USER')">
+                        <button class="btn btn-warning" th:href="@{/machines/enquiry/{id}(id=${machine.id})}" th:text="#{machines_make_enquiry_button}">Make enquiry</button>
+                    </div>
+                    <div class="mt-3 align-items-center justify-content-between row" sec:authorize="hasRole('ADMIN')">
+                        <div class="col-6">
+                            <form
+                                    th:action="@{/machines/edit/{id}(id=${machine.id})}"
+                                    th:method="get">
+                                <button class="btn btn-warning" type="submit" th:text="#{webshop_part_modify_button}">Modify</button>
+                            </form>
+                        </div>
+                        <div class="col-6">
+                            <form
+                                    th:action="@{/machines/delete/{id}(id=${machine.id})}"
+                                    th:method="delete">
+                                <button class="btn btn-danger" type="submit" th:text="#{webshop_part_delete_button}">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
