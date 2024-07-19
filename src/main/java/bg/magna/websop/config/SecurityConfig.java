@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 .loginPage("/users/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/spare-parts", true)
+                                .defaultSuccessUrl("/", true)
                                 .failureUrl("/users/login-error")
                 )
                 .logout(logout ->

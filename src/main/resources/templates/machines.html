@@ -37,7 +37,7 @@
                                     <div class="pb-3">
                                         <div class="row mb-2">
                                             <div class="col-3">
-                                                <img class="img-height20" th:src="${machine.brandLogoURL}" th:alt="${machine.brandName}"/>
+                                                <img class="img-height20" th:src="${@brandServiceImpl.findBrandByName(machine.brandName).logoURL}" th:alt="${machine.brandName}"/>
                                             </div>
                                             <div class="col-9">
                                                 <div class="text-muted mb-0" th:text="${machine.brandName}"></div>
@@ -60,7 +60,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mt-3 align-items-center justify-content-between" sec:authorize="hasRole('USER')">
+                                    <div class="mt-3 align-items-center" sec:authorize="hasRole('USER')">
                                         <button class="btn btn-warning" th:href="@{/machines/enquiry/{id}(id=${machine.id})}" th:text="#{machines_make_enquiry_button}">Make enquiry</button>
                                     </div>
                                     <div class="mt-3 align-items-center justify-content-between row" sec:authorize="hasRole('ADMIN')">
