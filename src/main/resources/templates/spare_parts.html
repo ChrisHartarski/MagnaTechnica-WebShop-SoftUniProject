@@ -25,8 +25,8 @@
                     <div class="text-center mb-5">
                         <h1 class="fw-bolder" th:text="#{webshop_title}">Spare parts</h1>
                     </div>
-                    <div class="row gx-5">
-                        <div th:each="part : ${parts}" class="col-lg-3 mb-5">
+                    <div class="row row-cols-lg-4 gx-5">
+                        <div th:each="part : ${parts}" class="col mb-5">
                             <div class="card h-100 shadow border-0">
                                 <a th:href="@{/parts/{partCode}(partCode=${part.partCode})}">
                                 <img class="img-fluid align-content-center" height="auto" width="auto" th:src="${part.imageURL}" th:alt="${part.partCode}"/>

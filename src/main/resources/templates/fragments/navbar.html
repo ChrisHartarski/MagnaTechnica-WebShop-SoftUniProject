@@ -36,8 +36,7 @@
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
-                            <span th:text="${#authentication.getPrincipal().fullName}">{user full name}</span>
-                            !
+                            <span th:text="#{navbar_profile}">Profile</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
                             <li><a class="dropdown-item" th:href="@{/users/edit}" th:text="#{navbar_update_profile}">Update profile</a></li>
