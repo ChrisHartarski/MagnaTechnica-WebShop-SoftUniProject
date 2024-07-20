@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-6">
                             <form
-                                    th:action="@{/machines/delete/{id}(id=${machine.id})}"
+                                    th:action="@{/machines/{id}(id=${machine.id})}"
                                     th:method="delete">
                                 <button class="btn btn-danger" type="submit" th:text="#{webshop_part_delete_button}">Delete</button>
                             </form>

@@ -7,6 +7,7 @@ import bg.magna.websop.model.dto.ShortMachineDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.MachineService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -36,8 +37,11 @@ public class MachinesController {
     }
 
     @ModelAttribute("modifyMachineData")
+    public FullMachineDTO modifyMachineDTO() {
+        return new FullMachineDTO();
+    }
 
-    @GetMapping("/")
+    @GetMapping()
     public String machines(Model model) {
         List<ShortMachineDTO> machines = machineService.getAll();
         model.addAttribute("machines", machines);
@@ -57,10 +61,22 @@ public class MachinesController {
     @DeleteMapping("/{id}")
     public String deleteMachine(@PathVariable("id") String id,
                                 @AuthenticationPrincipal UserDetails userDetails) {
-        if(userDetails.getAuthorities().contains("ROLE_ADMIN")) {
+        if(userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(role -> role.equals("ROLE_ADMIN"))) {
             machineService.deleteById(id);
         }
         return "redirect:/machines";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String viewUpdateMachine(@PathVariable("id") String id, Model model) {
+        FullMachineDTO machineDTO = machineService.getById(id);
+
+        model.addAttribute("modifyMachineData", machineDTO);
+        model.addAttribute("allBrands", brandService.getAllBrandNames());
+
+        return "edit-machine";
     }
 
     @PutMapping("/edit/{id}")

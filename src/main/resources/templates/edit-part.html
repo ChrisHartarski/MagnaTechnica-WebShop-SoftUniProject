@@ -29,7 +29,7 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form
                                     th:action="@{/parts/edit/{partCode}(partCode=${partData.partCode})}"
-                                    th:method="post"
+                                    th:method="put"
                                     th:object="${partData}">
                                     <!-- Part code input-->
                                     <div class="form-floating mb-3">
