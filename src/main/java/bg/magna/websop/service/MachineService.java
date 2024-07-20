@@ -4,6 +4,7 @@ import bg.magna.websop.model.dto.AddMachineDTO;
 import bg.magna.websop.model.dto.FullMachineDTO;
 import bg.magna.websop.model.dto.ShortMachineDTO;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MachineService {
@@ -18,4 +19,6 @@ public interface MachineService {
     void deleteById(String id);
 
     void updateMachine(FullMachineDTO machineDTO);
+
+    void initializeMockMachines() throws IOException;
 }

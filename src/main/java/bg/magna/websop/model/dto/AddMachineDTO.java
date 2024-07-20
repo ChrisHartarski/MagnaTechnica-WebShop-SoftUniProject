@@ -48,6 +48,21 @@ public class AddMachineDTO {
     public AddMachineDTO() {
     }
 
+    public AddMachineDTO(String serialNumber, String name, String imageURL, int year, String brandName, String descriptionEn, String descriptionBg, double workingWidth, int weight, int requiredPower, String moreInfoEn, String moreInfoBg) {
+        this.serialNumber = serialNumber;
+        this.name = name;
+        this.imageURL = imageURL;
+        this.year = year;
+        this.brandName = brandName;
+        this.descriptionEn = descriptionEn;
+        this.descriptionBg = descriptionBg;
+        this.workingWidth = workingWidth;
+        this.weight = weight;
+        this.requiredPower = requiredPower;
+        this.moreInfoEn = moreInfoEn;
+        this.moreInfoBg = moreInfoBg;
+    }
+
     public String getSerialNumber() {
         return serialNumber;
     }
