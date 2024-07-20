@@ -25,8 +25,8 @@ public class MachinesController {
 
     @GetMapping("/machines")
     public String machines(Model model) {
-//        List<ShortMachineDTO> machines = machineService.getAll();
-        List<ShortMachineDTO> machines = List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2);
+        List<ShortMachineDTO> machines = machineService.getAll();
+//        List<ShortMachineDTO> machines = List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2);
         model.addAttribute("machines", machines);
 
         return "machines";
@@ -35,8 +35,8 @@ public class MachinesController {
     @GetMapping("/machines/{id}")
     public String getPartDetails(@PathVariable("id") String id, Model model) {
 
-//        FullMachineDTO machine = machineService.getById(id);
-        FullMachineDTO machine = TEST_FULL_MACHINE_DTO_2;
+        FullMachineDTO machine = machineService.getById(id);
+//        FullMachineDTO machine = TEST_FULL_MACHINE_DTO_2;
 
         model.addAttribute("machine", machine);
 
