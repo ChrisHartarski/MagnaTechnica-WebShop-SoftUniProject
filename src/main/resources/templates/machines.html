@@ -26,7 +26,7 @@
                         <h1 class="fw-bolder" th:text="#{machines_title}">Machines</h1>
                     </div>
                     <div class="row gx-5">
-                        <div th:each="machine : ${machines}" class="col-lg-3 mb-5">
+                        <div th:each="machine : ${machines}" class="col-lg-4 mb-5">
                             <div class="card h-100 shadow border-0">
                                 <a th:href="@{/machines/{id}(id=${machine.id})}">
                                 <img class="img-fluid align-content-center" height="auto" width="auto" th:src="${machine.imageURL}" th:alt="${machine.name}"/>

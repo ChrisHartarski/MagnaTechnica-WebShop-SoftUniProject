@@ -23,10 +23,6 @@ public class MachinesController {
     private final MachineService machineService;
     private final BrandService brandService;
 
-    private static final ShortMachineDTO TEST_SHORT_MACHINE_DTO_1 = new ShortMachineDTO("id1", "Akpil BisonXL 50", "https://www.akpil.pl/wp-content/uploads/2021/06/BISON-XL-3.png", 2022, "Akpil", "Trailed disc harrow Akpil BisonXL 50", "Прикачна дискова брана Akpil BisonXL 50");
-    private static final ShortMachineDTO TEST_SHORT_MACHINE_DTO_2 = new ShortMachineDTO("id2", "Akpil BisonXL 60", "https://www.akpil.pl/wp-content/uploads/2021/06/BISON-XL-3.png", 2023, "Akpil", "Trailed disc harrow Akpil BisonXL 60", "Прикачна дискова брана Akpil BisonXL 60");
-    private static final FullMachineDTO TEST_FULL_MACHINE_DTO_2 = new FullMachineDTO("id2", "serialNum", "Akpil BisonXL 60", "https://www.akpil.pl/wp-content/uploads/2021/06/BISON-XL-3.png", 2023, "Akpil", "Trailed disc harrow Akpil BisonXL 60", "Прикачна дискова брана Akpil BisonXL 60", 6.00, 5750, 300, "moreInfoEn2", "moreInfoBg2");
-
     public MachinesController(MachineService machineService, BrandService brandService) {
         this.machineService = machineService;
         this.brandService = brandService;
@@ -40,7 +36,6 @@ public class MachinesController {
     @GetMapping("/machines")
     public String machines(Model model) {
         List<ShortMachineDTO> machines = machineService.getAll();
-//        List<ShortMachineDTO> machines = List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2);
         model.addAttribute("machines", machines);
 
         return "machines";
@@ -50,7 +45,6 @@ public class MachinesController {
     public String getPartDetails(@PathVariable("id") String id, Model model) {
 
         FullMachineDTO machine = machineService.getById(id);
-//        FullMachineDTO machine = TEST_FULL_MACHINE_DTO_2;
 
         model.addAttribute("machine", machine);
 
