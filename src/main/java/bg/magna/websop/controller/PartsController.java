@@ -102,7 +102,7 @@ public class PartsController {
         return "edit-part";
     }
 
-    @PostMapping("/edit/{partCode}")
+    @PutMapping("/edit/{partCode}")
     public String editPart(@PathVariable String partCode,
                           @Valid PartDataDTO partData,
                           BindingResult bindingResult,
@@ -116,7 +116,7 @@ public class PartsController {
 
         partService.editPart(partData);
 
-        return "redirect:/admin-panel";
+        return "redirect:/spare-parts";
     }
 
     @DeleteMapping("/delete/{partCode}")
