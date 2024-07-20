@@ -1,6 +1,7 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.config.MachinesApiConfig;
+import bg.magna.websop.model.dto.AddMachineDTO;
 import bg.magna.websop.model.dto.FullMachineDTO;
 import bg.magna.websop.model.dto.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
@@ -37,5 +38,31 @@ public class MachineServiceImpl implements MachineService {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(FullMachineDTO.class);
+    }
+
+    @Override
+    public void addMachine(AddMachineDTO addMachineDTO) {
+        machineRestClient
+                .post()
+                .uri("/machines/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                        .body(addMachineDTO)
+                                .retrieve();
+    }
+
+    @Override
+    public boolean machineExists(String serialNumber) {
+        Boolean machineExists = machineRestClient
+                .get()
+                .uri("/machines/exist/" + serialNumber)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .body(Boolean.class);
+
+        if(machineExists == null) {
+            machineExists = false;
+        }
+
+        return machineExists;
     }
 }
