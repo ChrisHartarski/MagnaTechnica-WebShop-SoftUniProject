@@ -50,15 +50,15 @@
                     </div>
                     <div class="row gx-5">
                         <div class="col-3" th:text="#{machine_working_width} + ': '">Working width: </div>
-                        <div class="col-8" type="number" th:text="${#numbers.formatDecimal(machine.workingWidth, 1, 2)} + ' m'">{machine working width}</div>
+                        <div th:if="${machine.workingWidth > 0}" class="col-8" type="number" th:text="${#numbers.formatDecimal(machine.workingWidth, 1, 2)} + ' m'">{machine working width}</div>
                     </div>
                     <div class="row gx-5">
                         <div class="col-3" th:text="#{machine_weight} + ': '">Weight: </div>
-                        <div class="col-8" th:text="${machine.weight} + ' kg'">{machine weight}</div>
+                        <div th:if="${machine.weight > 0}" class="col-8" th:text="${machine.weight} + ' kg'">{machine weight}</div>
                     </div>
                     <div class="row gx-5">
                         <div class="col-3" th:text="#{machine_required_power} + ': '">Required power: </div>
-                        <div class="col-8" th:text="${machine.requiredPower} + ' hp'">{machine required power}</div>
+                        <div th:if="${machine.requiredPower > 0}" class="col-8" th:text="${machine.requiredPower} + ' hp'">{machine required power}</div>
                     </div>
                     <div class="row gx-5">
                         <div class="col-3" th:text="#{machine_more_info} + ': '">More info: </div>
