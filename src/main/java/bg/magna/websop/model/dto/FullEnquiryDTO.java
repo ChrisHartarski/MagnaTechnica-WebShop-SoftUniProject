@@ -8,6 +8,8 @@ public class FullEnquiryDTO {
     private String userEmail;
     private String machineName;
     private String machineImageUrl;
+    private String machineId;
+    private String machineSerialNumber;
     private LocalDateTime createdOn;
     private String title;
     private String message;
@@ -53,6 +55,22 @@ public class FullEnquiryDTO {
 
     public void setMachineImageUrl(String machineImageUrl) {
         this.machineImageUrl = machineImageUrl;
+    }
+
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
+    }
+
+    public String getMachineSerialNumber() {
+        return machineSerialNumber;
+    }
+
+    public void setMachineSerialNumber(String machineSerialNumber) {
+        this.machineSerialNumber = machineSerialNumber;
     }
 
     public LocalDateTime getCreatedOn() {

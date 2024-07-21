@@ -10,6 +10,7 @@ import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.helper.UserHelperService;
+import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +95,18 @@ public class EnquiryServiceImpl implements EnquiryService {
                 .toList();
     }
 
+    @Override
+    public FullEnquiryDTO getById(long id) {
+        return enquiryRepository.findById(id)
+                .map(this::mapEnquiryToDTO)
+                .orElseThrow(() -> new IllegalArgumentException("Enquiry with id " + id + " not found"));
+    }
+
+    @Override
+    public void delete(long id) {
+        enquiryRepository.deleteById(id);
+    }
+
     private FullEnquiryDTO mapEnquiryToDTO(Enquiry enquiry) {
         FullMachineDTO machine = machineService.getById(enquiry.getMachineId());
 
@@ -103,6 +116,8 @@ public class EnquiryServiceImpl implements EnquiryService {
         dto.setUserEmail(enquiry.getUser().getEmail());
         dto.setMachineName(machine.getName());
         dto.setMachineImageUrl(machine.getImageURL());
+        dto.setMachineId(machine.getId());
+        dto.setMachineSerialNumber(machine.getSerialNumber());
         dto.setCreatedOn(enquiry.getCreatedOn());
         dto.setTitle(enquiry.getTitle());
         dto.setMessage(enquiry.getMessage());

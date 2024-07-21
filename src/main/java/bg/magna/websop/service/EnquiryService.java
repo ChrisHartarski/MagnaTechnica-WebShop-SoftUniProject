@@ -13,4 +13,8 @@ public interface EnquiryService {
     AddEnquiryDTO getAddEnquiryDTO(String machineId);
 
     List<FullEnquiryDTO> getAllEnquiries();
+
+    FullEnquiryDTO getById(long id);
+
+    void delete(long id);
 }
