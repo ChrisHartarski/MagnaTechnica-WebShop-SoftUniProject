@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="mt-3 align-items-center" sec:authorize="hasRole('USER')">
-                        <button class="btn btn-warning" th:href="@{/machines/enquiry/{id}(id=${machine.id})}" th:text="#{machines_make_enquiry_button}">Make enquiry</button>
+                        <a class="btn btn-warning" th:href="@{/machines/enquiries/{id}(id=${machine.id})}" th:text="#{machines_make_enquiry_button}">Make Enquiry</a>
                     </div>
                     <div class="mt-3 align-items-center justify-content-between row" sec:authorize="hasRole('ADMIN')">
                         <div class="col-6">

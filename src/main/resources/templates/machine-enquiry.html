@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Magna Technica Ltd. Web Shop" />
+        <meta name="author" content="Christopher Hartarski" />
+        <title>Magna Technica WebShop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" /><!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="d-flex flex-column">
+        <header th:replace="fragments/navbar"></header>
+        <main class="flex-shrink-0">
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5">
+
+                    <!-- Add Part form-->
+                    <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
+                        <div class="text-center mb-5">
+                            <h1 class="fw-bolder" th:text="#{enquiry_header}">Machine Enquiry</h1>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-8 col-xl-6">
+                                <form
+                                    th:action="@{/machines/enquiries/{id}(id = *{machineId})}"
+                                    th:method="post"
+                                    th:object="${enquiryData}">
+                                    <!-- User Data -->
+                                    <div class="text-muted" >
+                                        <span th:text="#{cart_user_full_name} + ': '">User: </span>
+                                        <span th:text="*{userFullName}">User name</span>
+                                    </div>
+                                    <div class="text-muted mb-4" >
+                                        <span th:text="#{cart_email} + ': '">Email: </span>
+                                        <span th:text="*{userEmail}">User email</span>
+                                    </div>
+                                    <!-- Title input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="title" type="text" placeholder="Title" th:field="*{title}"/>
+                                        <label for="title" th:text="#{enquiry_title}">Serial number</label>
+                                        <small th:errors="*{title}" class="text-danger">Serial number invalid!</small>
+                                    </div>
+                                    <!-- Message input-->
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" th:field="*{message}"></textarea>
+                                        <label for="message" th:text="#{enquiry_message}">Message</label>
+                                        <small th:errors="*{message}" class="text-danger">Message invalid!</small>
+                                    </div>
+
+                                    <!-- Make Enquiry Button-->
+                                    <div class="d-grid">
+                                        <button class="btn btn-warning btn-lg" id="submitButton" type="submit" th:text="#{enquiry_button}">Make Enquiry</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer-->
+        <footer th:replace="fragments/footer"></footer>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>

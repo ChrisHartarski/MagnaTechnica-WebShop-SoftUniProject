@@ -22,9 +22,9 @@ public class SecurityConfig {
                                 //grant access to pages
                                 .requestMatchers("/", "/machines", "machines/{id}", "/spare-parts","/parts/{partCode}", "/company/", "/contact", "/users/login", "/users/login-error", "/users/register", "/company/add").permitAll()
                                 //grant access only to admin users
-                                .requestMatchers("/admin-panel", "/machines/add", "machines/delete/", "machines/edit/", "/brands/add", "/admin-panel/initializeMockDB", "/orders/dispatch/", "/orders/deliver/", "/parts/add", "/parts/edit/", "/parts/delete/").hasRole("ADMIN")
+                                .requestMatchers("/admin-panel", "/machines/add", "/machines/delete/", "/machines/edit/", "/brands/add", "/admin-panel/initializeMockDB", "/orders/all", "/orders/dispatch/", "/orders/deliver/", "/parts/add", "/parts/edit/", "/parts/delete/", "/machines/enquiries/all").hasRole("ADMIN")
                                 //grant access only to normal users
-                                .requestMatchers("/cart", "/cart/remove-item/", "/orders/add", "machines/enquiry/").hasRole("USER")
+                                .requestMatchers("/cart", "/cart/remove-item/", "/orders/add", "machines/enquiries/").hasRole("USER")
                                 .anyRequest()
                                 .authenticated()
                 )

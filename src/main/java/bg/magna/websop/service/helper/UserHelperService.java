@@ -4,6 +4,7 @@ import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.UserService;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UserHelperService {
@@ -36,6 +38,10 @@ public class UserHelperService {
         CurrentUserDetails userDetails = mapUserToUserDetails(userService.getUserById(userId));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    public Locale getCurrentUserLocale() {
+        return LocaleContextHolder.getLocale();
     }
 
     private static CurrentUserDetails mapUserToUserDetails(UserEntity user) {

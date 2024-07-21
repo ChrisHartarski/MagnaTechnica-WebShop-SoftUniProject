@@ -1,16 +1,17 @@
 package bg.magna.websop.controller;
 
+import bg.magna.websop.model.CurrentUserDetails;
+import bg.magna.websop.model.dto.AddEnquiryDTO;
 import bg.magna.websop.model.dto.AddMachineDTO;
 import bg.magna.websop.model.dto.FullMachineDTO;
-import bg.magna.websop.model.dto.PartDataDTO;
 import bg.magna.websop.model.dto.ShortMachineDTO;
 import bg.magna.websop.service.BrandService;
+import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.MachineService;
+import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +26,14 @@ import java.util.List;
 public class MachinesController {
     private final MachineService machineService;
     private final BrandService brandService;
+    private final EnquiryService enquiryService;
+    private final UserHelperService userHelperService;
 
-    public MachinesController(MachineService machineService, BrandService brandService) {
+    public MachinesController(MachineService machineService, BrandService brandService, EnquiryService enquiryService, UserHelperService userHelperService) {
         this.machineService = machineService;
         this.brandService = brandService;
+        this.enquiryService = enquiryService;
+        this.userHelperService = userHelperService;
     }
 
     @ModelAttribute("machineData")
@@ -122,6 +127,34 @@ public class MachinesController {
         }
 
         machineService.addMachine(addMachineDTO);
+        return "redirect:/machines";
+    }
+
+    @GetMapping("/enquiries/{id}")
+    public String viewEnquiryScreen(@PathVariable("id") String id, Model model) {
+
+        AddEnquiryDTO enquiryData = enquiryService.getAddEnquiryDTO(id);
+
+        model.addAttribute("enquiryData", enquiryData);
+        return "machine-enquiry";
+    }
+
+    @PostMapping("/enquiries/{id}")
+    public String addEnquiry(@PathVariable String id,
+                                @Valid AddEnquiryDTO enquiryData,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("enquiryData", enquiryData);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.enquiryData", bindingResult);
+            return "redirect:/machines/enquiry/{id}";
+        }
+
+        CurrentUserDetails currentUser = userHelperService.getCurrentUserDetails();
+        enquiryData.setMachineId(id);
+        enquiryData.setUserId(currentUser.getId());
+        enquiryService.addEnquiry(enquiryData);
         return "redirect:/machines";
     }
 }
