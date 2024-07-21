@@ -1,6 +1,6 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.dto.*;
+import bg.magna.websop.model.dto.user.*;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
 

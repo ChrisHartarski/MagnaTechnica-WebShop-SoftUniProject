@@ -1,6 +1,6 @@
 package bg.magna.websop.service.impl;
 
-import bg.magna.websop.model.dto.*;
+import bg.magna.websop.model.dto.user.*;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.model.entity.UserEntity;

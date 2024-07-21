@@ -1,9 +1,9 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.CurrentUserDetails;
-import bg.magna.websop.model.dto.FullOrderDTO;
-import bg.magna.websop.model.dto.OrderDataDTO;
-import bg.magna.websop.model.dto.ShortOrderDTO;
+import bg.magna.websop.model.dto.order.FullOrderDTO;
+import bg.magna.websop.model.dto.order.OrderDataDTO;
+import bg.magna.websop.model.dto.order.ShortOrderDTO;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
@@ -23,7 +23,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.dto.AddBrandDTO;
-import bg.magna.websop.model.dto.FullEnquiryDTO;
+import bg.magna.websop.model.dto.brand.AddBrandDTO;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.*;
 import jakarta.validation.Valid;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 public class AdminPanelController {

@@ -1,7 +1,6 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.dto.AddCompanyDTO;
-import bg.magna.websop.model.dto.UserDTO;
+import bg.magna.websop.model.dto.company.AddCompanyDTO;
 import bg.magna.websop.service.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

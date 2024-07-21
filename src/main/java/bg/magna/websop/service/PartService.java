@@ -1,7 +1,7 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.dto.PartDataDTO;
-import bg.magna.websop.model.dto.ShortPartDataDTO;
+import bg.magna.websop.model.dto.part.PartDataDTO;
+import bg.magna.websop.model.dto.part.ShortPartDataDTO;
 import bg.magna.websop.model.entity.Part;
 
 import java.io.IOException;

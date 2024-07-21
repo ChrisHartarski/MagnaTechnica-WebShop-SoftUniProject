@@ -1,7 +1,7 @@
 package bg.magna.websop.controller;
 
 import bg.magna.websop.model.CurrentUserDetails;
-import bg.magna.websop.model.dto.PartDataDTO;
+import bg.magna.websop.model.dto.part.PartDataDTO;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;

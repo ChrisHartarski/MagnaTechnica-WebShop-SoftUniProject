@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.order;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

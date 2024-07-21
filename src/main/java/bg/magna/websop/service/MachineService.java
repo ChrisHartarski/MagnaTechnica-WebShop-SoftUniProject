@@ -1,8 +1,8 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.dto.AddMachineDTO;
-import bg.magna.websop.model.dto.FullMachineDTO;
-import bg.magna.websop.model.dto.ShortMachineDTO;
+import bg.magna.websop.model.dto.machine.AddMachineDTO;
+import bg.magna.websop.model.dto.machine.FullMachineDTO;
+import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,9 +1,9 @@
 package bg.magna.websop.service;
 
 import bg.magna.websop.model.CurrentUserDetails;
-import bg.magna.websop.model.dto.FullOrderDTO;
-import bg.magna.websop.model.dto.OrderDataDTO;
-import bg.magna.websop.model.dto.ShortOrderDTO;
+import bg.magna.websop.model.dto.order.FullOrderDTO;
+import bg.magna.websop.model.dto.order.OrderDataDTO;
+import bg.magna.websop.model.dto.order.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
 

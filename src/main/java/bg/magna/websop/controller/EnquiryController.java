@@ -1,8 +1,8 @@
 package bg.magna.websop.controller;
 
 import bg.magna.websop.model.CurrentUserDetails;
-import bg.magna.websop.model.dto.AddEnquiryDTO;
-import bg.magna.websop.model.dto.FullEnquiryDTO;
+import bg.magna.websop.model.dto.enquiry.AddEnquiryDTO;
+import bg.magna.websop.model.dto.enquiry.FullEnquiryDTO;
 import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;

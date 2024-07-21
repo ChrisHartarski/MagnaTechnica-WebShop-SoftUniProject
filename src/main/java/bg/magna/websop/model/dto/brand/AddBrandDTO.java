@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.brand;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

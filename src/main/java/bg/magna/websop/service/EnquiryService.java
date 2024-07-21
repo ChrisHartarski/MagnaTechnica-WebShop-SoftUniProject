@@ -1,7 +1,7 @@
 package bg.magna.websop.service;
 
-import bg.magna.websop.model.dto.AddEnquiryDTO;
-import bg.magna.websop.model.dto.FullEnquiryDTO;
+import bg.magna.websop.model.dto.enquiry.AddEnquiryDTO;
+import bg.magna.websop.model.dto.enquiry.FullEnquiryDTO;
 
 import java.util.List;
 

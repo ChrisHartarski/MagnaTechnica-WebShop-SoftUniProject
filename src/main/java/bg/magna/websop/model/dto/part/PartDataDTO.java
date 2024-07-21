@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.part;
 
 import jakarta.validation.constraints.*;
 

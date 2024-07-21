@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.order;
 
 import bg.magna.websop.model.entity.Part;
 

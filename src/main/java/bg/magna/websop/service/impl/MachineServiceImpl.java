@@ -1,10 +1,8 @@
 package bg.magna.websop.service.impl;
 
-import bg.magna.websop.model.dto.AddMachineDTO;
-import bg.magna.websop.model.dto.FullMachineDTO;
-import bg.magna.websop.model.dto.PartDataDTO;
-import bg.magna.websop.model.dto.ShortMachineDTO;
-import bg.magna.websop.model.entity.Part;
+import bg.magna.websop.model.dto.machine.AddMachineDTO;
+import bg.magna.websop.model.dto.machine.FullMachineDTO;
+import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;

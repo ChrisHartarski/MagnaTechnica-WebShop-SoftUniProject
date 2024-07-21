@@ -1,16 +1,15 @@
 package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.CurrentUserDetails;
-import bg.magna.websop.model.dto.AddEnquiryDTO;
-import bg.magna.websop.model.dto.FullEnquiryDTO;
-import bg.magna.websop.model.dto.FullMachineDTO;
+import bg.magna.websop.model.dto.enquiry.AddEnquiryDTO;
+import bg.magna.websop.model.dto.enquiry.FullEnquiryDTO;
+import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.entity.Enquiry;
 import bg.magna.websop.repository.EnquiryRepository;
 import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.helper.UserHelperService;
-import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

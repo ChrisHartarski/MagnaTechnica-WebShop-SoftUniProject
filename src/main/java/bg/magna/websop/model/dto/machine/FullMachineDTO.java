@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.machine;
 
 public class FullMachineDTO {
     private String id;

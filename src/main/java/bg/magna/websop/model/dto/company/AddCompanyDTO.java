@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.company;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

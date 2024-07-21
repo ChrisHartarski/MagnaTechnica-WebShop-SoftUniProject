@@ -1,4 +1,4 @@
-package bg.magna.websop.model.dto;
+package bg.magna.websop.model.dto.enquiry;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
