@@ -25,17 +25,19 @@
                         <div class="text-center mb-5">
                             <h1 class="fw-bolder" th:text="#{part_edit_title}">Edit Part</h1>
                         </div>
+                        <div class="text-center mb-2">
+                            <small th:if="${fieldsHaveErrors}" th:text="#{invalid_fields_error_msg}" class="text-danger">Part Code invalid!</small>
+                        </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
                                 <form
                                     th:action="@{/parts/edit/{partCode}(partCode=${partData.partCode})}"
                                     th:method="put"
                                     th:object="${partData}">
-                                    <!-- Part code input-->
+                                    <!-- Part code -->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="partCode" type="text" placeholder="Part code" th:field="*{partCode}" readonly/>
-                                        <label for="brandName" th:text="#{cart_part_code}">Part code</label>
-                                        <small th:errors="*{partCode}" class="text-danger">Part Code invalid!</small>
+                                        <label for="partCode" th:text="#{cart_part_code}">Part code</label>
                                     </div>
                                     <!-- Quantity input-->
                                     <div class="form-floating mb-3">

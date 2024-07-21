@@ -46,6 +46,12 @@ public class MachinesController {
         return new FullMachineDTO();
     }
 
+    @ModelAttribute("enquiryData")
+    public AddEnquiryDTO enquiryData() {
+//        AddEnquiryDTO enquiryData = enquiryService.getAddEnquiryDTO(id);
+        return new AddEnquiryDTO();
+    }
+
     @GetMapping()
     public String machines(Model model) {
         List<ShortMachineDTO> machines = machineService.getAll();
@@ -88,8 +94,7 @@ public class MachinesController {
     public String updateMachine(@PathVariable("id") String id,
                                 @Valid FullMachineDTO machineDTO,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes,
-                                @AuthenticationPrincipal UserDetails userDetails) {
+                                RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("modifyMachineData", machineDTO);
@@ -148,7 +153,8 @@ public class MachinesController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("enquiryData", enquiryData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.enquiryData", bindingResult);
-            return "redirect:/machines/enquiry/{id}";
+            redirectAttributes.addFlashAttribute("fieldsHaveErrors", true);
+            return "redirect:/machines/enquiries/{id}";
         }
 
         CurrentUserDetails currentUser = userHelperService.getCurrentUserDetails();

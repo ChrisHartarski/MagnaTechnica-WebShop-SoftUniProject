@@ -111,6 +111,7 @@ public class PartsController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("partData", partData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.partData", bindingResult);
+            redirectAttributes.addFlashAttribute("fieldsHaveErrors", true);
             return "redirect:/parts/edit/{partCode}";
         }
 

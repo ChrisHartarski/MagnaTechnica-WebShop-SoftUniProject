@@ -1,5 +1,8 @@
 package bg.magna.websop.model.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class AddEnquiryDTO {
 
     private String machineId;
@@ -10,8 +13,12 @@ public class AddEnquiryDTO {
 
     private String userFullName;
 
+    @NotEmpty(message = "{enquiry.title.notEmpty}")
+    @Size(min = 2, max = 50, message = "{enquiry.title.length}")
     private String title;
 
+    @NotEmpty(message = "{enquiry.message.notEmpty}")
+    @Size(max = 250, message = "{enquiry.message.length}")
     private String message;
 
     public AddEnquiryDTO() {

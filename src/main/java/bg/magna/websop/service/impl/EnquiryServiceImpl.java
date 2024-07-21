@@ -39,6 +39,27 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
+    public AddEnquiryDTO getAddEnquiryDTO() {
+        AddEnquiryDTO enquiryData = new AddEnquiryDTO();
+
+        CurrentUserDetails currentUserDetails = userHelperService.getCurrentUserDetails();
+        enquiryData.setMachineId("");
+        enquiryData.setUserId(currentUserDetails.getId());
+        enquiryData.setUserEmail(currentUserDetails.getUsername());
+        enquiryData.setUserFullName(currentUserDetails.getFullName());
+
+//        Locale currentLocale = userHelperService.getCurrentUserLocale();
+//        if(currentLocale.toString().equals("en_US")){
+//            enquiryData.setTitle("Enquiry for " + machineDTO.getDescriptionEn());
+//        }
+//        if(currentLocale.toString().equals("bg_BG")){
+//            enquiryData.setTitle("Запитване за " + machineDTO.getDescriptionBg());
+//        }
+
+        return enquiryData;
+    }
+
+    @Override
     public AddEnquiryDTO getAddEnquiryDTO(String machineId) {
         AddEnquiryDTO enquiryData = new AddEnquiryDTO();
         FullMachineDTO machineDTO = machineService.getById(machineId);
