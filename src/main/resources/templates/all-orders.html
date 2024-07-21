@@ -63,7 +63,7 @@
                                             </div>
                                             <div class="text-body mt-2 mb-2">
                                                 <span th:text="#{orders_created_on} + ': '">Created on: </span>
-                                                <span th:text="${#dates.format(awaitingOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
+                                                <span th:text="${#temporals.format(awaitingOrder.createdOn, 'dd-MM-yyyy HH:mm')}"></span>
                                             </div>
                                             <div class="fw-bold mt-2">
                                                 <span th:text="#{orders_total} + ': '">Order total: </span>

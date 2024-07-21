@@ -14,7 +14,7 @@ public class AddEnquiryDTO {
     private String userFullName;
 
     @NotEmpty(message = "{enquiry.title.notEmpty}")
-    @Size(min = 2, max = 50, message = "{enquiry.title.length}")
+    @Size(min = 2, max = 100, message = "{enquiry.title.length}")
     private String title;
 
     @NotEmpty(message = "{enquiry.message.notEmpty}")

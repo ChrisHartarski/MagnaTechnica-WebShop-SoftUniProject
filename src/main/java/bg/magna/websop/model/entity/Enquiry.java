@@ -2,6 +2,8 @@ package bg.magna.websop.model.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "enquiries")
 public class Enquiry {
@@ -21,6 +23,8 @@ public class Enquiry {
 
     @Column(nullable = false)
     private String message;
+
+    private LocalDateTime createdOn;
 
 
     public Enquiry() {
@@ -64,5 +68,13 @@ public class Enquiry {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 }

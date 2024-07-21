@@ -1,6 +1,7 @@
 package bg.magna.websop.controller;
 
 import bg.magna.websop.model.dto.AddBrandDTO;
+import bg.magna.websop.model.dto.FullEnquiryDTO;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.service.*;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class AdminPanelController {
@@ -21,13 +23,15 @@ public class AdminPanelController {
     private final PartService partService;
     private final OrderService orderService;
     private final MachineService machineService;
+    private final EnquiryService enquiryService;
 
-    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService, MachineService machineService) {
+    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService, MachineService machineService, EnquiryService enquiryService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
         this.orderService = orderService;
         this.machineService = machineService;
+        this.enquiryService = enquiryService;
     }
 
     @ModelAttribute("brandData")
@@ -86,5 +90,12 @@ public class AdminPanelController {
         partService.initializeMockParts();
         machineService.initializeMockMachines();
         return "redirect:/";
+    }
+
+    @GetMapping("/machines/enquiries/all")
+    public String viewAllEnquiries(Model model) {
+        List<FullEnquiryDTO> enquiries = enquiryService.getAllEnquiries();
+        model.addAttribute("enquiries", enquiries);
+        return "enquiries";
     }
 }

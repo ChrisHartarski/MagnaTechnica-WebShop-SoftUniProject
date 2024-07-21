@@ -2,6 +2,7 @@ package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.AddEnquiryDTO;
+import bg.magna.websop.model.dto.FullEnquiryDTO;
 import bg.magna.websop.model.dto.FullMachineDTO;
 import bg.magna.websop.model.entity.Enquiry;
 import bg.magna.websop.repository.EnquiryRepository;
@@ -9,8 +10,11 @@ import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.helper.UserHelperService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -19,12 +23,14 @@ public class EnquiryServiceImpl implements EnquiryService {
     private final UserService userService;
     private final MachineService machineService;
     private final UserHelperService userHelperService;
+    private final ModelMapper modelMapper;
 
-    public EnquiryServiceImpl(EnquiryRepository enquiryRepository, UserService userService, MachineService machineService, UserHelperService userHelperService) {
+    public EnquiryServiceImpl(EnquiryRepository enquiryRepository, UserService userService, MachineService machineService, UserHelperService userHelperService, ModelMapper modelMapper) {
         this.enquiryRepository = enquiryRepository;
         this.userService = userService;
         this.machineService = machineService;
         this.userHelperService = userHelperService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -34,6 +40,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         enquiry.setUser(userService.getUserById(enquiryData.getUserId()));
         enquiry.setTitle(enquiryData.getTitle());
         enquiry.setMessage(enquiryData.getMessage());
+        enquiry.setCreatedOn(LocalDateTime.now());
 
         enquiryRepository.saveAndFlush(enquiry);
     }
@@ -78,5 +85,28 @@ public class EnquiryServiceImpl implements EnquiryService {
         }
 
         return enquiryData;
+    }
+
+    @Override
+    public List<FullEnquiryDTO> getAllEnquiries() {
+        return enquiryRepository.findAll().stream()
+                .map(this::mapEnquiryToDTO)
+                .toList();
+    }
+
+    private FullEnquiryDTO mapEnquiryToDTO(Enquiry enquiry) {
+        FullMachineDTO machine = machineService.getById(enquiry.getMachineId());
+
+        FullEnquiryDTO dto = new FullEnquiryDTO();
+        dto.setId(enquiry.getId());
+        dto.setUserFullName(enquiry.getUser().getFullName());
+        dto.setUserEmail(enquiry.getUser().getEmail());
+        dto.setMachineName(machine.getName());
+        dto.setMachineImageUrl(machine.getImageURL());
+        dto.setCreatedOn(enquiry.getCreatedOn());
+        dto.setTitle(enquiry.getTitle());
+        dto.setMessage(enquiry.getMessage());
+
+        return dto;
     }
 }
