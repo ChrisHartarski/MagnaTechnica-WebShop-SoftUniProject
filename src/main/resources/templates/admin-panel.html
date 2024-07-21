@@ -15,7 +15,7 @@
         <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body class="d-flex flex-column h-100">
-        <header th:replace="fragments/navbar"></header>
+        <header th:replace="~{fragments/navbar::navbar(activeLink=${'admin_panel'})}"></header>
         <main class="flex-shrink-0">
 <!--        <Header>-->
             <section class="py-5">
@@ -33,25 +33,19 @@
                         <h3 class="fw-bolder" th:text="#{admin_panel_actions_title}">Admin actions</h3>
                     </div>
 
-                    <div class="row  gx-2 row-cols-lg-5 py-2 justify-content-center">
-                        <div class="col">
-                            <a class="btn btn-warning" th:href="@{/users/register}" th:text="#{admin_register_user_button}">Register User</a>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-warning" th:href="@{/brands/add}" th:text="#{admin_add_brand_button}">Add Brand</a>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-warning" th:href="@{/machines/add}" th:text="#{admin_add_machine_button}">Add Machine</a>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-warning" th:href="@{/parts/add}" th:text="#{admin_add_part_button}">Add Part</a>
-                        </div>
-                        <div class="col">
-                            <form th:action="@{admin-panel/initializeMockDB}" th:method="post">
-                                <button class="btn btn-warning" type="submit" th:text="#{admin_initialize_mock_db}">Initialize Mock DB</button>
+                    <ul class="ms-auto mb-2 mb-lg-0">
+                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/users/register}" th:text="#{admin_register_user_button}">Register User</a></li>
+                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/brands/add}" th:text="#{admin_add_brand_button}">Add Brand</a></li>
+                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/machines/add}" th:text="#{admin_add_machine_button}">Add Machine</a></li>
+                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/parts/add}" th:text="#{admin_add_part_button}">Add Part</a></li>
+                        <li class="list-inline-item nav-tabs m-2">
+                            <form th:action="@{/admin-panel/initializeMockDB}" th:method="post">
+                                <button class="btn btn-link nav-link" type="submit" th:text="#{admin_initialize_mock_db}">Initialize Mock DB</button>
                             </form>
-                        </div>
-                    </div>
+                        </li>
+                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/machines/enquiries/all}" th:text="#{admin_view_enquiries_button}">View All Enquiries</a></li>
+                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/orders/all}" th:text="#{admin_view_orders_button}">View All Orders</a></li>
+                    </ul>
                 </div>
             </section>
 <!--        <Data panel>-->

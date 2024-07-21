@@ -15,7 +15,7 @@
         <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body class="d-flex flex-column">
-        <header th:replace="fragments/navbar"></header>
+        <header th:replace="~{fragments/navbar::navbar(activeLink=${'register'})}"></header>
         <main class="flex-shrink-0">
             <!-- Page content-->
             <section class="py-5">

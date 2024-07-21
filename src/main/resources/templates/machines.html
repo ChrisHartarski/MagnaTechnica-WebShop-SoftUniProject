@@ -16,7 +16,7 @@
         <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body class="d-flex flex-column h-100">
-        <header th:replace="fragments/navbar"></header>
+        <header th:replace="~{fragments/navbar::navbar(activeLink=${'machines'})}"></header>
         <main class="flex-shrink-0">
 
             <!-- Parts section -->
