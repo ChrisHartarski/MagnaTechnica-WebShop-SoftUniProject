@@ -89,24 +89,4 @@ public class AdminPanelController {
         machineService.initializeMockMachines();
         return "redirect:/";
     }
-
-    @GetMapping("/machines/enquiries/all")
-    public String viewAllEnquiries(Model model) {
-        List<FullEnquiryDTO> enquiries = enquiryService.getAllEnquiries();
-        model.addAttribute("enquiries", enquiries);
-        return "enquiries";
-    }
-
-    @GetMapping("/machines/enquiries/view/{id}")
-    public String viewEnquiry(@PathVariable long id, Model model) {
-        FullEnquiryDTO enquiryData = enquiryService.getById(id);
-        model.addAttribute("enquiry", enquiryData);
-        return "enquiry-details";
-    }
-
-    @DeleteMapping("/machines/enquiries/delete/{id}")
-    public String deleteEnquiry(@PathVariable long id) {
-        enquiryService.delete(id);
-        return "redirect:/machines/enquiries/all";
-    }
 }

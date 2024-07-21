@@ -134,33 +134,4 @@ public class MachinesController {
         machineService.addMachine(addMachineDTO);
         return "redirect:/machines";
     }
-
-    @GetMapping("/enquiries/{id}")
-    public String viewEnquiryScreen(@PathVariable("id") String id, Model model) {
-
-        AddEnquiryDTO enquiryData = enquiryService.getAddEnquiryDTO(id);
-
-        model.addAttribute("enquiryData", enquiryData);
-        return "machine-enquiry";
-    }
-
-    @PostMapping("/enquiries/{id}")
-    public String addEnquiry(@PathVariable String id,
-                                @Valid AddEnquiryDTO enquiryData,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
-
-        if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("enquiryData", enquiryData);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.enquiryData", bindingResult);
-            redirectAttributes.addFlashAttribute("fieldsHaveErrors", true);
-            return "redirect:/machines/enquiries/{id}";
-        }
-
-        CurrentUserDetails currentUser = userHelperService.getCurrentUserDetails();
-        enquiryData.setMachineId(id);
-        enquiryData.setUserId(currentUser.getId());
-        enquiryService.addEnquiry(enquiryData);
-        return "redirect:/machines";
-    }
 }
