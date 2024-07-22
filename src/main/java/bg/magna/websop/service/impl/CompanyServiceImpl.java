@@ -4,6 +4,7 @@ import bg.magna.websop.model.dto.company.AddCompanyDTO;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.repository.CompanyRepository;
 import bg.magna.websop.service.CompanyService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +32,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getCompanyByName(String name) {
-        return companyRepository.findByName(name).orElseThrow(() -> new IllegalArgumentException("Company with name " + name + " not found"));
+        return companyRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Company with name " + name + " not found"));
     }
 
     @Override
     public void addCompany(AddCompanyDTO companyData) {
         if (!companyExists(companyData.getName())) {
             companyRepository.saveAndFlush(modelMapper.map(companyData, Company.class));
-        } else throw new IllegalArgumentException("Company with name " + companyData.getName() + " already exists");
+        } else throw new ResourceNotFoundException("Company with name " + companyData.getName() + " already exists");
     }
 
     @Override

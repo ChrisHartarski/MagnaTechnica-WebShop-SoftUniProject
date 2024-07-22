@@ -10,6 +10,7 @@ import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -200,7 +201,7 @@ public class PartServiceImplTest {
     void testGetPartByPartCode_throwsExceptionWhenPartNotFound(){
         when(partRepository.findByPartCode(TEST_PART_1.getPartCode())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.getPartByPartCode(TEST_PART_1.getPartCode()));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.getPartByPartCode(TEST_PART_1.getPartCode()));
     }
 
     @Test

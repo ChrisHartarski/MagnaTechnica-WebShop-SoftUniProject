@@ -195,4 +195,11 @@ public class UserController {
         userHelperService.updateAuthentication(userDetails.getId());
         return "redirect:/";
     }
+
+    @GetMapping("/{id}")
+    public String viewUser(@PathVariable String id, Model model) {
+        UserEntity user = userService.getUserById(id);
+        model.addAttribute("userDetails", user);
+        return "edit-user";
+    }
 }

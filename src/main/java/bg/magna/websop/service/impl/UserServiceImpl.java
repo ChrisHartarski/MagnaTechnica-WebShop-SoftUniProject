@@ -6,6 +6,8 @@ import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
+import bg.magna.websop.service.exception.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,17 +85,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getUserById(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User with id: " + id + ", does not exist!"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with id: " + id + ", does not exist!"));
     }
 
     @Override
     public UserEntity getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User with email: " + email + ", does not exist!"));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with email: " + email + ", does not exist!"));
     }
 
     @Override
     public UserDTO getCurrentUserData(String id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such user exists!"));
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No such user exists!"));
         return modelMapper.map(user, UserDTO.class);
     }
 
@@ -128,6 +130,6 @@ public class UserServiceImpl implements UserService {
     private UserEntity getUserByEmailAndPassword(ValidateUserDTO loginData) {
         return userRepository.findByEmail(loginData.getEmail())
                 .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+                .orElseThrow(() -> new UserNotFoundException("Invalid user"));
     }
 }

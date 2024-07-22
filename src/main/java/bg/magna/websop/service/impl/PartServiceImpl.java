@@ -8,6 +8,7 @@ import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -107,16 +108,13 @@ public class PartServiceImpl implements PartService {
 
     @Override
     public PartDataDTO getPartDTOFromPartCode(String partCode) {
-        if (partExists(partCode)) {
-            Part part = getPartByPartCode(partCode);
-            return modelMapper.map(part, PartDataDTO.class);
-        }
-        return null;
+        Part part = getPartByPartCode(partCode);
+        return modelMapper.map(part, PartDataDTO.class);
     }
 
     @Override
     public Part getPartByPartCode(String partCode) {
-        return partRepository.findByPartCode(partCode).orElseThrow(() -> new IllegalArgumentException("No such part exists"));
+        return partRepository.findByPartCode(partCode).orElseThrow(() -> new ResourceNotFoundException("No such part exists"));
     }
 
     @Override

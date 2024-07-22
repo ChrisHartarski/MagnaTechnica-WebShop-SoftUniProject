@@ -2,6 +2,7 @@ package bg.magna.websop.service.impl;
 
 import bg.magna.websop.model.entity.Brand;
 import bg.magna.websop.repository.BrandRepository;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,7 +73,7 @@ public class BrandServiceImplTest {
     void testAddBrand_throwsExceptionIfBrandExists(){
         when(brandRepository.existsByName(TEST_BRAND_1.getName())).thenReturn(true);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.addBrand(TEST_BRAND_1.getName(), TEST_BRAND_1.getLogoURL()));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.addBrand(TEST_BRAND_1.getName(), TEST_BRAND_1.getLogoURL()));
     }
 
     @Test

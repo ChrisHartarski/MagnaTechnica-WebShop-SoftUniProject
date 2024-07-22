@@ -3,6 +3,7 @@ package bg.magna.websop.service.impl;
 import bg.magna.websop.model.entity.Brand;
 import bg.magna.websop.repository.BrandRepository;
 import bg.magna.websop.service.BrandService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class BrandServiceImpl implements BrandService {
     public Brand findBrandByName(String brandName) {
         return brandRepository
                 .findByName(brandName)
-                .orElseThrow(() -> new IllegalArgumentException("Brand with name " + brandName + "does not exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Brand with name " + brandName + "does not exist."));
     }
 
     @Override

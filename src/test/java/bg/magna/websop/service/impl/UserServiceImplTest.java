@@ -7,6 +7,7 @@ import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.CompanyService;
+import bg.magna.websop.service.exception.UserNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -171,7 +172,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findByEmail(testValidateUserDTO.getEmail())).thenReturn(Optional.of(TEST_USER_1));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.isValidUser(testValidateUserDTO));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.isValidUser(testValidateUserDTO));
     }
 
     @Test
@@ -180,7 +181,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findByEmail(testValidateUserDTO.getEmail())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.isValidUser(testValidateUserDTO));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.isValidUser(testValidateUserDTO));
     }
 
     @Test
@@ -211,7 +212,7 @@ public class UserServiceImplTest {
     void testGetUserById_throwsExceptionWhenUserIsNotFound() {
         when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.getUserById(TEST_USER_1.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getUserById(TEST_USER_1.getId()));
     }
 
     @Test
@@ -235,7 +236,7 @@ public class UserServiceImplTest {
     void testGetUserByEmail_throwsExceptionWhenUserIsNotFound() {
         when(userRepository.findByEmail(TEST_USER_1.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.getUserById(TEST_USER_1.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getUserById(TEST_USER_1.getId()));
     }
 
     @Test
@@ -258,7 +259,7 @@ public class UserServiceImplTest {
     void testGetCurrentUserData_throwsExceptionWhenUserIsNotFound() {
         when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.getCurrentUserData(TEST_USER_1.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getCurrentUserData(TEST_USER_1.getId()));
     }
 
     @Test

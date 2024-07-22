@@ -11,6 +11,7 @@ import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,7 @@ public class OrderServiceImplTest {
     void testDeleteOrder_throwsException() {
         when(orderRepository.findById(TEST_ORDER_AWAITING.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.deleteOrder(TEST_ORDER_AWAITING.getId()));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.deleteOrder(TEST_ORDER_AWAITING.getId()));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class OrderServiceImplTest {
     void testCurrentUserOwnsOrder_throwsException() {
         when(orderRepository.findById(TEST_ORDER_AWAITING.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class,() -> toTest.currentUserOwnsOrder(TEST_ORDER_AWAITING.getId(), TEST_CURRENT_USER_DETAILS));
+        Assertions.assertThrows(ResourceNotFoundException.class,() -> toTest.currentUserOwnsOrder(TEST_ORDER_AWAITING.getId(), TEST_CURRENT_USER_DETAILS));
     }
 
     @Test
@@ -143,7 +144,7 @@ public class OrderServiceImplTest {
     void testDispatchOrder_throwsException() {
         when(orderRepository.findById(TEST_ORDER_AWAITING.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class,() -> toTest.dispatchOrder(TEST_ORDER_AWAITING.getId()));
+        Assertions.assertThrows(ResourceNotFoundException.class,() -> toTest.dispatchOrder(TEST_ORDER_AWAITING.getId()));
     }
 
     @Test
@@ -165,7 +166,7 @@ public class OrderServiceImplTest {
     void testDeliverOrder_throwsException() {
         when(orderRepository.findById(TEST_ORDER_DISPATCHED.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class,() -> toTest.dispatchOrder(TEST_ORDER_DISPATCHED.getId()));
+        Assertions.assertThrows(ResourceNotFoundException.class,() -> toTest.dispatchOrder(TEST_ORDER_DISPATCHED.getId()));
     }
 
     @Test
@@ -190,7 +191,7 @@ public class OrderServiceImplTest {
     void testGetOrderById_throwsException() {
         when(orderRepository.findById(TEST_ORDER_DELIVERED.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class,() -> toTest.getOrderById(TEST_ORDER_DELIVERED.getId()));
+        Assertions.assertThrows(ResourceNotFoundException.class,() -> toTest.getOrderById(TEST_ORDER_DELIVERED.getId()));
     }
 
 
@@ -231,7 +232,7 @@ public class OrderServiceImplTest {
     void testGetFullOrderDTO_throwsException() {
         when(orderRepository.findById(TEST_ORDER_DELIVERED.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(IllegalArgumentException.class,() -> toTest.getFullOrderDTO(TEST_ORDER_DELIVERED.getId()));
+        Assertions.assertThrows(ResourceNotFoundException.class,() -> toTest.getFullOrderDTO(TEST_ORDER_DELIVERED.getId()));
     }
 
     @Test

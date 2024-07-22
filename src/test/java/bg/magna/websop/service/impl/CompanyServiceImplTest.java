@@ -3,6 +3,7 @@ package bg.magna.websop.service.impl;
 import bg.magna.websop.model.dto.company.AddCompanyDTO;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.repository.CompanyRepository;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ public class CompanyServiceImplTest {
     void testGetCompanyByName_throwsExceptionWhenNoCompanyFound() {
         when(companyRepository.findByName(TEST_COMPANY.getName())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(RuntimeException.class, () -> toTest.getCompanyByName(TEST_COMPANY.getName()));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.getCompanyByName(TEST_COMPANY.getName()));
     }
 
     @Test
@@ -88,7 +89,7 @@ public class CompanyServiceImplTest {
                 TEST_COMPANY.getPhone(),
                 TEST_COMPANY.getEmail());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.addCompany(companyDTO));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.addCompany(companyDTO));
     }
 
     @Test

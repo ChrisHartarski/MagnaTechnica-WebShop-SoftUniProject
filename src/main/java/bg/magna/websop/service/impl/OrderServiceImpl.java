@@ -10,6 +10,7 @@ import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean deleteOrder(long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
         if (order.getDispatchedOn() != null || order.getDeliveredOn() != null) {
             return false;
@@ -54,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails) {
         String userId = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"))
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"))
                 .getUser().getId();
 
         return userId.equals(userDetails.getId());
@@ -77,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void dispatchOrder(long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setDispatchedOn(LocalDateTime.now());
         orderRepository.saveAndFlush(order);
     }
@@ -85,19 +86,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deliverOrder(long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));;
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));;
         order.setDeliveredOn(LocalDateTime.now());
         orderRepository.saveAndFlush(order);
     }
 
     @Override
     public Order getOrderById(long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such order exists!"));
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No such order exists!"));
     }
 
     @Override
     public FullOrderDTO getFullOrderDTO(long id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such order exists!")) ;
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No such order exists!")) ;
         return modelMapper.map(order, FullOrderDTO.class);
     }
 
