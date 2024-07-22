@@ -156,7 +156,6 @@ public class PartServiceImplTest {
 
     @Test
     void testGetPartDTOFromPartCode() {
-        when(partRepository.existsByPartCode(TEST_PART_1.getPartCode())).thenReturn(true);
         when(partRepository.findByPartCode(TEST_PART_1.getPartCode())).thenReturn(Optional.of(TEST_PART_1));
 
         PartDataDTO expected = getTestPartDataDTO(TEST_PART_1);

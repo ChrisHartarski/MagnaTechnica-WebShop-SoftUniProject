@@ -52,7 +52,7 @@ public class BrandServiceImplTest {
 
         Brand actual = toTest.findBrandByName(TEST_BRAND_1.getName());
         Assertions.assertEquals(TEST_BRAND_1, actual);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.findBrandByName(FAKE_BRAND.getName()));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.findBrandByName(FAKE_BRAND.getName()));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class BrandServiceImplTest {
     void testAddBrand_throwsExceptionIfBrandExists(){
         when(brandRepository.existsByName(TEST_BRAND_1.getName())).thenReturn(true);
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.addBrand(TEST_BRAND_1.getName(), TEST_BRAND_1.getLogoURL()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> toTest.addBrand(TEST_BRAND_1.getName(), TEST_BRAND_1.getLogoURL()));
     }
 
     @Test

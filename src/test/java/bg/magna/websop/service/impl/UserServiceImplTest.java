@@ -151,7 +151,7 @@ public class UserServiceImplTest {
         Assertions.assertEquals(TEST_USER_1.getFirstName(), actual.getFirstName());
         Assertions.assertEquals(TEST_USER_1.getLastName(), actual.getLastName());
         Assertions.assertEquals(TEST_USER_1.getPhone(), actual.getPhone());
-        Assertions.assertEquals(TEST_USER_1.getCompany(), actual.getCompany());
+        Assertions.assertEquals(TEST_USER_1.getCompany().getName(), actual.getCompany().getName());
         Assertions.assertEquals(TEST_USER_1.getUserRole(), actual.getUserRole());
     }
 
@@ -217,7 +217,7 @@ public class UserServiceImplTest {
 
     @Test
     void testGetUserByEmail() {
-        when(userRepository.findByEmail(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
 
         UserEntity actual = toTest.getUserById(TEST_USER_1.getId());
 
@@ -234,9 +234,9 @@ public class UserServiceImplTest {
 
     @Test
     void testGetUserByEmail_throwsExceptionWhenUserIsNotFound() {
-        when(userRepository.findByEmail(TEST_USER_1.getId())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getUserById(TEST_USER_1.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getUserByEmail(TEST_USER_1.getEmail()));
     }
 
     @Test
