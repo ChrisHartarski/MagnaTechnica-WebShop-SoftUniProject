@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/machines/enquiries")
 public class EnquiryController {
     private final EnquiryService enquiryService;
     private final UserHelperService userHelperService;

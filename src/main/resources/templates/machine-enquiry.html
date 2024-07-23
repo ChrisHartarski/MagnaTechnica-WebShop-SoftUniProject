@@ -20,13 +20,13 @@
             <section class="py-5">
                 <div class="container px-5">
 
-                    <!-- Add Part form-->
+                    <!-- Add Enquiry form-->
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5" id="contact-form">
                         <div class="text-center mb-5">
                             <h1 class="fw-bolder" th:text="#{enquiry_header}">Machine Enquiry</h1>
                         </div>
                         <div class="text-center mb-2">
-                            <small th:if="${fieldsHaveErrors}" th:text="#{invalid_fields_error_msg}" class="text-danger">Part Code invalid!</small>
+                            <small th:if="${fieldsHaveErrors}" th:text="#{invalid_fields_error_msg}" class="text-danger">One or more fields have errors!</small>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -45,13 +45,13 @@
                                     </div>
                                     <!-- Title input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="title" type="text" placeholder="Title" th:field="*{title}"/>
-                                        <label for="title" th:text="#{enquiry_title}">Serial number</label>
-                                        <small th:errors="*{title}" class="text-danger">Serial number invalid!</small>
+                                        <input class="form-control" id="title" type="text" required minlength="2" maxlength="100" placeholder="Title" th:field="*{title}"/>
+                                        <label for="title" th:text="#{enquiry_title}">Title</label>
+                                        <small th:errors="*{title}" class="text-danger">Title invalid!</small>
                                     </div>
                                     <!-- Message input-->
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" th:field="*{message}"></textarea>
+                                        <textarea class="form-control" id="message" type="text" required maxlength="250" placeholder="Enter your message here..." style="height: 10rem" th:field="*{message}"></textarea>
                                         <label for="message" th:text="#{enquiry_message}">Message</label>
                                         <small th:errors="*{message}" class="text-danger">Message invalid!</small>
                                     </div>
