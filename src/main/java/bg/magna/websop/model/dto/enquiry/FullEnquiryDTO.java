@@ -17,6 +17,19 @@ public class FullEnquiryDTO {
     public FullEnquiryDTO() {
     }
 
+    public FullEnquiryDTO(long id, String userFullName, String userEmail, String machineName, String machineImageUrl, String machineId, String machineSerialNumber, LocalDateTime createdOn, String title, String message) {
+        this.id = id;
+        this.userFullName = userFullName;
+        this.userEmail = userEmail;
+        this.machineName = machineName;
+        this.machineImageUrl = machineImageUrl;
+        this.machineId = machineId;
+        this.machineSerialNumber = machineSerialNumber;
+        this.createdOn = createdOn;
+        this.title = title;
+        this.message = message;
+    }
+
     public long getId() {
         return id;
     }

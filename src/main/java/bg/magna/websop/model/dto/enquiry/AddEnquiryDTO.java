@@ -24,6 +24,15 @@ public class AddEnquiryDTO {
     public AddEnquiryDTO() {
     }
 
+    public AddEnquiryDTO(String machineId, String userId, String userEmail, String userFullName, String title, String message) {
+        this.machineId = machineId;
+        this.userId = userId;
+        this.userEmail = userEmail;
+        this.userFullName = userFullName;
+        this.title = title;
+        this.message = message;
+    }
+
     public String getMachineId() {
         return machineId;
     }

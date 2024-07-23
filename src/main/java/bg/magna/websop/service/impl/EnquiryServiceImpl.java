@@ -9,6 +9,7 @@ import bg.magna.websop.repository.EnquiryRepository;
 import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import bg.magna.websop.service.helper.UserHelperService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,12 @@ public class EnquiryServiceImpl implements EnquiryService {
     private final UserService userService;
     private final MachineService machineService;
     private final UserHelperService userHelperService;
-    private final ModelMapper modelMapper;
 
-    public EnquiryServiceImpl(EnquiryRepository enquiryRepository, UserService userService, MachineService machineService, UserHelperService userHelperService, ModelMapper modelMapper) {
+    public EnquiryServiceImpl(EnquiryRepository enquiryRepository, UserService userService, MachineService machineService, UserHelperService userHelperService) {
         this.enquiryRepository = enquiryRepository;
         this.userService = userService;
         this.machineService = machineService;
         this.userHelperService = userHelperService;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -46,31 +45,11 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public AddEnquiryDTO getAddEnquiryDTO() {
-        AddEnquiryDTO enquiryData = new AddEnquiryDTO();
-
-        CurrentUserDetails currentUserDetails = userHelperService.getCurrentUserDetails();
-        enquiryData.setMachineId("");
-        enquiryData.setUserId(currentUserDetails.getId());
-        enquiryData.setUserEmail(currentUserDetails.getUsername());
-        enquiryData.setUserFullName(currentUserDetails.getFullName());
-
-//        Locale currentLocale = userHelperService.getCurrentUserLocale();
-//        if(currentLocale.toString().equals("en_US")){
-//            enquiryData.setTitle("Enquiry for " + machineDTO.getDescriptionEn());
-//        }
-//        if(currentLocale.toString().equals("bg_BG")){
-//            enquiryData.setTitle("Запитване за " + machineDTO.getDescriptionBg());
-//        }
-
-        return enquiryData;
-    }
-
-    @Override
     public AddEnquiryDTO getAddEnquiryDTO(String machineId) {
         AddEnquiryDTO enquiryData = new AddEnquiryDTO();
         FullMachineDTO machineDTO = machineService.getById(machineId);
         CurrentUserDetails currentUserDetails = userHelperService.getCurrentUserDetails();
+
         enquiryData.setMachineId(machineId);
         enquiryData.setUserId(currentUserDetails.getId());
         enquiryData.setUserEmail(currentUserDetails.getUsername());
@@ -98,7 +77,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     public FullEnquiryDTO getById(long id) {
         return enquiryRepository.findById(id)
                 .map(this::mapEnquiryToDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Enquiry with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Enquiry with id " + id + " not found"));
     }
 
     @Override
