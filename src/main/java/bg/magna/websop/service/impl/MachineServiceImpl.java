@@ -1,5 +1,6 @@
 package bg.magna.websop.service.impl;
 
+import bg.magna.websop.config.MachinesApiConfig;
 import bg.magna.websop.model.dto.machine.AddMachineDTO;
 import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
@@ -20,21 +21,21 @@ import java.util.List;
 @Service
 public class MachineServiceImpl implements MachineService {
     private final RestClient machineRestClient;
+    private final MachinesApiConfig machinesApiConfig;
     private final Gson gson;
-    private final ModelMapper modelMapper;
     private static final String PARTS_JSON_FILE_PATH = "src/main/resources/data/machines.json";
 
-    public MachineServiceImpl(RestClient machineRestClient, Gson gson, ModelMapper modelMapper) {
+    public MachineServiceImpl(RestClient machineRestClient, MachinesApiConfig machinesApiConfig, Gson gson) {
         this.machineRestClient = machineRestClient;
+        this.machinesApiConfig = machinesApiConfig;
         this.gson = gson;
-        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<ShortMachineDTO> getAll() {
         return machineRestClient
                 .get()
-                .uri("/machines/all")
+                .uri(machinesApiConfig.getBaseUrl() + "/machines/all")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>(){});
@@ -44,27 +45,30 @@ public class MachineServiceImpl implements MachineService {
     public FullMachineDTO getById(String id) {
         return machineRestClient
                 .get()
-                .uri("/machines/" + id)
+                .uri(machinesApiConfig.getBaseUrl() + "/machines/" + id)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(FullMachineDTO.class);
     }
 
     @Override
-    public void addMachine(AddMachineDTO addMachineDTO) {
-        machineRestClient
+    public FullMachineDTO addMachine(AddMachineDTO addMachineDTO) {
+        FullMachineDTO fullMachineDTO = machineRestClient
                 .post()
-                .uri("/machines/add")
+                .uri(machinesApiConfig.getBaseUrl() + "/machines/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                        .body(addMachineDTO)
-                                .retrieve();
+                .body(addMachineDTO)
+                .retrieve()
+                .body(FullMachineDTO.class);
+
+        return fullMachineDTO;
     }
 
     @Override
     public boolean machineExists(String serialNumber) {
         Boolean machineExists = machineRestClient
                 .get()
-                .uri("/machines/exist/" + serialNumber)
+                .uri(machinesApiConfig.getBaseUrl() + "/machines/exist/" + serialNumber)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(Boolean.class);
@@ -81,7 +85,7 @@ public class MachineServiceImpl implements MachineService {
         if(machineExists(getById(id).getSerialNumber())) {
             machineRestClient
                     .delete()
-                    .uri("/machines/" + id)
+                    .uri(machinesApiConfig.getBaseUrl() + "/machines/" + id)
                     .retrieve();
         }
     }
@@ -91,7 +95,7 @@ public class MachineServiceImpl implements MachineService {
         if(machineExists(machineDTO.getSerialNumber())) {
             machineRestClient
                     .put()
-                    .uri("/machines/edit/" + machineDTO.getId())
+                    .uri(machinesApiConfig.getBaseUrl() + "/machines/edit/" + machineDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(machineDTO)
                     .retrieve();
@@ -109,7 +113,7 @@ public class MachineServiceImpl implements MachineService {
     private boolean machineRepositoryEmpty() {
         Boolean machineRepositoryEmpty = machineRestClient
                 .get()
-                .uri("/machines/repository/empty")
+                .uri(machinesApiConfig.getBaseUrl() + "/machines/repository/empty")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(Boolean.class);

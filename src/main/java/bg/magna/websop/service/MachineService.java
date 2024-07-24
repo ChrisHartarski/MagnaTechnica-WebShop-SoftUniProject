@@ -12,7 +12,7 @@ public interface MachineService {
 
     FullMachineDTO getById(String id);
 
-    void addMachine(AddMachineDTO addMachineDTO);
+    FullMachineDTO addMachine(AddMachineDTO addMachineDTO);
 
     boolean machineExists(String serialNumber);
 
