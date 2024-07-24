@@ -16,6 +16,11 @@ public class AddBrandDTO {
     public AddBrandDTO() {
     }
 
+    public AddBrandDTO(String name, String logoURL) {
+        this.name = name;
+        this.logoURL = logoURL;
+    }
+
     public String getName() {
         return name;
     }

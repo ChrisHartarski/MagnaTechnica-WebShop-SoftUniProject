@@ -19,15 +19,13 @@ public class AdminPanelController {
     private final PartService partService;
     private final OrderService orderService;
     private final MachineService machineService;
-    private final EnquiryService enquiryService;
 
-    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService, MachineService machineService, EnquiryService enquiryService) {
+    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService, MachineService machineService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
         this.orderService = orderService;
         this.machineService = machineService;
-        this.enquiryService = enquiryService;
     }
 
     @ModelAttribute("brandData")
@@ -84,7 +82,7 @@ public class AdminPanelController {
     public String initializeMockDB() throws IOException {
         brandService.initializeMockBrands();
         partService.initializeMockParts();
-        machineService.initializeMockMachines();
+//        machineService.initializeMockMachines();
         return "redirect:/";
     }
 }

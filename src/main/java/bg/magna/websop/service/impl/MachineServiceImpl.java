@@ -6,7 +6,6 @@ import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
 import com.google.gson.Gson;
-import org.modelmapper.ModelMapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class MachineServiceImpl implements MachineService {
     private final RestClient machineRestClient;
     private final MachinesApiConfig machinesApiConfig;
     private final Gson gson;
-    private static final String PARTS_JSON_FILE_PATH = "src/main/resources/data/machines.json";
+    private static final String MACHINES_JSON_FILE_PATH = "src/main/resources/data/machines.json";
 
     public MachineServiceImpl(RestClient machineRestClient, MachinesApiConfig machinesApiConfig, Gson gson) {
         this.machineRestClient = machineRestClient;
@@ -53,15 +52,13 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public FullMachineDTO addMachine(AddMachineDTO addMachineDTO) {
-        FullMachineDTO fullMachineDTO = machineRestClient
+        return machineRestClient
                 .post()
                 .uri(machinesApiConfig.getBaseUrl() + "/machines/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(addMachineDTO)
                 .retrieve()
                 .body(FullMachineDTO.class);
-
-        return fullMachineDTO;
     }
 
     @Override
@@ -105,7 +102,7 @@ public class MachineServiceImpl implements MachineService {
     @Override
     public void initializeMockMachines() throws IOException {
         if(machineRepositoryEmpty()) {
-            Arrays.stream(gson.fromJson(Files.readString(Path.of(PARTS_JSON_FILE_PATH)), AddMachineDTO[].class))
+            Arrays.stream(gson.fromJson(Files.readString(Path.of(MACHINES_JSON_FILE_PATH)), AddMachineDTO[].class))
                     .forEach(this::addMachine);
         }
     }

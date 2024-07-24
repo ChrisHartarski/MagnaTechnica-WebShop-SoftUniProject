@@ -33,14 +33,14 @@
                                     th:object="${brandData}">
                                     <!-- Brand name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="brandName" type="text" placeholder="Brand name" th:field="*{name}"/>
+                                        <input class="form-control" name="brandName" id="brandName" type="text" placeholder="Brand name" th:field="*{name}"/>
                                         <label for="brandName" th:text="#{brand_name}">Brand name</label>
                                         <small th:errors="*{name}" class="text-danger">Email invalid!</small>
                                         <small th:if="${brandExists}" class="text-danger">Brand with this name already exists!</small>
                                     </div>
                                     <!-- LogoURL input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="logoURL" type="text" placeholder="logoURL" th:field="*{logoURL}"/>
+                                        <input class="form-control" name="logoURL" id="logoURL" type="text" placeholder="logoURL" th:field="*{logoURL}"/>
                                         <label for="logoURL" th:text="#{brand_logo_url}">Logo URL</label>
                                         <small th:errors="*{logoURL}" class="text-danger">Logo URL invalid!</small>
                                     </div>
