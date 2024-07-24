@@ -43,6 +43,16 @@ public class Order {
         this.partsAndQuantities = new HashMap<>();
     }
 
+    public Order(Map<Part, Integer> partsAndQuantities, UserEntity user, String deliveryAddress, LocalDateTime createdOn, LocalDateTime dispatchedOn, LocalDateTime deliveredOn, String notes) {
+        this.partsAndQuantities = partsAndQuantities;
+        this.user = user;
+        this.deliveryAddress = deliveryAddress;
+        this.createdOn = createdOn;
+        this.dispatchedOn = dispatchedOn;
+        this.deliveredOn = deliveredOn;
+        this.notes = notes;
+    }
+
     public Order(long id, Map<Part, Integer> partsAndQuantities, UserEntity user, String deliveryAddress, LocalDateTime createdOn, LocalDateTime dispatchedOn, LocalDateTime deliveredOn, String notes) {
         this.id = id;
         this.partsAndQuantities = partsAndQuantities;

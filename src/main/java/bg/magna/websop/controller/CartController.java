@@ -67,7 +67,7 @@ public class CartController {
 
     @DeleteMapping("/cart/remove-item/{partCode}")
     public String deletePartFromCart(@PathVariable String partCode, @AuthenticationPrincipal CurrentUserDetails userDetails) {
-        UserEntity user = userService.getUserById(userDetails.getId());
+        UserEntity user = userService.getUserByEmail(userDetails.getUsername());
         user.getCart().remove(partService.getPartByPartCode(partCode));
         userService.saveUserToDB(user);
 
