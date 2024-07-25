@@ -5,7 +5,9 @@ import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.entity.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.*;
+import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.MachineService;
+import bg.magna.websop.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,6 +52,12 @@ public class AdminPanelControllerIT {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CompanyService companyService;
+
     @Mock
     private MachineService machineService;
 
@@ -61,6 +69,10 @@ public class AdminPanelControllerIT {
         partRepository.deleteAll();
         companyRepository.deleteAll();
         brandRepository.deleteAll();
+
+        companyService.addFirstTwoCompanies();
+        userService.addAdminUser();
+        userService.addFirstUser();
     }
 
     @Test

@@ -7,6 +7,7 @@ import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.repository.EnquiryRepository;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.MachineService;
+import bg.magna.websop.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ public class EnquiryControllerIT {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private UserService userService;
+
     @MockBean
     private MachineService machineService;
 
@@ -48,6 +52,9 @@ public class EnquiryControllerIT {
     public void tearDown() {
         enquiryRepository.deleteAll();
         userRepository.deleteAll();
+
+        userService.addAdminUser();
+        userService.addFirstUser();
     }
 
     @Test
@@ -61,7 +68,7 @@ public class EnquiryControllerIT {
                         .with(user(user.getEmail()).roles("USER"))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("machine-enquiry"));
+                .andExpect(view().name("add-machine-enquiry"));
     }
 
     @Test
@@ -155,7 +162,7 @@ public class EnquiryControllerIT {
         Assertions.assertEquals(1, enquiryRepository.count());
 
         mockMvc.perform(delete("/machines/enquiries/delete/" + expected.getId())
-                        .with(user(user.getEmail()))
+                        .with(user(user.getEmail()).roles("ADMIN"))
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/machines/enquiries/all"));

@@ -23,14 +23,12 @@ import java.util.List;
 @RequestMapping("/parts")
 public class PartsController {
     private final UserService userService;
-    private final UserHelperService userHelperService;
     private final BrandService brandService;
     private final PartService partService;
     private final OrderService orderService;
 
-    public PartsController(UserService userService, UserHelperService userHelperService, BrandService brandService, PartService partService, OrderService orderService) {
+    public PartsController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
         this.userService = userService;
-        this.userHelperService = userHelperService;
         this.brandService = brandService;
         this.partService = partService;
         this.orderService = orderService;
@@ -80,7 +78,7 @@ public class PartsController {
     }
 
     @GetMapping("/{partCode}")
-    public String getPartDetails(@PathVariable("partCode") String partCode, Model model) {
+    public String viewPartDetails(@PathVariable("partCode") String partCode, Model model) {
 
         PartDataDTO part = partService.getPartDTOFromPartCode(partCode);
         model.addAttribute("part", part);

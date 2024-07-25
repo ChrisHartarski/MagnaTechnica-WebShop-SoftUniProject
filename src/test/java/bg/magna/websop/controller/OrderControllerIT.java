@@ -6,6 +6,7 @@ import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.OrderService;
+import bg.magna.websop.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,12 +47,18 @@ public class OrderControllerIT {
     @Autowired
     private BrandRepository brandRepository;
 
+    @Autowired
+    private UserService userService;
+
     @AfterEach
     public void tearDown() {
         orderRepository.deleteAll();
         userRepository.deleteAll();
         partRepository.deleteAll();
         brandRepository.deleteAll();
+
+        userService.addAdminUser();
+        userService.addFirstUser();
     }
 
 //    @Test

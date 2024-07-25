@@ -3,6 +3,8 @@ package bg.magna.websop.controller;
 import bg.magna.websop.model.entity.Company;
 import bg.magna.websop.repository.CompanyRepository;
 import bg.magna.websop.repository.UserRepository;
+import bg.magna.websop.service.CompanyService;
+import bg.magna.websop.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,10 +31,20 @@ public class CompanyControllerIT {
     @Autowired
     private CompanyRepository companyRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CompanyService companyService;
+
     @AfterEach
     public void tearDown() {
         userRepository.deleteAll();
         companyRepository.deleteAll();
+
+        companyService.addFirstTwoCompanies();
+        userService.addAdminUser();
+        userService.addFirstUser();
     }
 
     @Test
@@ -69,8 +81,7 @@ public class CompanyControllerIT {
 
     @Test
     public void testAddCompanyPost_returnsIfInputIsInvalid() throws Exception {
-        Company testCompany = createTestCompany("", "testVATNumber");
-        companyRepository.saveAndFlush(testCompany);
+        Company testCompany = createTestCompanyAndSaveToDB("", "testVATNumber");
 
         mockMvc.perform(post("/companies/add")
                         .param("name", testCompany.getName())
@@ -85,8 +96,7 @@ public class CompanyControllerIT {
 
     @Test
     public void testAddCompanyPost_returnsIfCompanyNameExists() throws Exception {
-        Company testCompany = createTestCompany("testCompany", "testVATNumber");
-        companyRepository.saveAndFlush(testCompany);
+        Company testCompany = createTestCompanyAndSaveToDB("testCompany", "testVATNumber");
 
         mockMvc.perform(post("/companies/add")
                         .param("name", testCompany.getName())
@@ -102,8 +112,7 @@ public class CompanyControllerIT {
 
     @Test
     public void testAddCompanyPost_returnsIfCompanyVATExists() throws Exception {
-        Company testCompany = createTestCompany("testCompany", "testVATNumber");
-        companyRepository.saveAndFlush(testCompany);
+        Company testCompany = createTestCompanyAndSaveToDB("testCompany", "testVATNumber");
 
         mockMvc.perform(post("/companies/add")
                         .param("name", "testCompany2")
@@ -127,14 +136,8 @@ public class CompanyControllerIT {
     }
 
     private Company createTestCompanyAndSaveToDB(String name, String vat) {
-        Company company = new Company(
-                name,
-                vat,
-                "address",
-                "0888888888",
-                "email@example.com");
+        Company company = createTestCompany(name, vat);
 
-        companyRepository.saveAndFlush(company);
-        return companyRepository.findByName(name).orElse(null);
+        return companyRepository.saveAndFlush(company);
     }
 }
