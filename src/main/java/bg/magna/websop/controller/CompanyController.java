@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/company")
+@RequestMapping("/companies")
 public class CompanyController {
     private final CompanyService companyService;
 
@@ -38,19 +38,19 @@ public class CompanyController {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("companyData", companyData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.companyData", bindingResult);
-            return "redirect:/company/add";
+            return "redirect:/companies/add";
         }
 
         if(companyService.companyExists(companyData.getName())) {
             redirectAttributes.addFlashAttribute("companyData", companyData);
             redirectAttributes.addFlashAttribute("companyExists", true);
-            return "redirect:/company/add";
+            return "redirect:/companies/add";
         }
 
         if(companyService.companyWithVATExists(companyData.getVatNumber())) {
             redirectAttributes.addFlashAttribute("companyData", companyData);
             redirectAttributes.addFlashAttribute("VATnumberExists", true);
-            return "redirect:/company/add";
+            return "redirect:/companies/add";
         }
 
         companyService.addCompany(companyData);

@@ -70,7 +70,7 @@
                                         <small th:errors="*{companyName}" class="text-danger">Company name input errors!</small>
                                         <small th:if="${companyDoesNotExist}" class="text-danger">
                                             <span th:text="#{register_company_not_exist_error_part1} + ' '">Company does not exist in database! Please </span>
-                                            <a class="link-danger" th:href="@{/company/add}" th:text="#{register_company_not_exist_error_part2}">add company</a>
+                                            <a class="link-danger" th:href="@{/companies/add}" th:text="#{register_company_not_exist_error_part2}">add company</a>
                                             <span>!</span>
                                         </small>
                                     </div>
