@@ -77,8 +77,8 @@ public class OrderController {
         return "redirect:/orders/all";
     }
 
-    @DeleteMapping("/delete/{id}")
     @Transactional
+    @DeleteMapping("/delete/{id}")
     public String deleteOrder(@PathVariable long id,
                               @AuthenticationPrincipal CurrentUserDetails userDetails,
                               RedirectAttributes redirectAttributes) {

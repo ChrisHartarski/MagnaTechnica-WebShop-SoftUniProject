@@ -5,9 +5,7 @@ import bg.magna.websop.model.dto.machine.AddMachineDTO;
 import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.BrandService;
-import bg.magna.websop.service.EnquiryService;
 import bg.magna.websop.service.MachineService;
-import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,14 +23,10 @@ import java.util.List;
 public class MachinesController {
     private final MachineService machineService;
     private final BrandService brandService;
-    private final EnquiryService enquiryService;
-    private final UserHelperService userHelperService;
 
-    public MachinesController(MachineService machineService, BrandService brandService, EnquiryService enquiryService, UserHelperService userHelperService) {
+    public MachinesController(MachineService machineService, BrandService brandService) {
         this.machineService = machineService;
         this.brandService = brandService;
-        this.enquiryService = enquiryService;
-        this.userHelperService = userHelperService;
     }
 
     @ModelAttribute("machineData")
@@ -47,7 +41,6 @@ public class MachinesController {
 
     @ModelAttribute("enquiryData")
     public AddEnquiryDTO enquiryData() {
-//        AddEnquiryDTO enquiryData = enquiryService.getAddEnquiryDTO(id);
         return new AddEnquiryDTO();
     }
 
