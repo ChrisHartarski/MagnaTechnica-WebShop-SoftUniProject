@@ -2,6 +2,7 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.part.PartDataDTO;
+import bg.magna.websop.model.dto.part.ShortPartDataDTO;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;
@@ -15,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/parts")
@@ -36,6 +39,15 @@ public class PartsController {
     @ModelAttribute("partData")
     public PartDataDTO addPartDTO() {
         return new PartDataDTO();
+    }
+
+    @GetMapping("/all")
+    public String viewWebShop(Model model) {
+
+        List<ShortPartDataDTO> parts = partService.getAllShortPartDTOs();
+        model.addAttribute("parts", parts);
+
+        return "spare_parts";
     }
 
     @GetMapping("/add")
@@ -88,7 +100,7 @@ public class PartsController {
 
         userService.saveUserToDB(user);
 
-        return "redirect:/spare-parts";
+        return "redirect:/parts/all";
     }
 
     @GetMapping("/edit/{partCode}")
@@ -117,7 +129,7 @@ public class PartsController {
 
         partService.editPart(partData);
 
-        return "redirect:/spare-parts";
+        return "redirect:/parts/all";
     }
 
     @DeleteMapping("/delete/{partCode}")
@@ -127,10 +139,10 @@ public class PartsController {
         if (orderService.partIsInExistingOrder(partService.getPartByPartCode(partCode))) {
             redirectAttributes.addFlashAttribute("partInExistingOrder", true);
             redirectAttributes.addFlashAttribute("errorPartCode", partCode);
-            return "redirect:/spare-parts";
+            return "redirect:/parts/all";
         }
 
         partService.deletePart(partCode);
-        return "redirect:/spare-parts";
+        return "redirect:/parts/all";
     }
 }
