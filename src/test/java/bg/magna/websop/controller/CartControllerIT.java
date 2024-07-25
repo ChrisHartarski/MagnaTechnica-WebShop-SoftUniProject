@@ -3,6 +3,8 @@ package bg.magna.websop.controller;
 import bg.magna.websop.model.entity.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.*;
+import bg.magna.websop.service.helper.UserHelperService;
+import bg.magna.websop.service.impl.CurrentUserDetailsService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -18,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -46,6 +51,11 @@ public class CartControllerIT {
 
     @Autowired
     private BrandRepository brandRepository;
+
+    @MockBean
+    private CurrentUserDetailsService currentUserDetailsService;
+    @Autowired
+    private UserHelperService userHelperService;
 
     @AfterEach
     public void tearDown() {
@@ -104,11 +114,14 @@ public class CartControllerIT {
         Part part = createTestPart(brand, "partCode");
         Part part2 = createTestPart(brand, "partCode2");
 
+        UserEntity user = userRepository.findByEmail("user01@example.com").orElse(null);
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
         cart.put(part2, 2);
-        UserEntity user = createTestUser(company, "user1@example.com", cart);
+        user.setCart(cart);
+        userRepository.saveAndFlush(user);
 
+//        when(currentUserDetailsService.loadUserByUsername(user.getEmail())).thenReturn()
 
         mockMvc.perform(delete("/cart/remove-item/" + part.getPartCode())
                         .with(user(user.getEmail()).roles("USER"))

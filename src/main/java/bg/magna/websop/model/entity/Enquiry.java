@@ -30,6 +30,14 @@ public class Enquiry {
     public Enquiry() {
     }
 
+    public Enquiry(String machineId, UserEntity user, String title, String message, LocalDateTime createdOn) {
+        this.machineId = machineId;
+        this.user = user;
+        this.title = title;
+        this.message = message;
+        this.createdOn = createdOn;
+    }
+
     public Enquiry(long id, String machineId, UserEntity user, String title, String message, LocalDateTime createdOn) {
         this.id = id;
         this.machineId = machineId;

@@ -31,7 +31,7 @@ public class EnquiryController {
         AddEnquiryDTO enquiryData = enquiryService.getAddEnquiryDTO(id);
 
         model.addAttribute("enquiryData", enquiryData);
-        return "machine-enquiry";
+        return "add-machine-enquiry";
     }
 
     @PostMapping("/{id}")
