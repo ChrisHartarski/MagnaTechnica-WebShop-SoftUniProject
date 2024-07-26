@@ -118,39 +118,37 @@ public class CartControllerIT {
         Assertions.assertEquals(0, user.getCartSize());
     }
 
-//    @Test
-//    @Transactional
-//    public void testDeleteItemFromCart() throws Exception {
-////        @AuthenticationPrincipal
-//
-//        Brand brand = createTestBrand();
-//        Company company = createTestCompany();
-//
-//        Part part = createTestPart(brand, "partCode");
-//        Part part2 = createTestPart(brand, "partCode2");
-//
-//        UserEntity user = userRepository.findByEmail("user01@example.com").orElse(null);
-//        Map<Part, Integer> cart = new HashMap<>();
-//        cart.put(part, 5);
-//        cart.put(part2, 2);
-//        user.setCart(cart);
-//        userRepository.saveAndFlush(user);
-//
-////        when(currentUserDetailsService.loadUserByUsername(user.getEmail())).thenReturn()
-//
-//        mockMvc.perform(delete("/cart/remove-item/" + part.getPartCode())
-//                        .with(user(user.getEmail()).roles("USER"))
-//                        .with(csrf()))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/cart"));
-//
-//        UserEntity actual = userRepository.findByEmail("user1@example.com").orElse(null);
-//
-//        Assertions.assertNotNull(actual);
-//        Assertions.assertEquals(1, actual.getCartSize());
-//        Assertions.assertTrue(actual.getCart().containsKey(part2));
-//        Assertions.assertEquals(2, actual.getCart().get(part2));
-//    }
+    @Test
+    @Transactional
+    public void testDeleteItemFromCart() throws Exception {
+//        @AuthenticationPrincipal
+
+        Brand brand = createTestBrand();
+        Company company = createTestCompany();
+
+        Part part = createTestPart(brand, "partCode");
+        Part part2 = createTestPart(brand, "partCode2");
+
+        UserEntity user = userRepository.findByEmail("user01@example.com").orElse(null);
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        cart.put(part2, 2);
+        user.setCart(cart);
+        userRepository.saveAndFlush(user);
+
+        mockMvc.perform(delete("/cart/remove-item/" + part.getPartCode())
+                        .with(user(user.getEmail()).roles("USER"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/cart"));
+
+        UserEntity actual = userRepository.findByEmail("user01@example.com").orElse(null);
+
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(1, actual.getCartSize());
+        Assertions.assertTrue(actual.getCart().containsKey(part2));
+        Assertions.assertEquals(2, actual.getCart().get(part2));
+    }
 
     private Brand createTestBrand() {
         Brand brand = new Brand("brand1", "https://example.com/exampleLogo.png");
@@ -217,18 +215,5 @@ public class CartControllerIT {
                 null,
                 notes);
     }
-
-//    private CurrentUserDetails getCurrentUserDetails(UserEntity user) {
-//        return new CurrentUserDetails(
-//                user.getEmail(),
-//                user.getPassword(),
-//                List.of(new SimpleGrantedAuthority("ROLE_" + user.getUserRole())),
-//                user.getId(),
-//                user.getFirstName(),
-//                user.getLastName(),
-//                "company1",
-//                5
-//        );
-//    }
 
 }

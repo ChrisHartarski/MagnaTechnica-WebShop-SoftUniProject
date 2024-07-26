@@ -9,6 +9,7 @@ import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +67,7 @@ public class CartController {
     }
 
     @DeleteMapping("/cart/remove-item/{partCode}")
-    public String deletePartFromCart(@PathVariable String partCode, @AuthenticationPrincipal CurrentUserDetails userDetails) {
+    public String deletePartFromCart(@PathVariable String partCode, @AuthenticationPrincipal UserDetails userDetails) {
         UserEntity user = userService.getUserByEmail(userDetails.getUsername());
         user.getCart().remove(partService.getPartByPartCode(partCode));
         userService.saveUserToDB(user);
