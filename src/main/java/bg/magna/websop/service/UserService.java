@@ -29,13 +29,13 @@ public interface UserService {
 
     UserEntity getUserByEmail(String email);
 
-    UserDTO getCurrentUserData(String id);
+    UserDTO getCurrentUserData(String email);
 
-    void editUserData(EditUserDTO userData, String userId);
+    void editUserData(EditUserDTO userData, String userEmail);
 
-    void editUserEmail(UserEmailDTO userData, String userId);
+    void editUserEmail(UserEmailDTO userData, String userEmail);
 
-    void editUserPassword(UserPasswordDTO userData, String userId);
+    void editUserPassword(UserPasswordDTO userData, String userEmail);
 
     void emptyUserCart(UserEntity user);
 }

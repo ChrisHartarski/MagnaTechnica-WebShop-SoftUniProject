@@ -17,6 +17,7 @@ public class EditUserDTO {
     @Size(min = 2, max = 40, message = "{companyName.length}")
     private String companyName;
 
+    @NotEmpty(message = "{phone.notEmpty}")
     @Pattern(regexp = "[\\+]?\\d{6,15}", message = "{phone.pattern}")
     private String phone;
 

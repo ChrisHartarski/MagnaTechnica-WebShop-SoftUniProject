@@ -7,6 +7,7 @@ import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.CompanyService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
+//import bg.magna.websop.service.exception.UserNotFoundException;
 import bg.magna.websop.service.exception.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -95,29 +96,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getCurrentUserData(String id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No such user exists!"));
+    public UserDTO getCurrentUserData(String email) {
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("No such user exists!"));
         return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
-    public void editUserData(EditUserDTO userData, String userId) {
-        UserEntity user = getUserById(userId);
+    public void editUserData(EditUserDTO userData, String userEmail) {
+        UserEntity user = getUserByEmail(userEmail);
         modelMapper.map(userData, user);
         user.setCompany(companyService.getCompanyByName(userData.getCompanyName()));
         saveUserToDB(user);
     }
 
     @Override
-    public void editUserEmail(UserEmailDTO userData, String userId) {
-        UserEntity user = getUserById(userId);
+    public void editUserEmail(UserEmailDTO userData, String userEmail) {
+        UserEntity user = getUserByEmail(userEmail);
         modelMapper.map(userData, user);
         saveUserToDB(user);
     }
 
     @Override
-    public void editUserPassword(UserPasswordDTO userData, String userId) {
-        UserEntity user = getUserById(userId);
+    public void editUserPassword(UserPasswordDTO userData, String userEmail) {
+        UserEntity user = getUserByEmail(userEmail);
         user.setPassword(userData.getPassword());
         encodePassAndSaveUserToDB(user);
     }
@@ -131,6 +132,6 @@ public class UserServiceImpl implements UserService {
     private UserEntity getUserByEmailAndPassword(ValidateUserDTO loginData) {
         return userRepository.findByEmail(loginData.getEmail())
                 .filter(u -> passwordEncoder.matches(loginData.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new UserNotFoundException("Invalid user"));
+                .orElse(null);
     }
 }

@@ -8,6 +8,7 @@ import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +48,6 @@ public class UserController {
     public String registerUser(@Valid UserDTO userData,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
-
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
@@ -91,21 +91,19 @@ public class UserController {
     }
 
     @GetMapping("/edit")
-    public String viewEditUser(@AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+    public String viewEditUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
 
-        model.addAttribute("currentUserDetails", userDetails);
-        UserDTO userData = userService.getCurrentUserData(userDetails.getId());
+        UserDTO userData = userService.getCurrentUserData(userDetails.getUsername());
         model.addAttribute("userData", userData);
 
         return "edit-user";
     }
 
     @PatchMapping("/edit")
-    public String editUser(@AuthenticationPrincipal CurrentUserDetails userDetails,
+    public String editUser(@AuthenticationPrincipal UserDetails userDetails,
                            @Valid EditUserDTO userData,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
-
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userData", userData);
@@ -119,23 +117,23 @@ public class UserController {
             return "redirect:/users/edit";
         }
 
-        userService.editUserData(userData, userDetails.getId());
-        userHelperService.updateAuthentication(userDetails.getId());
+        String userId = userService.getUserByEmail(userDetails.getUsername()).getId();
+        userService.editUserData(userData, userDetails.getUsername());
+        userHelperService.updateAuthentication(userId);
         return "redirect:/";
     }
 
     @GetMapping("/edit/email")
-    public String viewEditUserEmail(@AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+    public String viewEditUserEmail(@AuthenticationPrincipal UserDetails userDetails, Model model) {
 
-        model.addAttribute("currentUserDetails", userDetails);
-        UserDTO userData = userService.getCurrentUserData(userDetails.getId());
+        UserDTO userData = userService.getCurrentUserData(userDetails.getUsername());
         model.addAttribute("userData", userData);
 
         return "edit-user-email";
     }
 
     @PatchMapping("/edit/email")
-    public String editUserEmail(@AuthenticationPrincipal CurrentUserDetails userDetails,
+    public String editUserEmail(@AuthenticationPrincipal UserDetails userDetails,
                                 @Valid UserEmailDTO userData,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
@@ -152,16 +150,16 @@ public class UserController {
             return "redirect:/users/edit/email";
         }
 
-        userService.editUserEmail(userData, userDetails.getId());
-        userHelperService.updateAuthentication(userDetails.getId());
+        String userId = userService.getUserByEmail(userDetails.getUsername()).getId();
+        userService.editUserEmail(userData, userDetails.getUsername());
+        userHelperService.updateAuthentication(userId);
         return "redirect:/";
     }
 
     @GetMapping("/edit/password")
-    public String viewEditUserPassoword(@AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
+    public String viewEditUserPassoword(@AuthenticationPrincipal UserDetails userDetails, Model model) {
 
-        model.addAttribute("currentUserDetails", userDetails);
-        UserEntity user = userService.getUserById(userDetails.getId());
+        UserEntity user = userService.getUserByEmail(userDetails.getUsername());
         UserPasswordDTO userPasswordDTO = new UserPasswordDTO(user.getEmail());
         model.addAttribute("userPasswordData", userPasswordDTO);
 
@@ -170,7 +168,7 @@ public class UserController {
 
     @PatchMapping("/edit/password")
     public String editUserPassword(@Valid UserPasswordDTO userPasswordData,
-                                @AuthenticationPrincipal CurrentUserDetails userDetails,
+                                @AuthenticationPrincipal UserDetails userDetails,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
@@ -179,7 +177,7 @@ public class UserController {
             return "redirect:/users/edit/password";
         }
 
-        UserEntity user = userService.getUserById(userDetails.getId());
+        UserEntity user = userService.getUserByEmail(userDetails.getUsername());
 
         if(!userService.isValidUser(new ValidateUserDTO(user.getEmail(), userPasswordData.getCurrentPassword()))) {
             redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
@@ -191,15 +189,9 @@ public class UserController {
             return "redirect:/users/edit/password";
         }
 
-        userService.editUserPassword(userPasswordData, userDetails.getId());
-        userHelperService.updateAuthentication(userDetails.getId());
-        return "redirect:/";
-    }
+        userService.editUserPassword(userPasswordData, userDetails.getUsername());
+        userHelperService.updateAuthentication(user.getId());
 
-    @GetMapping("/{id}")
-    public String viewUser(@PathVariable String id, Model model) {
-        UserEntity user = userService.getUserById(id);
-        model.addAttribute("userDetails", user);
-        return "edit-user";
+        return "redirect:/";
     }
 }

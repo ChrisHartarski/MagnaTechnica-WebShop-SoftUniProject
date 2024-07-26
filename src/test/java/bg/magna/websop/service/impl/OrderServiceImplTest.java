@@ -262,7 +262,7 @@ public class OrderServiceImplTest {
 
         when(orderRepository.findAllByUserEmail(TEST_USER.getEmail())).thenReturn(List.of(TEST_ORDER_AWAITING, TEST_ORDER_DISPATCHED, TEST_ORDER_DELIVERED));
 
-        List<ShortOrderDTO> actual = toTest.getAllShortOrderDTOsByUser(TEST_USER.getId());
+        List<ShortOrderDTO> actual = toTest.getAllShortOrderDTOsByUser(TEST_USER.getEmail());
 
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(expected.size(), actual.size());

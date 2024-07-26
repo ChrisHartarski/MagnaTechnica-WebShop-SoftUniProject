@@ -167,21 +167,21 @@ public class UserServiceImplTest {
     }
 
     @Test
-    void testValidateUser_throwsExceptionWhenPasswordIsIncorrect() {
+    void testValidateUser_FalseWhenPasswordIsIncorrect() {
         ValidateUserDTO testValidateUserDTO = new ValidateUserDTO(TEST_USER_1.getEmail(), TEST_USER_1.getPassword());
 
         when(userRepository.findByEmail(testValidateUserDTO.getEmail())).thenReturn(Optional.of(TEST_USER_1));
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.isValidUser(testValidateUserDTO));
+        Assertions.assertFalse(toTest.isValidUser(testValidateUserDTO));
     }
 
     @Test
-    void testValidateUser_throwsExceptionWhenUserIsNotFound() {
+    void testValidateUser_returnsFalseWhenUserIsNotFound() {
         ValidateUserDTO testValidateUserDTO = new ValidateUserDTO(TEST_USER_1.getEmail(), TEST_USER_1.getPassword());
 
         when(userRepository.findByEmail(testValidateUserDTO.getEmail())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.isValidUser(testValidateUserDTO));
+        Assertions.assertFalse(toTest.isValidUser(testValidateUserDTO));
     }
 
     @Test
@@ -242,9 +242,9 @@ public class UserServiceImplTest {
     @Test
     void testGetCurrentUserData() {
         UserDTO expected = getUserDTOFromUserEntity(TEST_USER_1);
-        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
 
-        UserDTO actual = toTest.getCurrentUserData(TEST_USER_1.getId());
+        UserDTO actual = toTest.getCurrentUserData(TEST_USER_1.getEmail());
 
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(expected.getEmail(), actual.getEmail());
@@ -257,19 +257,20 @@ public class UserServiceImplTest {
 
     @Test
     void testGetCurrentUserData_throwsExceptionWhenUserIsNotFound() {
-        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getCurrentUserData(TEST_USER_1.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () -> toTest.getCurrentUserData(TEST_USER_1.getEmail()));
     }
 
     @Test
     void testEditUserData() {
         EditUserDTO testEditUserDTO = new EditUserDTO("newFirstName", "newLastName", "someCompany", "newPhone");
-        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
+
         Company expectedCompany = new Company("someCompany", "BG123456789", "address", "phone", "email");
         when(companyService.getCompanyByName(testEditUserDTO.getCompanyName())).thenReturn(expectedCompany);
 
-        toTest.editUserData(testEditUserDTO, TEST_USER_1.getId());
+        toTest.editUserData(testEditUserDTO, TEST_USER_1.getEmail());
         verify(userRepository).saveAndFlush(userCaptor.capture());
         UserEntity actual = userCaptor.getValue();
 
@@ -283,9 +284,9 @@ public class UserServiceImplTest {
     @Test
     void testEditUserEmail() {
         UserEmailDTO testUserEmailDTO = new UserEmailDTO("newMail@example.com");
-        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
 
-        toTest.editUserEmail(testUserEmailDTO, TEST_USER_1.getId());
+        toTest.editUserEmail(testUserEmailDTO, TEST_USER_1.getEmail());
         verify(userRepository).saveAndFlush(userCaptor.capture());
         UserEntity actual = userCaptor.getValue();
 
@@ -296,9 +297,9 @@ public class UserServiceImplTest {
     @Test
     void testEditUserPassword() {
         UserPasswordDTO testUserPasswordDTO = new UserPasswordDTO(TEST_USER_1.getEmail(), TEST_USER_1.getPassword(), "newPassword", "newPassword");
-        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
 
-        toTest.editUserPassword(testUserPasswordDTO, TEST_USER_1.getId());
+        toTest.editUserPassword(testUserPasswordDTO, TEST_USER_1.getEmail());
         verify(userRepository).saveAndFlush(userCaptor.capture());
         UserEntity actual = userCaptor.getValue();
 
