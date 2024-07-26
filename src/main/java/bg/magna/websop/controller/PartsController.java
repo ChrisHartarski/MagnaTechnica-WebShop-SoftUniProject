@@ -11,6 +11,7 @@ import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -87,8 +88,8 @@ public class PartsController {
     }
 
     @PostMapping("/add-to-cart/{partCode}")
-    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity, @AuthenticationPrincipal CurrentUserDetails userDetails) {
-        UserEntity user = userService.getUserById(userDetails.getId());
+    public String addPartToCart(@PathVariable String partCode, @RequestParam Integer quantity, @AuthenticationPrincipal UserDetails userDetails) {
+        UserEntity user = userService.getUserByEmail(userDetails.getUsername());
 
         if (user.getCart().containsKey(partService.getPartByPartCode(partCode))) {
             user.getCart().put(partService.getPartByPartCode(partCode), user.getCart().get(partService.getPartByPartCode(partCode)) + quantity);

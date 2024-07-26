@@ -8,6 +8,7 @@ import bg.magna.websop.repository.BrandRepository;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ public class PartsControllerIT {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @AfterEach
     public void tearDown() {
@@ -167,29 +170,28 @@ public class PartsControllerIT {
                 .andExpect(model().attributeExists("part"));
     }
 
-//    @Transactional
-//    @Test
-//    public void testAddPartToCart() throws Exception {
-////        @AuthenticationPrincipal
-//
-//        Brand testBrand = createTestBrandAndSaveToDB();
-//        Part part1 = createTestPartAndSaveToDB(testBrand, "partCode1");
-//        UserEntity user = getUserRoleUser();
-//
-//        Assertions.assertEquals(0, user.getCartSize());
-//
-//        mockMvc.perform(post("/parts/add-to-cart/" + part1.getPartCode())
-//                        .with(user(user.getEmail()).roles("USER"))
-//                        .with(csrf())
-//                .param("quantity", "5"))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/parts/all"));
-//
-//        UserEntity actualUser = userRepository.findByEmail(user.getEmail()).orElse(null);
-//        Assertions.assertNotNull(actualUser);
-//        Assertions.assertEquals(1, actualUser.getCartSize());
-//        Assertions.assertEquals(5, actualUser.getCart().get(part1));
-//    }
+    @Test
+    @Transactional
+    public void testAddPartToCart() throws Exception {
+
+        Brand testBrand = createTestBrandAndSaveToDB();
+        Part part1 = createTestPartAndSaveToDB(testBrand, "partCode1");
+        UserEntity user = getUserRoleUser();
+
+        Assertions.assertEquals(0, user.getCartSize());
+
+        mockMvc.perform(post("/parts/add-to-cart/" + part1.getPartCode())
+                        .with(user(user.getEmail()).roles("USER"))
+                        .with(csrf())
+                .param("quantity", "5"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/parts/all"));
+
+        UserEntity actualUser = userRepository.findByEmail(user.getEmail()).orElse(null);
+        Assertions.assertNotNull(actualUser);
+        Assertions.assertEquals(1, actualUser.getCartSize());
+        Assertions.assertEquals(5, actualUser.getCart().get(part1));
+    }
 
     @Test
     public void testViewEditPart() throws Exception {
@@ -289,5 +291,9 @@ public class PartsControllerIT {
         Part part = createTestPart(brand, partCode);
         return partRepository.saveAndFlush(part);
 
+    }
+
+    private UserEntity getUserRoleUser() {
+        return userRepository.findByEmail("user01@example.com").orElse(null);
     }
 }
