@@ -123,7 +123,6 @@ public class EnquiryControllerIT {
 
         Enquiry testEnquiry = createTestEnquiryAndSaveToDB(user);
         FullEnquiryDTO fullEnquiryDTO = modelMapper.map(testEnquiry, FullEnquiryDTO.class);
-        List<FullEnquiryDTO> expected = List.of(fullEnquiryDTO);
 
         mockMvc.perform(get("/machines/enquiries/all")
                         .with(user(user.getEmail()).roles("ADMIN"))

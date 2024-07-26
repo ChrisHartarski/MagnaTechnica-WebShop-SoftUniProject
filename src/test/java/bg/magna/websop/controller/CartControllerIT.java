@@ -56,11 +56,6 @@ public class CartControllerIT {
     @Autowired
     private CompanyService companyService;
 
-    @MockBean
-    private CurrentUserDetailsService currentUserDetailsService;
-    @Autowired
-    private UserHelperService userHelperService;
-
     @AfterEach
     public void tearDown() {
         orderRepository.deleteAll();
@@ -134,8 +129,6 @@ public class CartControllerIT {
         cart.put(part, 5);
         UserEntity user = createTestUser(company, "user1@example.com", cart);
 
-        Order expected = createAwaitingOrder(user, "address", "some notes");
-
         mockMvc.perform(post("/cart/add-order")
                         .with(user(user.getEmail()))
                         .with(csrf())
@@ -151,16 +144,11 @@ public class CartControllerIT {
     @Test
     @Transactional
     public void testAddOrder_returnsIfCartIsEmpty() throws Exception {
-        Brand brand = createTestBrand();
 
         Company company = createTestCompany();
 
-        Part part = createTestPart(brand, "partCode");
-
         Map<Part, Integer> cart = new HashMap<>();
         UserEntity user = createTestUser(company, "user1@example.com", cart);
-
-        Order expected = createAwaitingOrder(user, "address", "some notes");
 
         mockMvc.perform(post("/cart/add-order")
                         .with(user(user.getEmail()))
@@ -182,12 +170,12 @@ public class CartControllerIT {
 //        @AuthenticationPrincipal
 
         Brand brand = createTestBrand();
-        Company company = createTestCompany();
 
         Part part = createTestPart(brand, "partCode");
         Part part2 = createTestPart(brand, "partCode2");
 
         UserEntity user = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(user);
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
         cart.put(part2, 2);

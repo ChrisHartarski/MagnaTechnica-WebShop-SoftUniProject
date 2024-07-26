@@ -487,7 +487,7 @@ public class UserControllerIT {
                 UserRole.USER,
                 new HashMap<>(),
                 new ArrayList<>(),
-                companyRepository.findByName("Company 1").get());
+                companyRepository.findByName("Company 1").orElse(null));
     }
 
     private UserEntity createTestUserAndSaveToDB(String email){

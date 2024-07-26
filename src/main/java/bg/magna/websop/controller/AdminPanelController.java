@@ -2,7 +2,10 @@ package bg.magna.websop.controller;
 
 import bg.magna.websop.model.dto.brand.AddBrandDTO;
 import bg.magna.websop.model.enums.UserRole;
-import bg.magna.websop.service.*;
+import bg.magna.websop.service.BrandService;
+import bg.magna.websop.service.OrderService;
+import bg.magna.websop.service.PartService;
+import bg.magna.websop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +23,12 @@ public class AdminPanelController {
     private final BrandService brandService;
     private final PartService partService;
     private final OrderService orderService;
-    private final MachineService machineService;
 
-    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService, MachineService machineService) {
+    public AdminPanelController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
         this.orderService = orderService;
-        this.machineService = machineService;
     }
 
     @ModelAttribute("brandData")

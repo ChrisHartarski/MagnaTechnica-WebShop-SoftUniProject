@@ -94,6 +94,7 @@ public class OrderControllerIT {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
@@ -113,7 +114,9 @@ public class OrderControllerIT {
 
         Assertions.assertEquals(0, orderRepository.findAllByDispatchedOnNull().size());
         Assertions.assertEquals(1, orderRepository.findAllByDispatchedOnNotNullAndDeliveredOnNull().size());
-        Assertions.assertNotNull(orderRepository.findById(order.getId()).orElse(null).getDispatchedOn());
+        Order actual = orderRepository.findById(order.getId()).orElse(null);
+        Assertions.assertNotNull(actual);
+        Assertions.assertNotNull(actual.getDispatchedOn());
     }
 
     @Test
@@ -121,6 +124,7 @@ public class OrderControllerIT {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
@@ -146,6 +150,7 @@ public class OrderControllerIT {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
@@ -166,7 +171,9 @@ public class OrderControllerIT {
 
         Assertions.assertEquals(0, orderRepository.findAllByDispatchedOnNotNullAndDeliveredOnNull().size());
         Assertions.assertEquals(1, orderRepository.findAllByDeliveredOnNotNull().size());
-        Assertions.assertNotNull(orderRepository.findById(order.getId()).orElse(null).getDeliveredOn());
+        Order actual = orderRepository.findById(order.getId()).orElse(null);
+        Assertions.assertNotNull(actual);
+        Assertions.assertNotNull(actual.getDeliveredOn());
     }
 
     @Test
@@ -174,6 +181,7 @@ public class OrderControllerIT {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
@@ -201,6 +209,7 @@ public class OrderControllerIT {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
@@ -280,6 +289,7 @@ public class OrderControllerIT {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);
@@ -301,6 +311,8 @@ public class OrderControllerIT {
         Part part = createTestPart(brand, "partCode");
         UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
         UserEntity userRoleAdmin = userRepository.findByEmail("admin@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
+        Assertions.assertNotNull(userRoleAdmin);
 
         Map<Part, Integer> cart = new HashMap<>();
         cart.put(part, 5);

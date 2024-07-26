@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deliverOrder(long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));;
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setDeliveredOn(LocalDateTime.now());
         orderRepository.saveAndFlush(order);
     }
@@ -132,8 +132,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void fillOrderWithCartItems(Order order, Map<Part, Integer> cart) {
-        cart.forEach((key, value) -> {
-            order.getPartsAndQuantities().put(key, value);
-        });
+        cart.forEach(order.getPartsAndQuantities()::put);
     }
 }

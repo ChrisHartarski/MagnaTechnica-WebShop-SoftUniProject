@@ -77,20 +77,20 @@ public class AdminPanelControllerIT {
 
     @Test
     public void testViewAdminPanel() throws Exception {
-        brandRepository.saveAndFlush(TEST_BRAND);
+        Brand brand = brandRepository.saveAndFlush(TEST_BRAND);
 
         Company testCompany = new Company("TestCompany", "TestVAT", "TestAddress", "TestPhone", "testCompany@example.com");
-        companyRepository.saveAndFlush(testCompany);
+        testCompany = companyRepository.saveAndFlush(testCompany);
 
-        Part testPart = new Part("UUID1", "partCode", 5, "descriptionEn", "descriptionBg", "imageURL", brandRepository.findByName(TEST_BRAND.getName()).get(), new BigDecimal("20"), "size", 0, "moreInfo", "suitableFor");
+        Part testPart = new Part("UUID1", "partCode", 5, "descriptionEn", "descriptionBg", "imageURL", brand, new BigDecimal("20"), "size", 0, "moreInfo", "suitableFor");
         partRepository.saveAndFlush(testPart);
 
-        UserEntity testUser = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, new HashMap<>(), new ArrayList<>(), companyRepository.findByName(testCompany.getName()).get());
-        userRepository.saveAndFlush(testUser);
+        UserEntity testUser = new UserEntity("someUUID", "testUser@example.com", "password", "Test", "User", "0888888888", UserRole.USER, new HashMap<>(), new ArrayList<>(), testCompany);
+        testUser = userRepository.saveAndFlush(testUser);
 
-        Order testOrderAwaiting = new Order(1, Map.of(partRepository.getByPartCode(testPart.getPartCode()), 5), userRepository.findByEmail(testUser.getEmail()).get(), "address", LocalDateTime.of(2024, 4, 12, 12, 35), null, null, "some notes");
-        Order testOrderDispatched = new Order(2, Map.of(partRepository.getByPartCode(testPart.getPartCode()), 5), userRepository.findByEmail(testUser.getEmail()).get(), "address", LocalDateTime.of(2024, 3, 10, 10, 30), LocalDateTime.of(2024, 3, 12, 10, 30), null, "some notes");
-        Order testOrderDelivered = new Order(3, Map.of(partRepository.getByPartCode(testPart.getPartCode()), 5), userRepository.findByEmail(testUser.getEmail()).get(), "address", LocalDateTime.of(2024, 2, 5, 11, 20), LocalDateTime.of(2024, 2, 6, 10, 30), LocalDateTime.of(2024, 2, 7, 9, 45), "some notes");
+        Order testOrderAwaiting = new Order(1, Map.of(partRepository.getByPartCode(testPart.getPartCode()), 5), testUser, "address", LocalDateTime.of(2024, 4, 12, 12, 35), null, null, "some notes");
+        Order testOrderDispatched = new Order(2, Map.of(partRepository.getByPartCode(testPart.getPartCode()), 5), testUser, "address", LocalDateTime.of(2024, 3, 10, 10, 30), LocalDateTime.of(2024, 3, 12, 10, 30), null, "some notes");
+        Order testOrderDelivered = new Order(3, Map.of(partRepository.getByPartCode(testPart.getPartCode()), 5), testUser, "address", LocalDateTime.of(2024, 2, 5, 11, 20), LocalDateTime.of(2024, 2, 6, 10, 30), LocalDateTime.of(2024, 2, 7, 9, 45), "some notes");
         orderRepository.saveAllAndFlush(List.of(testOrderAwaiting, testOrderDispatched, testOrderDelivered));
 
         mockMvc.perform(get("/admin-panel")
