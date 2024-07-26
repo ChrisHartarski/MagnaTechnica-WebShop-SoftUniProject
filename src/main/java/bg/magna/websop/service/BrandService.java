@@ -3,7 +3,6 @@ package bg.magna.websop.service;
 import bg.magna.websop.model.entity.Brand;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BrandService {
     long getCount();

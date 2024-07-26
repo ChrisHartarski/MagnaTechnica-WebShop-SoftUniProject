@@ -1,6 +1,5 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.order.FullOrderDTO;
 import bg.magna.websop.model.dto.order.OrderDataDTO;
 import bg.magna.websop.model.dto.order.ShortOrderDTO;
@@ -9,7 +8,6 @@ import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

@@ -11,7 +11,6 @@ import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import bg.magna.websop.service.helper.UserHelperService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

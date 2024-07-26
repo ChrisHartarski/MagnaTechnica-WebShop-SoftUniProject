@@ -10,7 +10,6 @@ import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.repository.UserRepository;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.service.impl.PartServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import wiremock.org.checkerframework.checker.units.qual.A;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

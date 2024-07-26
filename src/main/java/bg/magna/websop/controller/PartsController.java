@@ -1,6 +1,5 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.CurrentUserDetails;
 import bg.magna.websop.model.dto.part.PartDataDTO;
 import bg.magna.websop.model.dto.part.ShortPartDataDTO;
 import bg.magna.websop.model.entity.UserEntity;
@@ -8,7 +7,6 @@ import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
-import bg.magna.websop.service.helper.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
