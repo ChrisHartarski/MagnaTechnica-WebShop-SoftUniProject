@@ -260,7 +260,7 @@ public class OrderServiceImplTest {
         ShortOrderDTO expectedDelivered = getShortOrderDTOFromOrder(TEST_ORDER_DELIVERED);
         List<ShortOrderDTO> expected = List.of(expectedAwaiting, expectedDispatched, expectedDelivered);
 
-        when(orderRepository.findAllByUserId(TEST_USER.getId())).thenReturn(List.of(TEST_ORDER_AWAITING, TEST_ORDER_DISPATCHED, TEST_ORDER_DELIVERED));
+        when(orderRepository.findAllByUserEmail(TEST_USER.getEmail())).thenReturn(List.of(TEST_ORDER_AWAITING, TEST_ORDER_DISPATCHED, TEST_ORDER_DELIVERED));
 
         List<ShortOrderDTO> actual = toTest.getAllShortOrderDTOsByUser(TEST_USER.getId());
 

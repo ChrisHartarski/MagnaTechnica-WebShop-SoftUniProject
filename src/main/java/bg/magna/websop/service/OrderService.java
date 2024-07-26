@@ -6,6 +6,7 @@ import bg.magna.websop.model.dto.order.OrderDataDTO;
 import bg.magna.websop.model.dto.order.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface OrderService {
 
     boolean deleteOrder(long id);
 
-    boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails);
+    boolean currentUserOwnsOrder(long orderId, UserDetails userDetails);
 
     void addOrder(OrderDataDTO orderData, String userId);
 
@@ -34,5 +35,5 @@ public interface OrderService {
 
     List<ShortOrderDTO> getAllShortOrderDTOs();
 
-    List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId);
+    List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userEmail);
 }

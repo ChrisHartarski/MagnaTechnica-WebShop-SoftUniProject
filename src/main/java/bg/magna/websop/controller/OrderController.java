@@ -7,7 +7,10 @@ import bg.magna.websop.model.dto.order.ShortOrderDTO;
 import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -34,14 +37,14 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public String viewAllOrders(Model model, @AuthenticationPrincipal CurrentUserDetails userDetails) {
+    public String viewAllOrders(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
         List<ShortOrderDTO> orders = new ArrayList<>();
 
-        if(userDetails.isAdmin()) {
+        if(currentUserIsAdmin(userDetails)) {
             orders = orderService.getAllShortOrderDTOs();
         } else {
-            orders = orderService.getAllShortOrderDTOsByUser(userDetails.getId());
+            orders = orderService.getAllShortOrderDTOsByUser(userDetails.getUsername());
         }
 
         List<ShortOrderDTO> awaitingOrders = orders.stream()
@@ -80,10 +83,10 @@ public class OrderController {
     @Transactional
     @DeleteMapping("/delete/{id}")
     public String deleteOrder(@PathVariable long id,
-                              @AuthenticationPrincipal CurrentUserDetails userDetails,
+                              @AuthenticationPrincipal UserDetails userDetails,
                               RedirectAttributes redirectAttributes) {
 
-        if (!userDetails.isAdmin() && !orderService.currentUserOwnsOrder(id, userDetails)) {
+        if (!currentUserIsAdmin(userDetails) && !orderService.currentUserOwnsOrder(id, userDetails)) {
             return "redirect:/";
         }
 
@@ -100,8 +103,8 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public String viewOrderDetails(@PathVariable long id, @AuthenticationPrincipal CurrentUserDetails userDetails, Model model) {
-        if (!userDetails.isAdmin() && !orderService.currentUserOwnsOrder(id, userDetails)){
+    public String viewOrderDetails(@PathVariable long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (!currentUserIsAdmin(userDetails) && !orderService.currentUserOwnsOrder(id, userDetails)){
             return "redirect:/";
         }
 
@@ -109,5 +112,13 @@ public class OrderController {
         model.addAttribute("order", order);
 
         return "order-details";
+    }
+
+    private boolean currentUserIsAdmin(UserDetails userDetails) {
+        List<String> authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+
+        return authorities.contains("ROLE_ADMIN");
     }
 }

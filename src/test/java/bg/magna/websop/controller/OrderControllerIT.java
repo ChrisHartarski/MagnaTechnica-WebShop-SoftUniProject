@@ -1,6 +1,9 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.entity.*;
+import bg.magna.websop.model.entity.Brand;
+import bg.magna.websop.model.entity.Order;
+import bg.magna.websop.model.entity.Part;
+import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.repository.BrandRepository;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.repository.PartRepository;
@@ -13,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -61,19 +63,18 @@ public class OrderControllerIT {
         userService.addFirstUser();
     }
 
-//    @Test
-//    public void testViewAllOrders() throws Exception {
-////        @AuthenticationPrincipal
-//
-//        mockMvc.perform(get("/orders/all")
-//                        .with(user("admin@example.com").roles("ADMIN")))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("all-orders"))
-//                .andExpect(model().attributeExists("userDetails"))
-//                .andExpect(model().attributeExists("awaitingOrders"))
-//                .andExpect(model().attributeExists("dispatchedOrders"))
-//                .andExpect(model().attributeExists("deliveredOrders"));
-//    }
+    @Test
+    public void testViewAllOrders() throws Exception {
+
+        mockMvc.perform(get("/orders/all")
+                        .with(user("admin@example.com").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("all-orders"))
+                .andExpect(model().attributeExists("userDetails"))
+                .andExpect(model().attributeExists("awaitingOrders"))
+                .andExpect(model().attributeExists("dispatchedOrders"))
+                .andExpect(model().attributeExists("deliveredOrders"));
+    }
 
     @Test
     public void testDispatchOrder() throws Exception {
@@ -181,53 +182,50 @@ public class OrderControllerIT {
         Assertions.assertEquals(0, orderRepository.findAllByDeliveredOnNotNull().size());
     }
 
-//    @Test
-//    public void testDeleteOrder() throws Exception {
-////        @AuthenticationPrincipal
-//
-//        Brand brand = createTestBrand();
-//        Part part = createTestPart(brand, "partCode");
-//        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
-//
-//        Map<Part, Integer> cart = new HashMap<>();
-//        cart.put(part, 5);
-//        userRoleUser.setCart(cart);
-//        userRepository.saveAndFlush(userRoleUser);
-//
-//        Order order = createAwaitingOrderAndSaveToDB(userRoleUser, "address", "notes");
-//
-//        Assertions.assertEquals(1, orderRepository.count());
-//
-//        mockMvc.perform(delete("/orders/delete/" + order.getId())
-//                        .with(user("admin@example.com").roles("ADMIN"))
-//                        .with(csrf()))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/orders/all"));
-//
-//        Assertions.assertEquals(0, orderRepository.count());
-//    }
+    @Test
+    public void testDeleteOrder() throws Exception {
 
-//    @Test
-//    public void testViewOrderDetails() throws Exception {
-////        @AuthenticationPrincipal
-//
-//        Brand brand = createTestBrand();
-//        Part part = createTestPart(brand, "partCode");
-//        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
-//
-//        Map<Part, Integer> cart = new HashMap<>();
-//        cart.put(part, 5);
-//        userRoleUser.setCart(cart);
-//        userRepository.saveAndFlush(userRoleUser);
-//
-//        Order order = createAwaitingOrderAndSaveToDB(userRoleUser, "address", "notes");
-//
-//        mockMvc.perform(get("/orders/" + order.getId())
-//                        .with(user("admin@example.com").roles("ADMIN")))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("order-details"))
-//                .andExpect(model().attributeExists("order"));
-//    }
+        Brand brand = createTestBrand();
+        Part part = createTestPart(brand, "partCode");
+        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        userRoleUser.setCart(cart);
+        userRepository.saveAndFlush(userRoleUser);
+
+        Order order = createAwaitingOrderAndSaveToDB(userRoleUser, "address", "notes");
+
+        Assertions.assertEquals(1, orderRepository.count());
+
+        mockMvc.perform(delete("/orders/delete/" + order.getId())
+                        .with(user("admin@example.com").roles("ADMIN"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/orders/all"));
+
+        Assertions.assertEquals(0, orderRepository.count());
+    }
+
+    @Test
+    public void testViewOrderDetails() throws Exception {
+        Brand brand = createTestBrand();
+        Part part = createTestPart(brand, "partCode");
+        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        userRoleUser.setCart(cart);
+        userRepository.saveAndFlush(userRoleUser);
+
+        Order order = createAwaitingOrderAndSaveToDB(userRoleUser, "address", "notes");
+
+        mockMvc.perform(get("/orders/" + order.getId())
+                        .with(user("admin@example.com").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("order-details"))
+                .andExpect(model().attributeExists("order"));
+    }
 
     private Brand createTestBrand() {
         Brand brand = new Brand("brand1", "https://example.com/exampleLogo.png");

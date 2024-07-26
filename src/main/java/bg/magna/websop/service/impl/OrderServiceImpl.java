@@ -12,6 +12,7 @@ import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,12 +54,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean currentUserOwnsOrder(long orderId, CurrentUserDetails userDetails) {
-        String userId = orderRepository.findById(orderId)
+    public boolean currentUserOwnsOrder(long orderId, UserDetails userDetails) {
+        String userEmail = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"))
-                .getUser().getId();
+                .getUser().getEmail();
 
-        return userId.equals(userDetails.getId());
+        return userEmail.equals(userDetails.getUsername());
     }
 
     @Override
@@ -125,8 +126,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userId) {
-        return orderRepository.findAllByUserId(userId).stream()
+    public List<ShortOrderDTO> getAllShortOrderDTOsByUser(String userEmail) {
+        return orderRepository.findAllByUserEmail(userEmail).stream()
                 .map(order -> modelMapper.map(order, ShortOrderDTO.class))
                 .collect(Collectors.toList());
     }

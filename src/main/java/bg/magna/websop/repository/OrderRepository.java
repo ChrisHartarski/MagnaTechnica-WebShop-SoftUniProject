@@ -11,5 +11,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByDispatchedOnNull();
     List<Order> findAllByDispatchedOnNotNullAndDeliveredOnNull();
     List<Order> findAllByDeliveredOnNotNull();
-    List<Order> findAllByUserId(String id);
+    List<Order> findAllByUserEmail(String userEmail);
 }
