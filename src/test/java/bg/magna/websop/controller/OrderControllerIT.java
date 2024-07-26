@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -68,6 +69,19 @@ public class OrderControllerIT {
 
         mockMvc.perform(get("/orders/all")
                         .with(user("admin@example.com").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("all-orders"))
+                .andExpect(model().attributeExists("userDetails"))
+                .andExpect(model().attributeExists("awaitingOrders"))
+                .andExpect(model().attributeExists("dispatchedOrders"))
+                .andExpect(model().attributeExists("deliveredOrders"));
+    }
+
+    @Test
+    public void testViewAllOrders_withUserRoleUser() throws Exception {
+
+        mockMvc.perform(get("/orders/all")
+                        .with(user("user01@example.com").roles("USER")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("all-orders"))
                 .andExpect(model().attributeExists("userDetails"))
@@ -208,6 +222,61 @@ public class OrderControllerIT {
     }
 
     @Test
+    public void testDeleteOrder_returnsHomeIfUserNotAdminOrOwner() throws Exception {
+        Brand brand = createTestBrand();
+        Part part = createTestPart(brand, "partCode");
+        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        UserEntity userRoleAdmin = userRepository.findByEmail("admin@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
+        Assertions.assertNotNull(userRoleAdmin);
+
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        userRoleAdmin.setCart(cart);
+        userRepository.saveAndFlush(userRoleAdmin);
+
+        Order order = createAwaitingOrderAndSaveToDB(userRoleAdmin, "address", "notes");
+
+        Assertions.assertEquals(1, orderRepository.count());
+
+        mockMvc.perform(delete("/orders/delete/" + order.getId())
+                        .with(user(userRoleUser.getEmail()).roles("USER"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+
+        Assertions.assertEquals(1, orderRepository.count());
+    }
+
+    @Test
+    public void testDeleteOrder_returnsToOrdersIfOrderAlreadyDispatched() throws Exception {
+        Brand brand = createTestBrand();
+        Part part = createTestPart(brand, "partCode");
+        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(userRoleUser);
+
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        userRoleUser.setCart(cart);
+        userRepository.saveAndFlush(userRoleUser);
+
+        Order order = createAwaitingOrderAndSaveToDB(userRoleUser, "address", "notes");
+        orderService.dispatchOrder(order.getId());
+
+        Assertions.assertEquals(1, orderRepository.count());
+
+        mockMvc.perform(delete("/orders/delete/" + order.getId())
+                        .with(user(userRoleUser.getEmail()).roles("USER"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/orders/all"))
+                .andExpect(flash().attribute("alreadyDispatchedOrDelivered", true))
+                .andExpect(flash().attribute("orderId", order.getId()));
+
+        Assertions.assertEquals(1, orderRepository.count());
+    }
+
+    @Test
     public void testViewOrderDetails() throws Exception {
         Brand brand = createTestBrand();
         Part part = createTestPart(brand, "partCode");
@@ -225,6 +294,26 @@ public class OrderControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(view().name("order-details"))
                 .andExpect(model().attributeExists("order"));
+    }
+
+    @Test
+    public void testViewOrderDetails_returnsHomeIfUserNotAdminOrOwner() throws Exception {
+        Brand brand = createTestBrand();
+        Part part = createTestPart(brand, "partCode");
+        UserEntity userRoleUser = userRepository.findByEmail("user01@example.com").orElse(null);
+        UserEntity userRoleAdmin = userRepository.findByEmail("admin@example.com").orElse(null);
+
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        userRoleAdmin.setCart(cart);
+        userRepository.saveAndFlush(userRoleAdmin);
+
+        Order order = createAwaitingOrderAndSaveToDB(userRoleAdmin, "address", "notes");
+
+        mockMvc.perform(get("/orders/" + order.getId())
+                        .with(user(userRoleUser.getEmail()).roles("USER")))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
     }
 
     private Brand createTestBrand() {

@@ -19,13 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final UserHelperService userHelperService;
     private final CompanyService companyService;
+    private final UserHelperService userHelperService;
 
-    public UserController(UserService userService, UserHelperService userHelperService, CompanyService companyService) {
+    public UserController(UserService userService, CompanyService companyService, UserHelperService userHelperService) {
         this.userService = userService;
-        this.userHelperService = userHelperService;
         this.companyService = companyService;
+        this.userHelperService = userHelperService;
     }
 
     @ModelAttribute("userData")
@@ -36,6 +36,12 @@ public class UserController {
     @ModelAttribute("loginData")
     public ValidateUserDTO loginUserDTO() {
         return new ValidateUserDTO();
+    }
+
+    @ModelAttribute("userPasswordData")
+    public UserPasswordDTO userPasswordDTO() {
+        UserPasswordDTO userPasswordData = new UserPasswordDTO();
+        return userPasswordData;
     }
 
     @GetMapping("/register")
@@ -168,16 +174,17 @@ public class UserController {
 
     @PatchMapping("/edit/password")
     public String editUserPassword(@Valid UserPasswordDTO userPasswordData,
-                                @AuthenticationPrincipal UserDetails userDetails,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
+        UserEntity user = userService.getUserByEmail(userHelperService.getCurrentUserDetails().getUsername());
+
         if(bindingResult.hasErrors()) {
+//            userPasswordData = new UserPasswordDTO(user.getEmail());
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordData", bindingResult);
+//            redirectAttributes.addFlashAttribute("userPasswordData", userPasswordData);
             return "redirect:/users/edit/password";
         }
-
-        UserEntity user = userService.getUserByEmail(userDetails.getUsername());
 
         if(!userService.isValidUser(new ValidateUserDTO(user.getEmail(), userPasswordData.getCurrentPassword()))) {
             redirectAttributes.addFlashAttribute("currentPasswordIncorrect", true);
@@ -189,7 +196,7 @@ public class UserController {
             return "redirect:/users/edit/password";
         }
 
-        userService.editUserPassword(userPasswordData, userDetails.getUsername());
+        userService.editUserPassword(userPasswordData, user.getEmail());
         userHelperService.updateAuthentication(user.getId());
 
         return "redirect:/";

@@ -110,6 +110,15 @@ public class AdminPanelControllerIT {
     }
 
     @Test
+    public void testViewAddBrands() throws Exception {
+        mockMvc.perform(get("/brands/add")
+                        .with(user("admin@example.com").roles("ADMIN"))
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("add-brand"));
+    }
+
+    @Test
     public void testAddBrandPost() throws Exception {
 
         mockMvc.perform(post("/brands/add")

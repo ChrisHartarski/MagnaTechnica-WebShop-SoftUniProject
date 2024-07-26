@@ -27,10 +27,10 @@
                         <div class="text-muted mt-2" sec:authorize="hasRole('USER')">
                             <div>
                                 <span th:text="#{orders_user}">User: </span>
-                                <span th:text="${userDetails.getFullName()}">{user full name}</span></div>
+                                <span th:text="${@userHelperService.getCurrentUserDetails().fullName}">{user full name}</span></div>
                             <div>
                                 <span th:text="#{orders_company}">Company: </span>
-                                <span th:text="${userDetails.companyName}">{user company name}</span></div>
+                                <span th:text="${@userHelperService.getCurrentUserDetails().companyName}">{user company name}</span></div>
                         </div>
                     </div>
 

@@ -8,8 +8,6 @@ public class UserPasswordDTO {
     @Email
     private String email;
 
-    @NotEmpty(message = "{password.notEmpty}")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*_)(?!.*\\W)(?!.* ).{8,}$", message = "{password.pattern}")
     private String currentPassword;
 
     @NotEmpty(message = "{password.notEmpty}")

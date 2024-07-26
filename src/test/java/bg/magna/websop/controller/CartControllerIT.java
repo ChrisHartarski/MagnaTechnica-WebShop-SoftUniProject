@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -25,13 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -80,6 +75,14 @@ public class CartControllerIT {
     }
 
     @Test
+    public void viewCart() throws Exception {
+        mockMvc.perform(get("/cart")
+                        .with(user("user01@example.com").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("cart"));
+    }
+
+    @Test
     @Transactional
     public void testAddOrder() throws Exception {
         Brand brand = createTestBrand();
@@ -116,6 +119,61 @@ public class CartControllerIT {
 
         //remove items from user cart
         Assertions.assertEquals(0, user.getCartSize());
+    }
+
+    @Test
+    @Transactional
+    public void testAddOrder_returnsIfInputInvalid() throws Exception {
+        Brand brand = createTestBrand();
+
+        Company company = createTestCompany();
+
+        Part part = createTestPart(brand, "partCode");
+
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part, 5);
+        UserEntity user = createTestUser(company, "user1@example.com", cart);
+
+        Order expected = createAwaitingOrder(user, "address", "some notes");
+
+        mockMvc.perform(post("/cart/add-order")
+                        .with(user(user.getEmail()))
+                        .with(csrf())
+                        .param("deliveryAddress", "")
+                        .param("notes", "some notes"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/cart"));
+
+        //no order added
+        Assertions.assertEquals(0, orderRepository.count());
+    }
+
+    @Test
+    @Transactional
+    public void testAddOrder_returnsIfCartIsEmpty() throws Exception {
+        Brand brand = createTestBrand();
+
+        Company company = createTestCompany();
+
+        Part part = createTestPart(brand, "partCode");
+
+        Map<Part, Integer> cart = new HashMap<>();
+        UserEntity user = createTestUser(company, "user1@example.com", cart);
+
+        Order expected = createAwaitingOrder(user, "address", "some notes");
+
+        mockMvc.perform(post("/cart/add-order")
+                        .with(user(user.getEmail()))
+                        .with(csrf())
+                        .param("deliveryAddress", "address")
+                        .param("notes", "some notes"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/cart"))
+                .andExpect(flash().attribute("cartEmpty", true));
+
+
+        //no order added
+        Assertions.assertEquals(0, orderRepository.count());
     }
 
     @Test

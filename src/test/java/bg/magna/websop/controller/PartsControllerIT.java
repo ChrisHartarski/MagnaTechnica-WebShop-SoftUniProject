@@ -2,12 +2,15 @@ package bg.magna.websop.controller;
 
 
 import bg.magna.websop.model.entity.Brand;
+import bg.magna.websop.model.entity.Order;
 import bg.magna.websop.model.entity.Part;
 import bg.magna.websop.model.entity.UserEntity;
 import bg.magna.websop.repository.BrandRepository;
 import bg.magna.websop.repository.OrderRepository;
 import bg.magna.websop.repository.PartRepository;
 import bg.magna.websop.repository.UserRepository;
+import bg.magna.websop.service.UserService;
+import bg.magna.websop.service.impl.PartServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -16,9 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import wiremock.org.checkerframework.checker.units.qual.A;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -39,14 +46,22 @@ public class PartsControllerIT {
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @AfterEach
     public void tearDown() {
         orderRepository.deleteAll();
+        userRepository.deleteAll();
         partRepository.deleteAll();
         brandRepository.deleteAll();
+
+        userService.addAdminUser();
+        userService.addFirstUser();
     }
 
     @Test
@@ -191,6 +206,43 @@ public class PartsControllerIT {
         Assertions.assertNotNull(actualUser);
         Assertions.assertEquals(1, actualUser.getCartSize());
         Assertions.assertEquals(5, actualUser.getCart().get(part1));
+
+        orderRepository.deleteAll();
+        userRepository.deleteAll();
+        partRepository.deleteAll();
+        brandRepository.deleteAll();
+    }
+
+    @Test
+    @Transactional
+    public void testAddPartToCart_increasesPartQuantityWhenAddedSecondTime() throws Exception {
+        Brand testBrand = createTestBrandAndSaveToDB();
+        Part part1 = createTestPartAndSaveToDB(testBrand, "partCode1");
+        UserEntity user = getUserRoleUser();
+        Map<Part, Integer> cart = new HashMap<>();
+        cart.put(part1, 5);
+        user.setCart(cart);
+        userRepository.saveAndFlush(user);
+
+        Assertions.assertEquals(1, user.getCartSize());
+
+
+        mockMvc.perform(post("/parts/add-to-cart/" + part1.getPartCode())
+                        .with(user(user.getEmail()).roles("USER"))
+                        .with(csrf())
+                        .param("quantity", "5"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/parts/all"));
+
+        UserEntity actualUser = userRepository.findByEmail(user.getEmail()).orElse(null);
+        Assertions.assertNotNull(actualUser);
+        Assertions.assertEquals(1, actualUser.getCartSize());
+        Assertions.assertEquals(10, actualUser.getCart().get(part1));
+
+        orderRepository.deleteAll();
+        userRepository.deleteAll();
+        partRepository.deleteAll();
+        brandRepository.deleteAll();
     }
 
     @Test
@@ -248,6 +300,31 @@ public class PartsControllerIT {
     }
 
     @Test
+    public void testEditPart_returnsWhenInputIsInvalid() throws Exception {
+        Brand testBrand = createTestBrandAndSaveToDB();
+        Part part1 = createTestPartAndSaveToDB(testBrand, "partCode1");
+
+
+        mockMvc.perform(put("/parts/edit/" + part1.getPartCode())
+                                .with(user("admin@example.com").roles("ADMIN"))
+                                .with(csrf())
+                        .param("partCode", part1.getPartCode())
+                        .param("descriptionEn", "newDescriptionEn")
+                        .param("descriptionBg", "newDescriptionBg")
+                        .param("imageURL", "")
+                        .param("brandName", "")
+                        .param("price", part1.getPrice().toString())
+                        .param("quantity", "20")
+                        .param("size", part1.getSize())
+                        .param("weight", String.valueOf(part1.getWeight()))
+                        .param("suitableFor", part1.getSuitableFor())
+                        .param("moreInfo", part1.getMoreInfo()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/parts/edit/" + part1.getPartCode()))
+                .andExpect(flash().attribute("fieldsHaveErrors", true));
+    }
+
+    @Test
     public void testDeletePart() throws Exception {
         Brand testBrand = createTestBrandAndSaveToDB();
 
@@ -264,6 +341,33 @@ public class PartsControllerIT {
                 .andExpect(redirectedUrl("/parts/all"));
 
         Assertions.assertEquals(0, partRepository.count());
+    }
+
+    @Test
+    public void testDeletePart_doesNotDeletePartInExistingOrder() throws Exception {
+        Brand testBrand = createTestBrandAndSaveToDB();
+
+        Assertions.assertEquals(0, partRepository.count());
+        Part part1 = createTestPartAndSaveToDB(testBrand, "partCode1");
+        Assertions.assertEquals(1, partRepository.count());
+
+        Map<Part, Integer> cart = Map.of(part1, 5);
+        UserEntity user = userRepository.findByEmail("user01@example.com").orElse(null);
+        Assertions.assertNotNull(user);
+        user.setCart(cart);
+        userRepository.saveAndFlush(user);
+
+        Order order = new Order(cart, user, "address", LocalDateTime.of(2024, 5, 5, 12, 30), LocalDateTime.of(2024, 5, 7, 12, 30), null, "notes");
+        orderRepository.saveAndFlush(order);
+
+        mockMvc.perform(delete("/parts/delete/" + part1.getPartCode())
+                        .with(user("admin@example.com").roles("ADMIN"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/parts/all"))
+                .andExpect(flash().attribute("errorPartCode", part1.getPartCode()));
+
+        Assertions.assertEquals(1, partRepository.count());
     }
 
     private Brand createTestBrandAndSaveToDB() {

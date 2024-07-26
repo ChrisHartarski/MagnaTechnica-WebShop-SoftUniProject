@@ -414,6 +414,26 @@ public class UserControllerIT {
     }
 
     @Test
+    public void testEditUserPassword_returnsIfInputIsInvalid() throws Exception {
+        UserEntity newUser = createTestUserAndSaveToDB("user02@example.com");
+        Assertions.assertTrue(userRepository.findByEmail("user02@example.com").isPresent());
+        Assertions.assertTrue(passwordEncoder.matches("Password_123", newUser.getPassword()));
+
+        mockMvc.perform(patch("/users/edit/password")
+                        .with(user(newUser.getEmail()).roles("USER"))
+                        .with(csrf())
+                        .param("currentPassword", "Password_123")
+                        .param("password", "")
+                        .param("confirmPassword", "newPassword_123"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users/edit/password"));
+
+        UserEntity actual = userRepository.findByEmail(newUser.getEmail()).orElse(null);
+        Assertions.assertNotNull(actual);
+        Assertions.assertFalse(passwordEncoder.matches("newPassword_123", actual.getPassword()));
+    }
+
+    @Test
     public void testEditUserPassword_returnsIfCurrentPasswordIsIncorrect() throws Exception {
         UserEntity newUser = createTestUserAndSaveToDB("user02@example.com");
         Assertions.assertTrue(userRepository.findByEmail("user02@example.com").isPresent());

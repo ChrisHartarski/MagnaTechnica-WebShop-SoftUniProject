@@ -36,6 +36,7 @@ public class EnquiryServiceImplTests {
     private static final Enquiry TEST_ENQUIRY_1 = new Enquiry(1, TEST_MACHINE_DTO.getId(), TEST_USER, "Enquiry for " + TEST_MACHINE_DTO.getDescriptionEn(), "message1", LocalDateTime.of(2024, 7, 22, 12, 30));
     private static final Enquiry TEST_ENQUIRY_2 = new Enquiry(2, TEST_MACHINE_DTO.getId(), TEST_USER, "Enquiry for " + TEST_MACHINE_DTO.getDescriptionEn(), "message2", LocalDateTime.of(2024, 7, 23, 12, 30));
     private static final AddEnquiryDTO TEST_ADD_ENQUIRY_DTO = new AddEnquiryDTO(TEST_MACHINE_DTO.getId(), TEST_USER.getId(), TEST_USER.getEmail(), TEST_USER.getFullName(), "Enquiry for " + TEST_MACHINE_DTO.getDescriptionEn(), "message1");
+    private static final AddEnquiryDTO TEST_ADD_ENQUIRY_DTO_BG = new AddEnquiryDTO(TEST_MACHINE_DTO.getId(), TEST_USER.getId(), TEST_USER.getEmail(), TEST_USER.getFullName(), "Запитване за " + TEST_MACHINE_DTO.getDescriptionBg(), "message1");
     private static final FullEnquiryDTO TEST_FULL_ENQUIRY_DTO_1 = new FullEnquiryDTO(1, TEST_USER.getFullName(), TEST_USER.getEmail(), TEST_MACHINE_DTO.getName(), TEST_MACHINE_DTO.getImageURL(), TEST_MACHINE_DTO.getId(), TEST_MACHINE_DTO.getSerialNumber(), LocalDateTime.of(2024, 7, 22, 12, 30), "Enquiry for " + TEST_MACHINE_DTO.getDescriptionEn(), "message1");
     private static final FullEnquiryDTO TEST_FULL_ENQUIRY_DTO_2 = new FullEnquiryDTO(2, TEST_USER.getFullName(), TEST_USER.getEmail(), TEST_MACHINE_DTO.getName(), TEST_MACHINE_DTO.getImageURL(), TEST_MACHINE_DTO.getId(), TEST_MACHINE_DTO.getSerialNumber(), LocalDateTime.of(2024, 7, 23, 12, 30), "Enquiry for " + TEST_MACHINE_DTO.getDescriptionEn(), "message2");
 
@@ -79,6 +80,24 @@ public class EnquiryServiceImplTests {
         when(machineService.getById(TEST_MACHINE_DTO.getId())).thenReturn(TEST_MACHINE_DTO);
         when(userHelperService.getCurrentUserDetails()).thenReturn(new CurrentUserDetails(TEST_USER.getEmail(), TEST_USER.getPassword(), List.of(), TEST_USER.getId(), TEST_USER.getFirstName(), TEST_USER.getLastName(), "companyName", TEST_USER.getCartSize()));
         when(userHelperService.getCurrentUserLocale()).thenReturn(Locale.of("en", "US"));
+
+        AddEnquiryDTO actual = toTest.getAddEnquiryDTO(TEST_MACHINE_DTO.getId());
+
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expected.getMachineId(),actual.getMachineId());
+        Assertions.assertEquals(expected.getUserId(), actual.getUserId());
+        Assertions.assertEquals(expected.getUserEmail(), actual.getUserEmail());
+        Assertions.assertEquals(expected.getUserFullName(), actual.getUserFullName());
+        Assertions.assertEquals(expected.getTitle(), actual.getTitle());
+        Assertions.assertNull(actual.getMessage());
+    }
+
+    @Test
+    void testGetAddEnquiryDTO_withBGLocale() {
+        AddEnquiryDTO expected = TEST_ADD_ENQUIRY_DTO_BG;
+        when(machineService.getById(TEST_MACHINE_DTO.getId())).thenReturn(TEST_MACHINE_DTO);
+        when(userHelperService.getCurrentUserDetails()).thenReturn(new CurrentUserDetails(TEST_USER.getEmail(), TEST_USER.getPassword(), List.of(), TEST_USER.getId(), TEST_USER.getFirstName(), TEST_USER.getLastName(), "companyName", TEST_USER.getCartSize()));
+        when(userHelperService.getCurrentUserLocale()).thenReturn(Locale.of("bg", "BG"));
 
         AddEnquiryDTO actual = toTest.getAddEnquiryDTO(TEST_MACHINE_DTO.getId());
 
