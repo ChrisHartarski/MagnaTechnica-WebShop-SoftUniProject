@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -58,7 +59,7 @@ public class AdminPanelControllerIT {
     @Autowired
     private CompanyService companyService;
 
-    @Mock
+    @MockBean
     private MachineService machineService;
 
 
@@ -165,7 +166,7 @@ public class AdminPanelControllerIT {
 
     @Test
     public void testInitializeDB_withoutMachines() throws Exception {
-        when(machineService.addMachine(any(AddMachineDTO.class))).thenReturn(new FullMachineDTO());
+        when(machineService.initializeMockMachines()).thenReturn(true);
 
         mockMvc.perform(post("/admin-panel/initializeMockDB")
                         .with(user("admin").roles("ADMIN"))

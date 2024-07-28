@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -121,6 +122,85 @@ public class MachineServiceImplIT {
 
         FullMachineDTO expected = TEST_FULL_MACHINE_DTO_1;
         FullMachineDTO actual = machineService.addMachine(TEST_ADD_MACHINE_DTO_1);
+
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expected.getId(), actual.getId());
+        Assertions.assertEquals(expected.getName(), actual.getName());
+        Assertions.assertEquals(expected.getBrandName(), actual.getBrandName());
+        Assertions.assertEquals(expected.getYear(), actual.getYear());
+        Assertions.assertEquals(expected.getImageURL(), actual.getImageURL());
+        Assertions.assertEquals(expected.getDescriptionEn(), actual.getDescriptionEn());
+        Assertions.assertEquals(expected.getDescriptionBg(), actual.getDescriptionBg());
+        Assertions.assertEquals(expected.getWorkingWidth(), actual.getWorkingWidth());
+        Assertions.assertEquals(expected.getWeight(), actual.getWeight());
+        Assertions.assertEquals(expected.getRequiredPower(), actual.getRequiredPower());
+        Assertions.assertEquals(expected.getMoreInfoEn(), actual.getMoreInfoEn());
+        Assertions.assertEquals(expected.getMoreInfoBg(), actual.getMoreInfoBg());
+    }
+
+    @Test
+    public void testMachineExists_returnsTrue() {
+        wireMockServer.stubFor(get(urlEqualTo("/test-machines/machines/exist/" + TEST_FULL_MACHINE_DTO_1.getSerialNumber()))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("true")
+                )
+        );
+
+        boolean actual = machineService.machineExists(TEST_FULL_MACHINE_DTO_1.getSerialNumber());
+
+        Assertions.assertTrue(actual);
+    }
+
+    @Test
+    public void testMachineExists_returnsFalse() {
+        wireMockServer.stubFor(get(urlEqualTo("/test-machines/machines/exist/" + TEST_FULL_MACHINE_DTO_1.getSerialNumber()))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("false")
+                )
+        );
+
+        boolean actual = machineService.machineExists(TEST_FULL_MACHINE_DTO_1.getSerialNumber());
+
+        Assertions.assertFalse(actual);
+    }
+
+    @Test
+    public void testUpdateMachine() {
+        FullMachineDTO expected = new FullMachineDTO();
+        expected.setId(TEST_FULL_MACHINE_DTO_1.getId());
+        expected.setSerialNumber(TEST_FULL_MACHINE_DTO_1.getSerialNumber());
+        expected.setName(TEST_FULL_MACHINE_DTO_1.getName());
+        expected.setBrandName(TEST_FULL_MACHINE_DTO_1.getBrandName());
+        expected.setYear(TEST_FULL_MACHINE_DTO_1.getYear());
+        expected.setImageURL(TEST_FULL_MACHINE_DTO_2.getImageURL());
+        expected.setDescriptionEn(TEST_FULL_MACHINE_DTO_2.getDescriptionEn());
+        expected.setDescriptionBg(TEST_FULL_MACHINE_DTO_2.getDescriptionBg());
+        expected.setWorkingWidth(TEST_FULL_MACHINE_DTO_2.getWorkingWidth());
+        expected.setWeight(TEST_FULL_MACHINE_DTO_2.getWeight());
+        expected.setRequiredPower(TEST_FULL_MACHINE_DTO_2.getRequiredPower());
+        expected.setMoreInfoEn(TEST_FULL_MACHINE_DTO_2.getMoreInfoEn());
+        expected.setMoreInfoBg(TEST_FULL_MACHINE_DTO_2.getMoreInfoBg());
+
+        wireMockServer.stubFor(get(urlEqualTo("/test-machines/machines/exist/" + expected.getSerialNumber()))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("true")
+                )
+        );
+
+        wireMockServer.stubFor(put(urlEqualTo("/test-machines/machines/edit/" + TEST_FULL_MACHINE_DTO_1.getId()))
+                .withHeader("Content-Type", equalTo(MediaType.APPLICATION_JSON_VALUE))
+                .withRequestBody(equalToJson(gson.toJson(expected)))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withStatus(200)
+                        .withBody(gson.toJson(expected))
+                )
+        );
+
+        FullMachineDTO actual = machineService.updateMachine(expected.getId(), expected);
 
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(expected.getId(), actual.getId());

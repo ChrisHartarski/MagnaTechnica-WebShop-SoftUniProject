@@ -20,7 +20,7 @@ public class SecurityConfig {
                                 //grant access to static resources
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 //grant access to pages
-                                .requestMatchers("/", "/machines", "machines/{id}", "/parts/all","/parts/{partCode}", "/contact", "/users/login", "/users/login-error", "/users/register", "/companies/add").permitAll()
+                                .requestMatchers("/", "/machines", "/machines/{id}", "/parts/all","/parts/{partCode}", "/contact", "/users/login", "/users/login-error", "/users/register", "/companies/add").permitAll()
                                 //grant access only to admin users
                                 .requestMatchers("/admin-panel", "/machines/add", "/machines/delete/", "/machines/edit/{id}", "/brands/add", "/admin-panel/initializeMockDB", "/orders/dispatch/{id}", "/orders/deliver/{id}", "/parts/add", "/parts/edit/{partCode}", "/parts/delete/{partCode}", "/machines/enquiries/all", "/machines/enquiries/delete/{id}").hasRole("ADMIN")
                                 //grant access only to normal users

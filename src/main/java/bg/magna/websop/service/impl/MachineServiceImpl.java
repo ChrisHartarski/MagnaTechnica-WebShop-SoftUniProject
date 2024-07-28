@@ -5,6 +5,7 @@ import bg.magna.websop.model.dto.machine.AddMachineDTO;
 import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
+import bg.magna.websop.service.exception.ResourceNotFoundException;
 import com.google.gson.Gson;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -78,32 +79,47 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public boolean deleteById(String id) {
         if(machineExists(getById(id).getSerialNumber())) {
-            machineRestClient
+            Boolean result = machineRestClient
                     .delete()
                     .uri(machinesApiConfig.getBaseUrl() + "/machines/" + id)
-                    .retrieve();
+                    .retrieve()
+                    .body(Boolean.class);
+
+            if(result == null) {
+                return false;
+            }
+
+            return result;
+        } else {
+            return false;
         }
     }
 
     @Override
-    public void updateMachine(FullMachineDTO machineDTO) {
+    public FullMachineDTO updateMachine(String id, FullMachineDTO machineDTO) {
         if(machineExists(machineDTO.getSerialNumber())) {
-            machineRestClient
+            return machineRestClient
                     .put()
-                    .uri(machinesApiConfig.getBaseUrl() + "/machines/edit/" + machineDTO.getId())
+                    .uri(machinesApiConfig.getBaseUrl() + "/machines/edit/" + id)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(machineDTO)
-                    .retrieve();
+                    .retrieve()
+                    .body(FullMachineDTO.class);
+        } else {
+            throw new ResourceNotFoundException("Machine was not found");
         }
     }
 
     @Override
-    public void initializeMockMachines() throws IOException {
+    public boolean initializeMockMachines() throws IOException {
         if(machineRepositoryEmpty()) {
             Arrays.stream(gson.fromJson(Files.readString(Path.of(MACHINES_JSON_FILE_PATH)), AddMachineDTO[].class))
                     .forEach(this::addMachine);
+            return true;
+        } else {
+            return false;
         }
     }
 

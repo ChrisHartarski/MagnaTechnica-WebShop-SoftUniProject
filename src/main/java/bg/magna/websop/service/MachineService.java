@@ -16,9 +16,9 @@ public interface MachineService {
 
     boolean machineExists(String serialNumber);
 
-    void deleteById(String id);
+    boolean deleteById(String id);
 
-    void updateMachine(FullMachineDTO machineDTO);
+    FullMachineDTO updateMachine(String id, FullMachineDTO machineDTO);
 
-    void initializeMockMachines() throws IOException;
+    boolean initializeMockMachines() throws IOException;
 }

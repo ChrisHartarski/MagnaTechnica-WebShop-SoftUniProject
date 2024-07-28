@@ -45,7 +45,7 @@ public class MachinesController {
     }
 
     @GetMapping()
-    public String machines(Model model) {
+    public String getMachines(Model model) {
         List<ShortMachineDTO> machines = machineService.getAll();
         model.addAttribute("machines", machines);
 
@@ -53,7 +53,7 @@ public class MachinesController {
     }
 
     @GetMapping("/{id}")
-    public String getPartDetails(@PathVariable("id") String id, Model model) {
+    public String getMachineDetails(@PathVariable("id") String id, Model model) {
         FullMachineDTO machine = machineService.getById(id);
 
         model.addAttribute("machine", machine);
@@ -67,7 +67,7 @@ public class MachinesController {
         if(userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ROLE_ADMIN"))) {
-            machineService.deleteById(id);
+            boolean result = machineService.deleteById(id);
         }
         return "redirect:/machines";
     }
@@ -94,8 +94,8 @@ public class MachinesController {
             return "redirect:/machines/edit/{id}";
         }
 
-        machineService.updateMachine(machineDTO);
-        return "redirect:/machines";
+        FullMachineDTO result = machineService.updateMachine(id, machineDTO);
+        return "redirect:/machines/" + result.getId();
     }
 
     @GetMapping("/add")

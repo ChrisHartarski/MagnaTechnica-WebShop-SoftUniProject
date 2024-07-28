@@ -164,8 +164,6 @@ public class CartControllerIT {
     @Test
     @Transactional
     public void testDeleteItemFromCart() throws Exception {
-//        @AuthenticationPrincipal
-
         Brand brand = createTestBrand();
 
         Part part = createTestPart(brand, "partCode");
