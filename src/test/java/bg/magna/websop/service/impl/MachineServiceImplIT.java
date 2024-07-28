@@ -15,11 +15,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 @SpringBootTest
 @EnableWireMock(@ConfigureWireMock(name = "machines-api-service"))
@@ -46,6 +46,7 @@ public class MachineServiceImplIT {
     @BeforeEach
     void setUp() {
         machinesApiConfig.setBaseUrl(wireMockServer.baseUrl() + "/test-machines");
+        wireMockServer.resetAll();
     }
 
     @Test
@@ -106,33 +107,34 @@ public class MachineServiceImplIT {
         Assertions.assertEquals(expected.getMoreInfoBg(), actual.getMoreInfoBg());
     }
 
-//    @Test
-//    public void testAddMachine() {
-//        wireMockServer.stubFor(get("/test-machines/machines/add")
-//                        .withRequestBody();
-//                .willReturn(aResponse()
-//                        .withHeader("Content-Type", "application/json")
-//                        .withStatus(201)
-//                        .withBody(JSON_FULL_MACHINE_DTO_1)
-//                )
-//        );
-//
-//        FullMachineDTO expected = TEST_FULL_MACHINE_DTO_1;
-//        FullMachineDTO actual = machineService.addMachine(TEST_ADD_MACHINE_DTO_1);
-//
-//        Assertions.assertNotNull(actual);
-//        Assertions.assertEquals(expected.getId(), actual.getId());
-//        Assertions.assertEquals(expected.getName(), actual.getName());
-//        Assertions.assertEquals(expected.getBrandName(), actual.getBrandName());
-//        Assertions.assertEquals(expected.getYear(), actual.getYear());
-//        Assertions.assertEquals(expected.getImageURL(), actual.getImageURL());
-//        Assertions.assertEquals(expected.getDescriptionEn(), actual.getDescriptionEn());
-//        Assertions.assertEquals(expected.getDescriptionBg(), actual.getDescriptionBg());
-//        Assertions.assertEquals(expected.getWorkingWidth(), actual.getWorkingWidth());
-//        Assertions.assertEquals(expected.getWeight(), actual.getWeight());
-//        Assertions.assertEquals(expected.getRequiredPower(), actual.getRequiredPower());
-//        Assertions.assertEquals(expected.getMoreInfoEn(), actual.getMoreInfoEn());
-//        Assertions.assertEquals(expected.getMoreInfoBg(), actual.getMoreInfoBg());
-//    }
+    @Test
+    public void testAddMachine() {
+        wireMockServer.stubFor(post(urlEqualTo("/test-machines/machines/add"))
+                        .withHeader("Content-Type", equalTo(MediaType.APPLICATION_JSON_VALUE))
+                        .withRequestBody(equalToJson(JSON_ADD_MACHINE_DTO_1))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withStatus(201)
+                        .withBody(JSON_FULL_MACHINE_DTO_1)
+                )
+        );
+
+        FullMachineDTO expected = TEST_FULL_MACHINE_DTO_1;
+        FullMachineDTO actual = machineService.addMachine(TEST_ADD_MACHINE_DTO_1);
+
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expected.getId(), actual.getId());
+        Assertions.assertEquals(expected.getName(), actual.getName());
+        Assertions.assertEquals(expected.getBrandName(), actual.getBrandName());
+        Assertions.assertEquals(expected.getYear(), actual.getYear());
+        Assertions.assertEquals(expected.getImageURL(), actual.getImageURL());
+        Assertions.assertEquals(expected.getDescriptionEn(), actual.getDescriptionEn());
+        Assertions.assertEquals(expected.getDescriptionBg(), actual.getDescriptionBg());
+        Assertions.assertEquals(expected.getWorkingWidth(), actual.getWorkingWidth());
+        Assertions.assertEquals(expected.getWeight(), actual.getWeight());
+        Assertions.assertEquals(expected.getRequiredPower(), actual.getRequiredPower());
+        Assertions.assertEquals(expected.getMoreInfoEn(), actual.getMoreInfoEn());
+        Assertions.assertEquals(expected.getMoreInfoBg(), actual.getMoreInfoBg());
+    }
 }
 
