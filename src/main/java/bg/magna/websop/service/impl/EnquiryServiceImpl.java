@@ -11,24 +11,36 @@ import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import bg.magna.websop.service.helper.UserHelperService;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Locale;
 
 @Service
 public class EnquiryServiceImpl implements EnquiryService {
+    private final Logger logger = LoggerFactory.getLogger(EnquiryServiceImpl.class);
     private final EnquiryRepository enquiryRepository;
     private final UserService userService;
     private final MachineService machineService;
     private final UserHelperService userHelperService;
+    private final Period enquiryRetentionPeriod;
 
-    public EnquiryServiceImpl(EnquiryRepository enquiryRepository, UserService userService, MachineService machineService, UserHelperService userHelperService) {
+    public EnquiryServiceImpl(EnquiryRepository enquiryRepository,
+                              UserService userService,
+                              MachineService machineService,
+                              UserHelperService userHelperService,
+                              @Value("${enquiry.retention.period}") Period enquiryRetentionPeriod) {
         this.enquiryRepository = enquiryRepository;
         this.userService = userService;
         this.machineService = machineService;
         this.userHelperService = userHelperService;
+        this.enquiryRetentionPeriod = enquiryRetentionPeriod;
     }
 
     @Override
@@ -82,6 +94,14 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public void delete(long id) {
         enquiryRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOldEnquiries() {
+        LocalDateTime deleteBefore = LocalDateTime.now().minus(enquiryRetentionPeriod);
+        enquiryRepository.deleteByCreatedOnBefore(deleteBefore);
+        logger.info("Deleted all enquiries created before {}", deleteBefore);
     }
 
     private FullEnquiryDTO mapEnquiryToDTO(Enquiry enquiry) {

@@ -3,6 +3,7 @@ package bg.magna.websop.service;
 import bg.magna.websop.model.dto.enquiry.AddEnquiryDTO;
 import bg.magna.websop.model.dto.enquiry.FullEnquiryDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EnquiryService {
@@ -15,4 +16,6 @@ public interface EnquiryService {
     FullEnquiryDTO getById(long id);
 
     void delete(long id);
+
+    void deleteOldEnquiries();
 }

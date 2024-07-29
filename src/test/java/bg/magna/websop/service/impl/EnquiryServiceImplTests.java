@@ -21,8 +21,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.*;
 
 import static org.mockito.Mockito.verify;
@@ -48,13 +50,15 @@ public class EnquiryServiceImplTests {
     private MachineService machineService;
     @Mock
     private UserHelperService userHelperService;
+    @Mock
+    private Period enquiryRetentionPeriod;
 
     @Captor
     private ArgumentCaptor<Enquiry> enquiryCaptor;
 
     @BeforeEach
     void setUp() {
-        toTest = new EnquiryServiceImpl(enquiryRepository, userService, machineService, userHelperService);
+        toTest = new EnquiryServiceImpl(enquiryRepository, userService, machineService, userHelperService, enquiryRetentionPeriod);
     }
 
     @Test
