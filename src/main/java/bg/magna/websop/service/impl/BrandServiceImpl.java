@@ -53,7 +53,7 @@ public class BrandServiceImpl implements BrandService {
             addBrand("Massey Ferguson", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/MF_Logo_2022.png/330px-MF_Logo_2022.png");
             addBrand("New Holland", "https://upload.wikimedia.org/wikipedia/en/thumb/7/74/New_Holland_Logo_2023.png/330px-New_Holland_Logo_2023.png");
             addBrand("Ferruzza", "http://www.ferruzza.it/sito/wp-content/uploads/2016/09/logoa.gif");
-            addBrand("Manitou", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Manitou_Group_Logo.svg/330px-Manitou_Group_Logo.svg.png");
+            addBrand("Manitou", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Logo_Manitou_Group.png?20171005085211");
             addBrand("Friuli", "https://www.agricolmeccanica.it/wp-content/uploads/2020/11/FRIULI-logo-corretto.png");
             addBrand("Akpil", "https://www.akpil.pl/wp-content/uploads/2024/04/logo-akpil-1975.jpg");
             addBrand("Arbos", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Logo_ARBOS.png/330px-Logo_ARBOS.png");

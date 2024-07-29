@@ -121,12 +121,12 @@ public class PartsController {
             redirectAttributes.addFlashAttribute("partData", partData);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.partData", bindingResult);
             redirectAttributes.addFlashAttribute("fieldsHaveErrors", true);
-            return "redirect:/parts/edit/{partCode}";
+            return "redirect:/parts/edit/" + partCode;
         }
 
         partService.editPart(partData);
 
-        return "redirect:/parts/all";
+        return "redirect:/parts/" + partCode;
     }
 
     @DeleteMapping("/delete/{partCode}")

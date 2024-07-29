@@ -278,7 +278,7 @@ public class PartsControllerIT {
                         .param("suitableFor", part1.getSuitableFor())
                         .param("moreInfo", part1.getMoreInfo()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/parts/all"));
+                .andExpect(redirectedUrl("/parts/" + part1.getPartCode()));
 
         Assertions.assertEquals(1, partRepository.count());
         Part actual = partRepository.findByPartCode(part1.getPartCode()).orElse(null);
