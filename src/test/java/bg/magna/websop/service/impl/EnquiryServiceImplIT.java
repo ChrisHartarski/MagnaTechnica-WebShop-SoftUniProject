@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class EnquiryServiceIT {
+public class EnquiryServiceImplIT {
     private static final FullMachineDTO TEST_MACHINE_DTO = new FullMachineDTO("machineId1", "machine1serial", "machine1Name", "machine1URL", 2020, "brand1", "descEn1", "descBg1", 0, 0, 0, "moreInfoEn1", "moreInfoBg1");
 
     @Autowired
@@ -53,13 +53,15 @@ public class EnquiryServiceIT {
 
         Enquiry enquiry1 = createTestEnquiry(1, machineDTO, user);
         Enquiry enquiry2 = createTestEnquiry(2, machineDTO, user);
-        enquiryRepository.saveAllAndFlush(List.of(enquiry1, enquiry2));
+        Enquiry enquiry3 = createTestEnquiry(3, machineDTO, user);
+        enquiry3.setCreatedOn(LocalDateTime.now());
+        enquiryRepository.saveAllAndFlush(List.of(enquiry1, enquiry2, enquiry3));
 
-        Assertions.assertEquals(2, enquiryRepository.count());
+        Assertions.assertEquals(3, enquiryRepository.count());
 
         enquiryService.deleteOldEnquiries();
 
-        Assertions.assertEquals(0, enquiryRepository.count());
+        Assertions.assertEquals(1, enquiryRepository.count());
     }
 
     private Enquiry createTestEnquiry(long id, FullMachineDTO machineDTO, UserEntity user) {
