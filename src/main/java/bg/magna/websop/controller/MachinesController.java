@@ -7,6 +7,9 @@ import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.MachineService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,9 +48,9 @@ public class MachinesController {
         return new AddEnquiryDTO();
     }
 
-    @GetMapping()
-    public String getMachines(Model model) {
-        PagedModel<ShortMachineDTO> machines = machineService.getAll();
+    @GetMapping("/all")
+    public String getMachines(Model model, @PageableDefault(size = 6, sort="createdOn", direction = Sort.Direction.DESC) Pageable pageable) {
+        PagedModel<ShortMachineDTO> machines = machineService.getAll(pageable);
         model.addAttribute("machines", machines);
 
         return "machines";
