@@ -1,6 +1,7 @@
 package bg.magna.websop.model.dto.part;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class ShortPartDataDTO {
     private String partCode;
@@ -11,11 +12,12 @@ public class ShortPartDataDTO {
     private String descriptionBg;
     private BigDecimal price;
     private int quantity;
+    private LocalDateTime createdOn;
 
     public ShortPartDataDTO() {
     }
 
-    public ShortPartDataDTO(String partCode, String imageURL, String brandName, String brandLogoURL, String descriptionEn, String descriptionBg, BigDecimal price, int quantity) {
+    public ShortPartDataDTO(String partCode, String imageURL, String brandName, String brandLogoURL, String descriptionEn, String descriptionBg, BigDecimal price, int quantity, LocalDateTime createdOn) {
         this.partCode = partCode;
         this.imageURL = imageURL;
         this.brandName = brandName;
@@ -24,6 +26,7 @@ public class ShortPartDataDTO {
         this.descriptionBg = descriptionBg;
         this.price = price;
         this.quantity = quantity;
+        this.createdOn = createdOn;
     }
 
     public String getPartCode() {
@@ -88,5 +91,13 @@ public class ShortPartDataDTO {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 }

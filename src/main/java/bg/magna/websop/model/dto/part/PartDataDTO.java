@@ -3,6 +3,7 @@ package bg.magna.websop.model.dto.part;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class PartDataDTO {
     @NotEmpty(message = "{part.code.notEmpty}")
@@ -48,10 +49,12 @@ public class PartDataDTO {
     @Size(max = 200, message = "{part.moreInfo.length}")
     private String moreInfo;
 
+    private LocalDateTime createdOn;
+
     public PartDataDTO() {
     }
 
-    public PartDataDTO(String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, String brandLogoURL, String brandName, BigDecimal price, String size, double weight, String suitableFor, String moreInfo) {
+    public PartDataDTO(String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, String brandLogoURL, String brandName, BigDecimal price, String size, double weight, String suitableFor, String moreInfo, LocalDateTime createdOn) {
         this.partCode = partCode;
         this.quantity = quantity;
         this.descriptionEn = descriptionEn;
@@ -64,6 +67,7 @@ public class PartDataDTO {
         this.weight = weight;
         this.suitableFor = suitableFor;
         this.moreInfo = moreInfo;
+        this.createdOn = createdOn;
     }
 
     public String getPartCode() {
@@ -160,5 +164,13 @@ public class PartDataDTO {
 
     public void setSuitableFor(String suitableFor) {
         this.suitableFor = suitableFor;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 }

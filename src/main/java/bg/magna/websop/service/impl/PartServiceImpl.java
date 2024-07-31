@@ -11,6 +11,10 @@ import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +94,14 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
+    public PagedModel<ShortPartDataDTO> getPagedParts(Pageable pageable) {
+        return new PagedModel<>(partRepository
+                .findAll(pageable)
+                .map(part -> modelMapper.map(part, ShortPartDataDTO.class))
+        );
+    }
+
+    @Override
     public void initializeMockParts() throws IOException {
         if(partRepository.count() == 0) {
             Arrays.stream(gson.fromJson(Files.readString(Path.of(PARTS_JSON_FILE_PATH)), PartDataDTO[].class))
@@ -96,6 +109,7 @@ public class PartServiceImpl implements PartService {
                         Part part = modelMapper.map(dto, Part.class);
                         part.setQuantity(20);
                         part.setBrand(brandService.findBrandByName(dto.getBrandName()));
+                        part.setCreatedOn(LocalDateTime.now());
                         return part;
                     })
                     .forEach(p -> {

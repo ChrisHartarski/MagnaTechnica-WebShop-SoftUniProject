@@ -3,6 +3,7 @@ package bg.magna.websop.model.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "parts")
@@ -44,16 +45,22 @@ public class Part {
     @Column(name = "suitable_for")
     private String suitableFor;
 
+    @Column(name = "createdOn", nullable = false)
+    private LocalDateTime createdOn;
+
     public Part() {
+        this.createdOn = LocalDateTime.now();
     }
 
     public Part(String partCode, BigDecimal price, int quantity) {
+        super();
         this.partCode = partCode;
         this.price = price;
         this.quantity = quantity;
     }
 
     public Part(String id, String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, Brand brand, BigDecimal price, String size, double weight, String moreInfo, String suitableFor) {
+        super();
         this.id = id;
         this.partCode = partCode;
         this.quantity = quantity;
@@ -162,6 +169,14 @@ public class Part {
 
     public void setSuitableFor(String suitableFor) {
         this.suitableFor = suitableFor;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 
     public void increaseQuantity(int quantity) {

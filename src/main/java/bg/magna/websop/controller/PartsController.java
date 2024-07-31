@@ -8,6 +8,10 @@ import bg.magna.websop.service.OrderService;
 import bg.magna.websop.service.PartService;
 import bg.magna.websop.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -39,9 +43,9 @@ public class PartsController {
     }
 
     @GetMapping("/all")
-    public String viewWebShop(Model model) {
-
-        List<ShortPartDataDTO> parts = partService.getAllShortPartDTOs();
+    public String viewWebShop(Model model, @PageableDefault(size = 8, sort="createdOn", direction = Sort.Direction.DESC) Pageable pageable) {
+        PagedModel<ShortPartDataDTO> parts = partService.getPagedParts(pageable);
+//        List<ShortPartDataDTO> parts = partService.getAllShortPartDTOs();
         model.addAttribute("parts", parts);
 
         return "spare_parts";

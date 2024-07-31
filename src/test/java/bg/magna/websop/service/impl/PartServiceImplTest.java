@@ -277,7 +277,8 @@ public class PartServiceImplTest {
                 part.getSize(),
                 part.getWeight(),
                 part.getSuitableFor(),
-                part.getMoreInfo());
+                part.getMoreInfo(),
+                part.getCreatedOn());
     }
 
     private ShortPartDataDTO getTestShortPartDataDTO(Part part) {
@@ -289,6 +290,7 @@ public class PartServiceImplTest {
                 part.getDescriptionEn(),
                 part.getDescriptionBg(),
                 part.getPrice(),
-                part.getQuantity());
+                part.getQuantity(),
+                part.getCreatedOn());
     }
 }

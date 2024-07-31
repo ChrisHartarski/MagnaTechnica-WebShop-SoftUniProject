@@ -3,6 +3,8 @@ package bg.magna.websop.service;
 import bg.magna.websop.model.dto.part.PartDataDTO;
 import bg.magna.websop.model.dto.part.ShortPartDataDTO;
 import bg.magna.websop.model.entity.Part;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -23,6 +25,8 @@ public interface PartService {
     void deletePart(String partCode);
 
     List<ShortPartDataDTO> getAllShortPartDTOs();
+
+    PagedModel<ShortPartDataDTO> getPagedParts(Pageable pageable);
 
     void initializeMockParts() throws IOException;
 
