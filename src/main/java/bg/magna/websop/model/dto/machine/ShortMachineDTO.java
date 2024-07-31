@@ -1,5 +1,7 @@
 package bg.magna.websop.model.dto.machine;
 
+import java.time.LocalDateTime;
+
 public class ShortMachineDTO {
     private String id;
     private String name;
@@ -8,11 +10,12 @@ public class ShortMachineDTO {
     private String brandName;
     private String descriptionEn;
     private String descriptionBg;
+    private LocalDateTime createdOn;
 
     public ShortMachineDTO() {
     }
 
-    public ShortMachineDTO(String id, String name, String imageURL, int year, String brandName, String descriptionEn, String descriptionBg) {
+    public ShortMachineDTO(String id, String name, String imageURL, int year, String brandName, String descriptionEn, String descriptionBg, LocalDateTime createdOn) {
         this.id = id;
         this.name = name;
         this.imageURL = imageURL;
@@ -20,6 +23,7 @@ public class ShortMachineDTO {
         this.brandName = brandName;
         this.descriptionEn = descriptionEn;
         this.descriptionBg = descriptionBg;
+        this.createdOn = createdOn;
     }
 
     public String getId() {
@@ -76,5 +80,13 @@ public class ShortMachineDTO {
 
     public void setDescriptionBg(String descriptionBg) {
         this.descriptionBg = descriptionBg;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 }

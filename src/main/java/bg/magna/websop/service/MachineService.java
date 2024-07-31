@@ -3,12 +3,13 @@ package bg.magna.websop.service;
 import bg.magna.websop.model.dto.machine.AddMachineDTO;
 import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
+import org.springframework.data.web.PagedModel;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface MachineService {
-    List<ShortMachineDTO> getAll();
+    PagedModel<ShortMachineDTO> getAll();
 
     FullMachineDTO getById(String id);
 

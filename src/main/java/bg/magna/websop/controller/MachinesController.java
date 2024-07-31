@@ -7,6 +7,7 @@ import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.MachineService;
 import jakarta.validation.Valid;
+import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,7 +47,7 @@ public class MachinesController {
 
     @GetMapping()
     public String getMachines(Model model) {
-        List<ShortMachineDTO> machines = machineService.getAll();
+        PagedModel<ShortMachineDTO> machines = machineService.getAll();
         model.addAttribute("machines", machines);
 
         return "machines";

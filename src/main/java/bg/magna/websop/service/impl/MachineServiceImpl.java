@@ -8,6 +8,7 @@ import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import com.google.gson.Gson;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -32,7 +33,7 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public List<ShortMachineDTO> getAll() {
+    public PagedModel<ShortMachineDTO> getAll() {
         return machineRestClient
                 .get()
                 .uri(machinesApiConfig.getBaseUrl() + "/machines/all")
