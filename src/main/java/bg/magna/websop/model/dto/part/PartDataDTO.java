@@ -51,7 +51,24 @@ public class PartDataDTO {
 
     private LocalDateTime createdOn;
 
+
     public PartDataDTO() {
+    }
+
+    public PartDataDTO(String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, String brandLogoURL, String brandName, BigDecimal price, String size, double weight, String suitableFor, String moreInfo) {
+        this.partCode = partCode;
+        this.quantity = quantity;
+        this.descriptionEn = descriptionEn;
+        this.descriptionBg = descriptionBg;
+        this.imageURL = imageURL;
+        this.brandLogoURL = brandLogoURL;
+        this.brandName = brandName;
+        this.price = price;
+        this.size = size;
+        this.weight = weight;
+        this.suitableFor = suitableFor;
+        this.moreInfo = moreInfo;
+        this.createdOn = LocalDateTime.now();
     }
 
     public PartDataDTO(String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, String brandLogoURL, String brandName, BigDecimal price, String size, double weight, String suitableFor, String moreInfo, LocalDateTime createdOn) {

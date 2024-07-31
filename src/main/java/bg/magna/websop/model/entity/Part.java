@@ -53,10 +53,10 @@ public class Part {
     }
 
     public Part(String partCode, BigDecimal price, int quantity) {
-        super();
         this.partCode = partCode;
         this.price = price;
         this.quantity = quantity;
+        this.createdOn = LocalDateTime.now();
     }
 
     public Part(String id, String partCode, int quantity, String descriptionEn, String descriptionBg, String imageURL, Brand brand, BigDecimal price, String size, double weight, String moreInfo, String suitableFor) {
@@ -73,6 +73,7 @@ public class Part {
         this.weight = weight;
         this.moreInfo = moreInfo;
         this.suitableFor = suitableFor;
+        this.createdOn = LocalDateTime.now();
     }
 
     public String getId() {

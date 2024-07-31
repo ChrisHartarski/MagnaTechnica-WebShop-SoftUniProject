@@ -67,16 +67,20 @@ public class PartServiceImpl implements PartService {
         Part part = modelMapper.map(partData, Part.class);
         Brand brand = brandService.findBrandByName(partData.getBrandName());
         part.setBrand(brand);
+        part.setCreatedOn(LocalDateTime.now());
         partRepository.saveAndFlush(part);
     }
 
     @Override
     public void editPart(PartDataDTO partData) {
         Part part = getPartByPartCode(partData.getPartCode());
+        LocalDateTime partCreatedOn = part.getCreatedOn();
 
         modelMapper.map(partData, part);
         Brand brand = brandService.findBrandByName(partData.getBrandName());
         part.setBrand(brand);
+        part.setCreatedOn(partCreatedOn);
+
         partRepository.saveAndFlush(part);
     }
 
@@ -106,10 +110,10 @@ public class PartServiceImpl implements PartService {
         if(partRepository.count() == 0) {
             Arrays.stream(gson.fromJson(Files.readString(Path.of(PARTS_JSON_FILE_PATH)), PartDataDTO[].class))
                     .map(dto -> {
+                        dto.setCreatedOn(LocalDateTime.now());
                         Part part = modelMapper.map(dto, Part.class);
                         part.setQuantity(20);
                         part.setBrand(brandService.findBrandByName(dto.getBrandName()));
-                        part.setCreatedOn(LocalDateTime.now());
                         return part;
                     })
                     .forEach(p -> {
