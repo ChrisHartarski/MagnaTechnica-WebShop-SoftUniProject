@@ -85,18 +85,18 @@
                     </div>
                     <div class="text-center">
                         <div class="justify-content-center btn-group">
-                            <a class="btn btn-warning" th:if="${machines.metadata.number() > 1}" th:href="@{'/machines/all?page=0'}"
+                            <a class="btn btn-warning" th:if="${machines.page.number() > 1}" th:href="@{'/machines/all?page=0'}"
                                th:text="'<<' + #{paging_first}">{First}</a>
-                            <a class="btn btn-warning" th:if="${machines.metadata.number() > 0}"
-                               th:href="@{'/machines/all?page=' + ${machines.metadata.number() - 1}}"
-                               th:text="${machines.metadata.number()}">{Previous}</a>
-                            <a class="btn btn-warning active" th:href="@{'/machines/all?page=' + ${machines.metadata.number()}}"
-                               th:text="${machines.metadata.number() + 1}">{current}</a>
-                            <a class="btn btn-warning" th:if="${machines.metadata.number() < machines.metadata.totalPages() - 1}"
-                               th:href="@{'/machines/all?page=' + ${machines.metadata.number() + 1}}"
-                               th:text="${machines.metadata.number() + 2}">{Next}</a>
-                            <a class="btn btn-warning" th:if="${machines.metadata.number() < machines.metadata.totalPages() - 2} "
-                               th:href="@{'/machines/all?page=' + ${machines.metadata.totalPages() - 1}}"
+                            <a class="btn btn-warning" th:if="${machines.hasPrevious()}"
+                               th:href="@{'/machines/all?page=' + ${machines.page.number() - 1}}"
+                               th:text="${machines.page.number()}">{Previous}</a>
+                            <a class="btn btn-warning active" th:href="@{'/machines/all?page=' + ${machines.page.number()}}"
+                               th:text="${machines.page.number() + 1}">{current}</a>
+                            <a class="btn btn-warning" th:if="${machines.hasNext()}"
+                               th:href="@{'/machines/all?page=' + ${machines.page.number() + 1}}"
+                               th:text="${machines.page.number() + 2}">{Next}</a>
+                            <a class="btn btn-warning" th:if="${machines.page.number() < machines.page.totalPages() - 2} "
+                               th:href="@{'/machines/all?page=' + ${machines.page.totalPages() - 1}}"
                                th:text="'>>' + #{paging_last}">{Last}</a>
                         </div>
                     </div>

@@ -6,6 +6,7 @@ import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
+import bg.magna.websop.util.CustomPagedModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -36,40 +37,15 @@ public class MachineServiceImpl implements MachineService {
         this.objectMapper = objectMapper;
     }
 
-//    @Override
-//    public PagedModel<ShortMachineDTO> getAll() {
-//        return machineRestClient
-//                .get()
-//                .uri(machinesApiConfig.getBaseUrl() + "/machines/all")
-//                .accept(MediaType.APPLICATION_JSON)
-//                .retrieve()
-//                .body(new ParameterizedTypeReference<PagedModel<ShortMachineDTO>>(){});
-//    }
-
     @Override
-    public PagedModel<ShortMachineDTO> getAll(Pageable pageable) {
+    public CustomPagedModel<ShortMachineDTO> getAll(Pageable pageable) {
         int pageNumber = pageable.getPageNumber();
 
-        String response = machineRestClient.get()
+        return machineRestClient.get()
                 .uri(machinesApiConfig.getBaseUrl() + "/machines/all" + "?page=" + pageNumber)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .body(String.class);
-        PagedModel<ShortMachineDTO> result = null;
-
-        try {
-            result = objectMapper.readValue(response, PagedModel.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to deserialize response", e);
-        }
-
-        return result;
-
-//        try {
-//            return objectMapper.readValue(response, PagedModel.class);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException("Failed to deserialize response", e);
-//        }
+                .body(new ParameterizedTypeReference<CustomPagedModel<ShortMachineDTO>>() {});
     }
 
     @Override

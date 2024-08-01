@@ -6,11 +6,11 @@ import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.MachineService;
+import bg.magna.websop.util.CustomPagedModel;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/machines")
@@ -50,7 +48,8 @@ public class MachinesController {
 
     @GetMapping("/all")
     public String getMachines(Model model, @PageableDefault(size = 6, sort="createdOn", direction = Sort.Direction.DESC) Pageable pageable) {
-        PagedModel<ShortMachineDTO> machines = machineService.getAll(pageable);
+
+        CustomPagedModel<ShortMachineDTO> machines = machineService.getAll(pageable);
         model.addAttribute("machines", machines);
 
         return "machines";
