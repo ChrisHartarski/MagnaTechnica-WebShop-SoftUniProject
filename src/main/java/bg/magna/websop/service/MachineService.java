@@ -22,5 +22,5 @@ public interface MachineService {
 
     FullMachineDTO updateMachine(String id, FullMachineDTO machineDTO);
 
-    boolean initializeMockMachines() throws IOException;
+    void initializeMockMachines() throws IOException;
 }

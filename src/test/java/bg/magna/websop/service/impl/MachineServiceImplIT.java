@@ -5,6 +5,7 @@ import bg.magna.websop.model.dto.machine.AddMachineDTO;
 import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
+import bg.magna.websop.util.CustomPagedModel;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.gson.Gson;
 import com.maciejwalkowiak.wiremock.spring.ConfigureWireMock;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.MediaType;
@@ -53,36 +53,38 @@ public class MachineServiceImplIT {
         wireMockServer.resetAll();
     }
 
-//    @Test
-//    public void testGetAll() {
-//        wireMockServer.stubFor(get("/test-machines/machines/all?page=0")
-//                .willReturn(aResponse()
-//                        .withHeader("Content-Type", "application/json")
-//                        .withBody(getJsonPagedModel())
-//                )
-//        );
-//
-//        PagedModel<ShortMachineDTO> expected = new PagedModel<>(new PageImpl<>(List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2)));
-//        PagedModel<ShortMachineDTO> actual = machineService.getAll(Pageable.ofSize(2));
-//
-//        Assertions.assertEquals(expected.getMetadata().size(), actual.getMetadata().size());
-//
-//        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.getContent().get(0).getId());
-//        Assertions.assertEquals(expected.getContent().get(0).getName(), actual.getContent().get(0).getName());
-//        Assertions.assertEquals(expected.getContent().get(0).getBrandName(), actual.getContent().get(0).getBrandName());
-//        Assertions.assertEquals(expected.getContent().get(0).getYear(), actual.getContent().get(0).getYear());
-//        Assertions.assertEquals(expected.getContent().get(0).getImageURL(), actual.getContent().get(0).getImageURL());
-//        Assertions.assertEquals(expected.getContent().get(0).getDescriptionEn(), actual.getContent().get(0).getDescriptionEn());
-//        Assertions.assertEquals(expected.getContent().get(0).getDescriptionBg(), actual.getContent().get(0).getDescriptionBg());
-//
-//        Assertions.assertEquals(expected.getContent().get(1).getId(), actual.getContent().get(1).getId());
-//        Assertions.assertEquals(expected.getContent().get(1).getName(), actual.getContent().get(1).getName());
-//        Assertions.assertEquals(expected.getContent().get(1).getBrandName(), actual.getContent().get(1).getBrandName());
-//        Assertions.assertEquals(expected.getContent().get(1).getYear(), actual.getContent().get(1).getYear());
-//        Assertions.assertEquals(expected.getContent().get(1).getImageURL(), actual.getContent().get(1).getImageURL());
-//        Assertions.assertEquals(expected.getContent().get(1).getDescriptionEn(), actual.getContent().get(1).getDescriptionEn());
-//        Assertions.assertEquals(expected.getContent().get(1).getDescriptionBg(), actual.getContent().get(1).getDescriptionBg());
-//    }
+    @Test
+    public void testGetAll() {
+        wireMockServer.stubFor(get("/test-machines/machines/all?page=0")
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(getJsonCustomPagedModel())
+                )
+        );
+
+        CustomPagedModel<ShortMachineDTO> expected = new CustomPagedModel<>(List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2),
+                                                                            new PagedModel.PageMetadata(2, 0, 2, 1));
+
+        CustomPagedModel<ShortMachineDTO> actual = machineService.getAll(Pageable.ofSize(2));
+
+        Assertions.assertEquals(expected.getPage().size(), actual.getPage().size());
+
+        Assertions.assertEquals(expected.getContent().getFirst().getId(), actual.getContent().getFirst().getId());
+        Assertions.assertEquals(expected.getContent().getFirst().getName(), actual.getContent().getFirst().getName());
+        Assertions.assertEquals(expected.getContent().getFirst().getBrandName(), actual.getContent().getFirst().getBrandName());
+        Assertions.assertEquals(expected.getContent().getFirst().getYear(), actual.getContent().getFirst().getYear());
+        Assertions.assertEquals(expected.getContent().getFirst().getImageURL(), actual.getContent().getFirst().getImageURL());
+        Assertions.assertEquals(expected.getContent().getFirst().getDescriptionEn(), actual.getContent().getFirst().getDescriptionEn());
+        Assertions.assertEquals(expected.getContent().getFirst().getDescriptionBg(), actual.getContent().getFirst().getDescriptionBg());
+
+        Assertions.assertEquals(expected.getContent().get(1).getId(), actual.getContent().get(1).getId());
+        Assertions.assertEquals(expected.getContent().get(1).getName(), actual.getContent().get(1).getName());
+        Assertions.assertEquals(expected.getContent().get(1).getBrandName(), actual.getContent().get(1).getBrandName());
+        Assertions.assertEquals(expected.getContent().get(1).getYear(), actual.getContent().get(1).getYear());
+        Assertions.assertEquals(expected.getContent().get(1).getImageURL(), actual.getContent().get(1).getImageURL());
+        Assertions.assertEquals(expected.getContent().get(1).getDescriptionEn(), actual.getContent().get(1).getDescriptionEn());
+        Assertions.assertEquals(expected.getContent().get(1).getDescriptionBg(), actual.getContent().get(1).getDescriptionBg());
+    }
 
     @Test
     public void testGetById() {
@@ -228,8 +230,11 @@ public class MachineServiceImplIT {
         return gson.toJson(TEST_ADD_MACHINE_DTO_1);
     }
 
-    private String getJsonPagedModel() {
-        return gson.toJson(new PagedModel<>(new PageImpl<>(List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2))));
+    private String getJsonCustomPagedModel() {
+        List<ShortMachineDTO> content = List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2);
+        PagedModel.PageMetadata page = new PagedModel.PageMetadata(2, 0, 2, 1);
+
+        return gson.toJson(new CustomPagedModel<>(content, page));
     }
 }
 

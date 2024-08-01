@@ -11,8 +11,6 @@ import bg.magna.websop.service.UserService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;

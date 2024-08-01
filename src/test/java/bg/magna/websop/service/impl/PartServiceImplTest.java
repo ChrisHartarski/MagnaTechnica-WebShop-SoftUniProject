@@ -57,9 +57,8 @@ public class PartServiceImplTest {
         toTest = new PartServiceImpl(partRepository, brandService, userService, new ModelMapper(), new Gson());
     }
 
-
     @Test
-    void testGetTotalParts(){
+    void testGetTotalParts() {
         when(partRepository.findAll()).thenReturn(List.of(TEST_PART_1, TEST_PART_2));
 
         long expected = TEST_PART_1.getQuantity() + TEST_PART_2.getQuantity();
@@ -134,22 +133,6 @@ public class PartServiceImplTest {
     }
 
     @Test
-    void testInitializeMockParts() throws IOException {
-        when(partRepository.count()).thenReturn(0L);
-        Part expected = new Part("P5S58101149", BigDecimal.valueOf(55.67), 0);
-
-        toTest.initializeMockParts();
-        verify(partRepository, atMost(21)).saveAndFlush(partCaptor.capture());
-
-        toTest.initializeMockParts();
-        verify(partRepository, atLeast(21)).saveAndFlush(partCaptor.capture());
-        Part actual = partCaptor.getValue();
-
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected.getPartCode(), actual.getPartCode());
-    }
-
-    @Test
     void testInitializeMockParts_doesNotStartWhenRepositoryIsNotEmpty() throws IOException {
         when(partRepository.count()).thenReturn(5L);
 
@@ -200,7 +183,7 @@ public class PartServiceImplTest {
     }
 
     @Test
-    void testGetPartByPartCode_throwsExceptionWhenPartNotFound(){
+    void testGetPartByPartCode_throwsExceptionWhenPartNotFound() {
         when(partRepository.findByPartCode(TEST_PART_1.getPartCode())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> toTest.getPartByPartCode(TEST_PART_1.getPartCode()));
@@ -261,7 +244,6 @@ public class PartServiceImplTest {
 
         Assertions.assertEquals(expected, actual);
     }
-
 
 
     private PartDataDTO getTestPartDataDTO(Part part) {

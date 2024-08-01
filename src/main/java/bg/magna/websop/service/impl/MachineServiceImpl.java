@@ -7,12 +7,9 @@ import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.service.MachineService;
 import bg.magna.websop.service.exception.ResourceNotFoundException;
 import bg.magna.websop.util.CustomPagedModel;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -27,14 +24,12 @@ public class MachineServiceImpl implements MachineService {
     private final RestClient machineRestClient;
     private final MachinesApiConfig machinesApiConfig;
     private final Gson gson;
-    private final ObjectMapper objectMapper;
     private static final String MACHINES_JSON_FILE_PATH = "src/main/resources/data/machines.json";
 
-    public MachineServiceImpl(RestClient machineRestClient, MachinesApiConfig machinesApiConfig, Gson gson, ObjectMapper objectMapper) {
+    public MachineServiceImpl(RestClient machineRestClient, MachinesApiConfig machinesApiConfig, Gson gson) {
         this.machineRestClient = machineRestClient;
         this.machinesApiConfig = machinesApiConfig;
         this.gson = gson;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -45,7 +40,7 @@ public class MachineServiceImpl implements MachineService {
                 .uri(machinesApiConfig.getBaseUrl() + "/machines/all" + "?page=" + pageNumber)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .body(new ParameterizedTypeReference<CustomPagedModel<ShortMachineDTO>>() {});
+                .body(new ParameterizedTypeReference<>() {});
     }
 
     @Override
@@ -99,6 +94,7 @@ public class MachineServiceImpl implements MachineService {
             }
 
             return result;
+
         } else {
             return false;
         }
@@ -120,13 +116,10 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public boolean initializeMockMachines() throws IOException {
+    public void initializeMockMachines() throws IOException {
         if(machineRepositoryEmpty()) {
             Arrays.stream(gson.fromJson(Files.readString(Path.of(MACHINES_JSON_FILE_PATH)), AddMachineDTO[].class))
                     .forEach(this::addMachine);
-            return true;
-        } else {
-            return false;
         }
     }
 

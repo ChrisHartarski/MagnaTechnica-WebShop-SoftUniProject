@@ -6,7 +6,7 @@ import bg.magna.websop.model.dto.machine.ShortMachineDTO;
 import bg.magna.websop.repository.BrandRepository;
 import bg.magna.websop.service.BrandService;
 import bg.magna.websop.service.MachineService;
-import com.google.gson.Gson;
+import bg.magna.websop.util.CustomPagedModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -63,16 +59,17 @@ public class MachinesControllerIT {
         brandRepository.deleteAll();
     }
 
-//    @Test
-//    public void testGetMachines() throws Exception {
-//
-//        when(machineService.getAll(Pageable.ofSize(2))).thenReturn(new PagedModel<>(new PageImpl<>(List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2))));
-//
-//        mockMvc.perform(get("/machines/all"))
-//                .andExpect(status().isOk())
-//                .andExpect(model().attributeExists("machines"))
-//                .andExpect(view().name("machines"));
-//    }
+    @Test
+    public void testGetMachines() throws Exception {
+
+        when(machineService.getAll(any())).thenReturn(new CustomPagedModel<>(List.of(TEST_SHORT_MACHINE_DTO_1, TEST_SHORT_MACHINE_DTO_2),
+                                                                                                    new PagedModel.PageMetadata(2, 0, 2, 1)));
+
+        mockMvc.perform(get("/machines/all"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("machines"))
+                .andExpect(view().name("machines"));
+    }
 
     @Test
     public void testGetMachineDetails() throws Exception {
@@ -145,6 +142,48 @@ public class MachinesControllerIT {
                         .param("moreInfoBg", expected.getMoreInfoBg()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/machines/" + expected.getId()));
+    }
+
+    @Test
+    public void testUpdateMachine_ReturnsIfInputInvalid() throws Exception {
+        FullMachineDTO expected = new FullMachineDTO();
+        expected.setId(TEST_FULL_MACHINE_DTO_1.getId());
+        expected.setSerialNumber(TEST_FULL_MACHINE_DTO_1.getSerialNumber());
+        expected.setName(TEST_FULL_MACHINE_DTO_1.getName());
+        expected.setBrandName(TEST_FULL_MACHINE_DTO_1.getBrandName());
+        expected.setYear(TEST_FULL_MACHINE_DTO_1.getYear());
+        expected.setImageURL(TEST_FULL_MACHINE_DTO_2.getImageURL());
+        expected.setDescriptionEn(TEST_FULL_MACHINE_DTO_2.getDescriptionEn());
+        expected.setDescriptionBg(TEST_FULL_MACHINE_DTO_2.getDescriptionBg());
+        expected.setWorkingWidth(TEST_FULL_MACHINE_DTO_2.getWorkingWidth());
+        expected.setWeight(TEST_FULL_MACHINE_DTO_2.getWeight());
+        expected.setRequiredPower(TEST_FULL_MACHINE_DTO_2.getRequiredPower());
+        expected.setMoreInfoEn(TEST_FULL_MACHINE_DTO_2.getMoreInfoEn());
+        expected.setMoreInfoBg(TEST_FULL_MACHINE_DTO_2.getMoreInfoBg());
+
+        when(machineService.updateMachine(eq(expected.getId()), any())).thenReturn(expected);
+        when(machineService.getById(expected.getId())).thenReturn(expected);
+
+        mockMvc.perform(put("/machines/edit/" + expected.getId())
+                        .with(user("admin@example.com").roles("ADMIN"))
+                        .with(csrf())
+                        .param("id", expected.getId())
+                        .param("serialNumber", expected.getSerialNumber())
+                        .param("name", "")
+                        .param("imageURL", "")
+                        .param("year", String.valueOf(expected.getYear()))
+                        .param("brandName", expected.getBrandName())
+                        .param("descriptionEn", "")
+                        .param("descriptionBg", "")
+                        .param("workingWidth", String.valueOf(expected.getWorkingWidth()))
+                        .param("weight", String.valueOf(expected.getWeight()))
+                        .param("requiredPower", String.valueOf(expected.getRequiredPower()))
+                        .param("moreInfoEn", expected.getMoreInfoEn())
+                        .param("moreInfoBg", expected.getMoreInfoBg()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/machines/edit/" + expected.getId()))
+                .andExpect(flash().attributeExists("modifyMachineData"))
+                .andExpect(flash().attributeExists("org.springframework.validation.BindingResult.modifyMachineData"));
     }
 
     @Test

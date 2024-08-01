@@ -20,8 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/parts")
 public class PartsController {
@@ -45,7 +43,6 @@ public class PartsController {
     @GetMapping("/all")
     public String viewWebShop(Model model, @PageableDefault(size = 8, sort="createdOn", direction = Sort.Direction.DESC) Pageable pageable) {
         PagedModel<ShortPartDataDTO> parts = partService.getPagedParts(pageable);
-//        List<ShortPartDataDTO> parts = partService.getAllShortPartDTOs();
         model.addAttribute("parts", parts);
 
         return "spare_parts";

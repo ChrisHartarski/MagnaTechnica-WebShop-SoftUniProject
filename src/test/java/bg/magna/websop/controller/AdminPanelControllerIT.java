@@ -1,7 +1,5 @@
 package bg.magna.websop.controller;
 
-import bg.magna.websop.model.dto.machine.AddMachineDTO;
-import bg.magna.websop.model.dto.machine.FullMachineDTO;
 import bg.magna.websop.model.entity.*;
 import bg.magna.websop.model.enums.UserRole;
 import bg.magna.websop.repository.*;
@@ -11,7 +9,6 @@ import bg.magna.websop.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,8 +19,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -166,7 +163,6 @@ public class AdminPanelControllerIT {
 
     @Test
     public void testInitializeDB_withoutMachines() throws Exception {
-        when(machineService.initializeMockMachines()).thenReturn(true);
 
         mockMvc.perform(post("/admin-panel/initializeMockDB")
                         .with(user("admin").roles("ADMIN"))
@@ -174,6 +170,8 @@ public class AdminPanelControllerIT {
                 ).andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
 
+
+        verify(machineService, times(1)).initializeMockMachines();
         Assertions.assertEquals(8, brandRepository.count());
         Assertions.assertEquals(21, partRepository.count());
     }
