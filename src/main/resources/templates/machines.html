@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="justify-content-center btn-group">
+                        <div class="justify-content-center btn-group" th:if="${machines.page.totalElements() > 0}">
                             <a class="btn btn-warning" th:if="${machines.page.number() > 1}" th:href="@{'/machines/all?page=0'}"
                                th:text="'<<' + #{paging_first}">{First}</a>
                             <a class="btn btn-warning" th:if="${machines.hasPrevious()}"
