@@ -96,9 +96,13 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public PagedModel<ShortPartDataDTO> getPagedParts(Pageable pageable) {
+    public PagedModel<ShortPartDataDTO> getPagedParts(Pageable pageable, String searchPartCode) {
+        if(searchPartCode == null) {
+            searchPartCode = "";
+        }
+
         return new PagedModel<>(partRepository
-                .findAll(pageable)
+                .findByPartCodeContains(searchPartCode, pageable)
                 .map(part -> modelMapper.map(part, ShortPartDataDTO.class))
         );
     }

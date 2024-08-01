@@ -26,7 +26,7 @@ public interface PartService {
 
     List<ShortPartDataDTO> getAllShortPartDTOs();
 
-    PagedModel<ShortPartDataDTO> getPagedParts(Pageable pageable);
+    PagedModel<ShortPartDataDTO> getPagedParts(Pageable pageable, String searchPartCode);
 
     void initializeMockParts() throws IOException;
 

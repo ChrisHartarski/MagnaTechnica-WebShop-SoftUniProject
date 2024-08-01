@@ -41,9 +41,17 @@ public class PartsController {
     }
 
     @GetMapping("/all")
-    public String viewWebShop(Model model, @PageableDefault(size = 8, sort="createdOn", direction = Sort.Direction.DESC) Pageable pageable) {
-        PagedModel<ShortPartDataDTO> parts = partService.getPagedParts(pageable);
+    public String viewWebShop(Model model,
+                              @RequestParam(value = "searchPartCode", required = false) String searchPartCode,
+                              @PageableDefault(size = 8, sort="createdOn", direction = Sort.Direction.DESC) Pageable pageable,
+                              RedirectAttributes redirectAttributes) {
+
+        if(searchPartCode == null) {
+            searchPartCode = "";
+        }
+        PagedModel<ShortPartDataDTO> parts = partService.getPagedParts(pageable, searchPartCode);
         model.addAttribute("parts", parts);
+        model.addAttribute("searchPartCode", searchPartCode);
 
         return "spare_parts";
     }

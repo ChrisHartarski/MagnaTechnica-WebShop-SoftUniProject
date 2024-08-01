@@ -25,6 +25,24 @@
             <div class="text-center mb-5">
                 <h1 class="fw-bolder" th:text="#{webshop_title}">Spare parts</h1>
             </div>
+            <!--            Part Search-->
+            <div class="text-center mb-5">
+                <form
+                        th:action="@{/parts/all}">
+                    <div class="form-floating text-center align-items-center mb-3 row">
+                        <div class="col-6">
+                            <input class="form-control" id="searchPartCode" th:name="searchPartCode" type="text"
+                                   th:placeholder="#{webshop_search_part_code}" th:value="${param.searchPartCode}"/>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-warning" id="searchButton" type="submit"
+                                    th:text="#{webshop_search_button}">Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--            All Parts-->
             <div class="row row-cols-lg-4 gx-5">
                 <div th:each="part : ${parts.getContent()}" class="col mb-5">
                     <div class="card h-100 shadow border-0">
@@ -122,20 +140,23 @@
                     </div>
                 </div>
             </div>
+
             <div class="text-center" th:if="${parts.metadata.totalElements() > 0}">
                 <div class="justify-content-center btn-group">
-                    <a class="btn btn-warning" th:if="${parts.metadata.number() > 1}" th:href="@{'/parts/all?page=0'}"
+                    <a class="btn btn-warning" th:if="${parts.metadata.number() > 1}"
+                       th:href="@{'/parts/all?page=0&searchPartCode=' + ${searchPartCode}}"
                        th:text="'<<' + #{paging_first}">{First}</a>
                     <a class="btn btn-warning" th:if="${parts.metadata.number() > 0}"
-                       th:href="@{'/parts/all?page=' + ${parts.metadata.number() - 1}}"
+                       th:href="@{'/parts/all?page=' + ${parts.metadata.number() - 1} + '&searchPartCode=' + ${searchPartCode}}"
                        th:text="${parts.metadata.number()}">{Previous}</a>
-                    <a class="btn btn-warning active" th:href="@{'/parts/all?page=' + ${parts.metadata.number()}}"
+                    <a class="btn btn-warning active"
+                       th:href="@{'/parts/all?page=' + ${parts.metadata.number()} + '&searchPartCode=' + ${searchPartCode}}"
                        th:text="${parts.metadata.number() + 1}">{current}</a>
                     <a class="btn btn-warning" th:if="${parts.metadata.number() < parts.metadata.totalPages() - 1}"
-                       th:href="@{'/parts/all?page=' + ${parts.metadata.number() + 1}}"
+                       th:href="@{'/parts/all?page=' + ${parts.metadata.number() + 1} + '&searchPartCode=' + ${searchPartCode}}"
                        th:text="${parts.metadata.number() + 2}">{Next}</a>
                     <a class="btn btn-warning" th:if="${parts.metadata.number() < parts.metadata.totalPages() - 2} "
-                       th:href="@{'/parts/all?page=' + ${parts.metadata.totalPages() - 1}}"
+                       th:href="@{'/parts/all?page=' + ${parts.metadata.totalPages() - 1} + '&searchPartCode=' + ${searchPartCode}}"
                        th:text="'>>' + #{paging_last}">{Last}</a>
                 </div>
             </div>
