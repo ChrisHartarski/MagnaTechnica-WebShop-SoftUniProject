@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addAdminUser() {
-        encodePassAndSaveUserToDB(new UserEntity("admin@example.com", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd.")));
+        encodePassAndSaveUserToDB(new UserEntity("admin@example.com", "asdasd", "admin", "admin", UserRole.ADMIN, companyService.getCompanyByName("Magna Technica Ltd."), "0888123456"));
     }
 
     @Override
     public void addFirstUser() {
-        encodePassAndSaveUserToDB(new UserEntity("user01@example.com", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1")));
+        encodePassAndSaveUserToDB(new UserEntity("user01@example.com", "asdasd", "user01", "user01", UserRole.USER, companyService.getCompanyByName("Company 1"), "0888888888"));
     }
 
     @Override

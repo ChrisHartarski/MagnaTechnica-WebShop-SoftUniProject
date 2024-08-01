@@ -52,7 +52,7 @@ public class UserEntity {
         this.orders = new ArrayList<>();
     }
 
-    public UserEntity(String email, String password, String firstName, String lastName, UserRole userRole, Company company) {
+    public UserEntity(String email, String password, String firstName, String lastName, UserRole userRole, Company company, String phone) {
         super();
         this.email = email;
         this.password = password;
@@ -60,6 +60,7 @@ public class UserEntity {
         this.lastName = lastName;
         this.userRole = userRole;
         this.company = company;
+        this.phone = phone;
     }
 
     public UserEntity(String id, String email, String password, String firstName, String lastName, String phone, UserRole userRole, Map<Part, Integer> cart, List<Order> orders, Company company) {
