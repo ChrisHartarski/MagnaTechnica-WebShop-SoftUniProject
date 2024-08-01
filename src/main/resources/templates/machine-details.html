@@ -82,15 +82,16 @@
                     <div class="mt-3 align-items-center" sec:authorize="hasRole('USER')">
                         <a class="btn btn-warning" th:href="@{/machines/enquiries/{id}(id=${machine.id})}" th:text="#{machines_make_enquiry_button}">Make Enquiry</a>
                     </div>
-                    <div class="mt-3 align-items-center justify-content-between row" sec:authorize="hasRole('ADMIN')">
-                        <div class="col-6">
+
+                    <div class="mt-3 align-items-center row" sec:authorize="hasRole('ADMIN')">
+                        <div class="col-1">
                             <form
                                     th:action="@{/machines/edit/{id}(id=${machine.id})}"
                                     th:method="get">
                                 <button class="btn btn-warning" type="submit" th:text="#{webshop_part_modify_button}">Modify</button>
                             </form>
                         </div>
-                        <div class="col-6">
+                        <div class="col-1">
                             <form
                                     th:action="@{/machines/{id}(id=${machine.id})}"
                                     th:method="delete">
