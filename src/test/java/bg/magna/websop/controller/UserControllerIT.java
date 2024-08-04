@@ -80,7 +80,8 @@ public class UserControllerIT {
                         .param("companyName", user.getCompany().getName())
                         .param("phone", user.getPhone()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/users/login"));
+                .andExpect(redirectedUrl("/users/login"))
+                .andExpect(flash().attribute("userRegistered", true));
 
         Assertions.assertEquals(3, userRepository.count());
 
@@ -266,7 +267,8 @@ public class UserControllerIT {
                     .param("companyName", user.getCompany().getName())
                     .param("phone", "0123456789"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("userEdited", true));
 
         UserEntity actual = userRepository.findByEmail(user.getEmail()).orElse(null);
         Assertions.assertNotNull(actual);
@@ -340,7 +342,8 @@ public class UserControllerIT {
                         .with(csrf())
                         .param("email", "newEmail@example.com"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("userEdited", true));
 
         UserEntity actual = userRepository.findById(userId).orElse(null);
         Assertions.assertNotNull(actual);
@@ -406,7 +409,8 @@ public class UserControllerIT {
                         .param("password", "newPassword_123")
                         .param("confirmPassword", "newPassword_123"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("userEdited", true));
 
         UserEntity actual = userRepository.findByEmail(newUser.getEmail()).orElse(null);
         Assertions.assertNotNull(actual);

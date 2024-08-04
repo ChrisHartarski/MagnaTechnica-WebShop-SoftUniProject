@@ -83,7 +83,8 @@ public class EnquiryControllerIT {
                         .param("title", expected.getTitle())
                         .param("message", expected.getMessage()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/machines"));
+                .andExpect(redirectedUrl("/machines/all"))
+                .andExpect(flash().attribute("enquiryCreated", true));
 
         Enquiry actual = enquiryRepository.findAll().getFirst();
 

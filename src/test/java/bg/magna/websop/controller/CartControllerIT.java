@@ -95,7 +95,8 @@ public class CartControllerIT {
                         .param("deliveryAddress", "address")
                         .param("notes", "some notes"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("orderCreated", true));
 
 
         //added correct order

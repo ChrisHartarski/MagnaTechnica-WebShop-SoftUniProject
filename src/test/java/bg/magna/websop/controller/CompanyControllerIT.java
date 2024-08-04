@@ -66,7 +66,8 @@ public class CompanyControllerIT {
                         .param("phone", testCompany.getPhone())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/users/register"));
+                .andExpect(redirectedUrl("/users/register"))
+                .andExpect(flash().attribute("companyCreated", true));
 
         Company actual = companyRepository.findByName(testCompany.getName()).orElse(null);
 

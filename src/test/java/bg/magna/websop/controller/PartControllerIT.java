@@ -103,7 +103,8 @@ public class PartControllerIT {
                         .param("suitableFor", part1.getSuitableFor())
                         .param("moreInfo", part1.getMoreInfo()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin-panel"));
+                .andExpect(redirectedUrl("/admin-panel"))
+                .andExpect(flash().attribute("partCreated", true));
 
         Assertions.assertEquals(1, partRepository.count());
         Part actual = partRepository.findByPartCode(part1.getPartCode()).orElse(null);
@@ -278,7 +279,8 @@ public class PartControllerIT {
                         .param("suitableFor", part1.getSuitableFor())
                         .param("moreInfo", part1.getMoreInfo()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/parts/" + part1.getPartCode()));
+                .andExpect(redirectedUrl("/parts/" + part1.getPartCode()))
+                .andExpect(flash().attribute("partUpdated", true));
 
         Assertions.assertEquals(1, partRepository.count());
         Part actual = partRepository.findByPartCode(part1.getPartCode()).orElse(null);

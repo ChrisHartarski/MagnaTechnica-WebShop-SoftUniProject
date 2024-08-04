@@ -125,7 +125,8 @@ public class AdminPanelControllerIT {
                         .param("name", TEST_BRAND.getName())
                         .param("logoURL", TEST_BRAND.getLogoURL())
         ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin-panel"));
+                .andExpect(redirectedUrl("/admin-panel"))
+                .andExpect(flash().attribute("brandCreated",true));
 
         Optional<Brand> brandOpt = brandRepository.findByName(TEST_BRAND.getName());
 

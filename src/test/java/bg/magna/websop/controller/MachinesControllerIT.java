@@ -89,7 +89,7 @@ public class MachinesControllerIT {
                         .with(user("admin@example.com").roles("ADMIN"))
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/machines"));
+                .andExpect(redirectedUrl("/machines/all"));
     }
 
     @Test
@@ -141,7 +141,8 @@ public class MachinesControllerIT {
                         .param("moreInfoEn", expected.getMoreInfoEn())
                         .param("moreInfoBg", expected.getMoreInfoBg()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/machines/" + expected.getId()));
+                .andExpect(redirectedUrl("/machines/" + expected.getId()))
+                .andExpect(flash().attribute("machineUpdated", true));
     }
 
     @Test
@@ -217,7 +218,8 @@ public class MachinesControllerIT {
                         .param("moreInfoEn", TEST_ADD_MACHINE_DTO_1.getMoreInfoEn())
                         .param("moreInfoBg", TEST_ADD_MACHINE_DTO_1.getMoreInfoBg()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/machines"));
+                .andExpect(redirectedUrl("/machines/all"))
+                .andExpect(flash().attribute("machineCreated", true));
     }
 
     @Test
