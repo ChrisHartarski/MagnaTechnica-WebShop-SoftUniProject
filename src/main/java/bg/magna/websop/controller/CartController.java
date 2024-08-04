@@ -59,6 +59,8 @@ public class CartController {
         }
 
         orderService.addOrder(orderData, user.getId());
+        redirectAttributes.addFlashAttribute("orderCreated", true);
+
         partService.removeQuantitiesFromParts(user.getCart());
         userService.emptyUserCart(user);
 

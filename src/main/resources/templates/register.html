@@ -17,6 +17,18 @@
     <body class="d-flex flex-column">
         <header th:replace="~{fragments/navbar::navbar(activeLink=${'register'})}"></header>
         <main class="flex-shrink-0">
+            <!--            <Notification Messages>-->
+            <section>
+                <!--        Add Company Message-->
+                <div class="container-fluid row text-center justify-content-center mt-4" th:if="${companyCreated}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{add_company_message}">Company added successfully!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Page content-->
             <section class="py-5">
                 <div class="container px-5">

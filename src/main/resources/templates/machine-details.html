@@ -18,6 +18,17 @@
     <body class="d-flex flex-column h-100">
         <header th:replace="~{fragments/navbar}"></header>
         <main class="flex-shrink-0">
+            <!--            <Notification Messages>-->
+            <section>
+                <!--        Edit Machine Message-->
+                <div class="container-fluid row text-center justify-content-center mt-4" th:if="${machineUpdated}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{edit_machine_message}">Machine edited successfully!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- Part Details Section -->
             <section class="py-5">

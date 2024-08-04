@@ -54,6 +54,7 @@ public class CompanyController {
         }
 
         companyService.addCompany(companyData);
+        redirectAttributes.addFlashAttribute("companyCreated", true);
         return "redirect:/users/register";
     }
 }

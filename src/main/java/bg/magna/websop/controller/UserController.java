@@ -79,6 +79,7 @@ public class UserController {
         }
 
         userService.registerUser(userData);
+        redirectAttributes.addFlashAttribute("userRegistered", true);
         return "redirect:/users/login";
     }
 
@@ -124,6 +125,7 @@ public class UserController {
 
         String userId = userService.getUserByEmail(userDetails.getUsername()).getId();
         userService.editUserData(userData, userId);
+        redirectAttributes.addFlashAttribute("userEdited", true);
         return "redirect:/";
     }
 
@@ -156,7 +158,7 @@ public class UserController {
 
         String userId = userService.getUserByEmail(userDetails.getUsername()).getId();
         userService.editUserEmail(userData, userId);
-
+        redirectAttributes.addFlashAttribute("userEdited", true);
         return "redirect:/";
     }
 
@@ -193,7 +195,7 @@ public class UserController {
         }
 
         userService.editUserPassword(userPasswordData, user.getId());
-
+        redirectAttributes.addFlashAttribute("userEdited", true);
         return "redirect:/";
     }
 }

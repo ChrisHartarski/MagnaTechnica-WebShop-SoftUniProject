@@ -1,117 +1,150 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Magna Technica Ltd. Web Shop" />
-        <meta name="author" content="Christopher Hartarski" />
-        <title>Magna Technica WebShop</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css" rel="stylesheet" />
-    </head>
-    <body class="d-flex flex-column h-100">
-        <header th:replace="~{fragments/navbar::navbar(activeLink=${'admin_panel'})}"></header>
-        <main class="flex-shrink-0">
-<!--        <Header>-->
-            <section class="py-5">
-                <div class="container px-5">
-                    <div class="text-center mb-5">
-                        <h1 class="fw-bolder" th:text="#{admin_panel_title}">Administration Panel</h1>
-                    </div>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Magna Technica Ltd. Web Shop"/>
+    <meta name="author" content="Christopher Hartarski"/>
+    <title>Magna Technica WebShop</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico"/>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet"/>
+</head>
+<body class="d-flex flex-column h-100">
+<header th:replace="~{fragments/navbar::navbar(activeLink=${'admin_panel'})}"></header>
+<main class="flex-shrink-0">
+
+<!--            <Notification Messages>-->
+    <section>
+<!--        Add Brand Message-->
+        <div class="container-fluid row text-center justify-content-center mt-4" th:if="${brandCreated}">
+            <div class="card bg-success col-4">
+                <div class="card-text mt-3">
+                    <p class="text-light" th:text="#{add_brand_message}">Brand added successfully!</p>
                 </div>
-            </section>
+            </div>
+        </div>
+<!--        Add Part Message-->
+        <div class="container-fluid row text-center justify-content-center mt-4" th:if="${partCreated}">
+            <div class="card bg-success col-4">
+                <div class="card-text mt-3">
+                    <p class="text-light" th:text="#{add_part_message}">Part added successfully!</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!--        <Actions panel>-->
-            <section class="py-5">
-                <div class="bg-light rounded-3 py-3 px-2 px-md-5 mb-2" id="actions-panel">
-                    <div class="text mb-2">
-                        <h3 class="fw-bolder" th:text="#{admin_panel_actions_title}">Admin actions</h3>
-                    </div>
+    <!--        <Header>-->
+    <section class="py-5">
+        <div class="container px-5">
+            <div class="text-center">
+                <h1 class="fw-bolder" th:text="#{admin_panel_title}">Administration Panel</h1>
+            </div>
+        </div>
+    </section>
 
-                    <ul class="ms-auto mb-2 mb-lg-0">
-                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/users/register}" th:text="#{admin_register_user_button}">Register User</a></li>
-                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/brands/add}" th:text="#{admin_add_brand_button}">Add Brand</a></li>
-                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/machines/add}" th:text="#{admin_add_machine_button}">Add Machine</a></li>
-                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/parts/add}" th:text="#{admin_add_part_button}">Add Part</a></li>
-                        <li class="list-inline-item nav-tabs m-2">
-                            <form th:action="@{/admin-panel/initializeMockDB}" th:method="post">
-                                <button class="btn btn-link nav-link" type="submit" th:text="#{admin_initialize_mock_db}">Initialize Mock DB</button>
-                            </form>
+    <!--        <Actions panel>-->
+    <section class="py-5">
+        <div class="bg-light rounded-3 py-3 px-2 px-md-5 mb-2" id="actions-panel">
+            <div class="text mb-2">
+                <h3 class="fw-bolder" th:text="#{admin_panel_actions_title}">Admin actions</h3>
+            </div>
+
+            <ul class="ms-auto mb-2 mb-lg-0">
+                <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/users/register}"
+                                                             th:text="#{admin_register_user_button}">Register User</a>
+                </li>
+                <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/brands/add}"
+                                                             th:text="#{admin_add_brand_button}">Add Brand</a></li>
+                <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/machines/add}"
+                                                             th:text="#{admin_add_machine_button}">Add Machine</a></li>
+                <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/parts/add}"
+                                                             th:text="#{admin_add_part_button}">Add Part</a></li>
+                <li class="list-inline-item nav-tabs m-2">
+                    <form th:action="@{/admin-panel/initializeMockDB}" th:method="post">
+                        <button class="btn btn-link nav-link" type="submit" th:text="#{admin_initialize_mock_db}">
+                            Initialize Mock DB
+                        </button>
+                    </form>
+                </li>
+                <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link"
+                                                             th:href="@{/machines/enquiries/all}"
+                                                             th:text="#{admin_view_enquiries_button}">View All
+                    Enquiries</a></li>
+                <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/orders/all}"
+                                                             th:text="#{admin_view_orders_button}">View All Orders</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!--        <Data panel>-->
+    <section class="py-5">
+        <div class="py-1 px-4 px-md-5 mb-2" id="data-panel">
+            <div class="text mb-5">
+                <h3 class="fw-bolder" th:text="#{admin_data_title}">Admin data</h3>
+            </div>
+            <div class="row gx-2 row-cols-2 row-cols-lg-2 justify-content-center">
+                <div class="col">
+                    <h5 class="fw-bolder" th:text="#{admin_users_data_title}">Users Data</h5>
+                    <ul>
+                        <li>
+                            <span th:text="#{admin_users_count} + ': '">Users count: </span>
+                            <span th:text="${usersCount}"></span>
                         </li>
-                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/machines/enquiries/all}" th:text="#{admin_view_enquiries_button}">View All Enquiries</a></li>
-                        <li class="list-inline-item nav-tabs m-2"><a class="nav-link btn-link" th:href="@{/orders/all}" th:text="#{admin_view_orders_button}">View All Orders</a></li>
+                        <li>
+                            <span th:text="#{admin_admin_roles_count} + ': '">Admin roles: </span>
+                            <span th:text="${adminRolesCount}"></span>
+                        </li>
+                        <li>
+                            <span th:text="#{admin_user_roles_count} + ': '">User roles: </span>
+                            <span th:text="${userRolesCount}"></span>
+                        </li>
                     </ul>
                 </div>
-            </section>
-<!--        <Data panel>-->
-            <section class="py-5">
-                <div class="py-1 px-4 px-md-5 mb-2" id="data-panel">
-                    <div class="text mb-5">
-                        <h3 class="fw-bolder" th:text="#{admin_data_title}">Admin data</h3>
-                    </div>
-                    <div class="row gx-2 row-cols-2 row-cols-lg-2 justify-content-center">
-                        <div class="col">
-                            <h5 class="fw-bolder" th:text="#{admin_users_data_title}">Users Data</h5>
-                            <ul>
-                                <li>
-                                    <span th:text="#{admin_users_count} + ': '">Users count: </span>
-                                    <span th:text="${usersCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_admin_roles_count} + ': '">Admin roles: </span>
-                                    <span th:text="${adminRolesCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_user_roles_count} + ': '">User roles: </span>
-                                    <span th:text="${userRolesCount}"></span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <h5 class="fw-bolder" th:text="#{admin_parts_data_title}">Parts Data</h5>
-                            <ul>
-                                <li>
-                                    <span th:text="#{admin_parts_brands_count} + ': '">Brands count: </span>
-                                    <span th:text="${brandsCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_parts_articles_count} + ': '">Part articles count: </span>
-                                    <span th:text="${partArticlesCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_total_parts_count} + ': '">Total parts count: </span>
-                                    <span th:text="${totalPartsCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_awaiting_orders_count} + ': '">Awaiting orders count: </span>
-                                    <span th:text="${awaitingOrdersCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_dispatched_orders_count} + ': '">Dispatched orders count: </span>
-                                    <span th:text="${dispatchedOrdersCount}"></span>
-                                </li>
-                                <li>
-                                    <span th:text="#{admin_delivered_orders_count} + ': '">Delivered orders count: </span>
-                                    <span th:text="${deliveredOrdersCount}"></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="col">
+                    <h5 class="fw-bolder" th:text="#{admin_parts_data_title}">Parts Data</h5>
+                    <ul>
+                        <li>
+                            <span th:text="#{admin_parts_brands_count} + ': '">Brands count: </span>
+                            <span th:text="${brandsCount}"></span>
+                        </li>
+                        <li>
+                            <span th:text="#{admin_parts_articles_count} + ': '">Part articles count: </span>
+                            <span th:text="${partArticlesCount}"></span>
+                        </li>
+                        <li>
+                            <span th:text="#{admin_total_parts_count} + ': '">Total parts count: </span>
+                            <span th:text="${totalPartsCount}"></span>
+                        </li>
+                        <li>
+                            <span th:text="#{admin_awaiting_orders_count} + ': '">Awaiting orders count: </span>
+                            <span th:text="${awaitingOrdersCount}"></span>
+                        </li>
+                        <li>
+                            <span th:text="#{admin_dispatched_orders_count} + ': '">Dispatched orders count: </span>
+                            <span th:text="${dispatchedOrdersCount}"></span>
+                        </li>
+                        <li>
+                            <span th:text="#{admin_delivered_orders_count} + ': '">Delivered orders count: </span>
+                            <span th:text="${deliveredOrdersCount}"></span>
+                        </li>
+                    </ul>
                 </div>
-            </section>
-        </main>
+            </div>
+        </div>
+    </section>
+</main>
 
-        <!-- Footer-->
-        <footer th:replace="~{fragments/footer}"></footer>
+<!-- Footer-->
+<footer th:replace="~{fragments/footer}"></footer>
 
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="/js/scripts.js"></script>
-    </body>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
+</body>
 </html>

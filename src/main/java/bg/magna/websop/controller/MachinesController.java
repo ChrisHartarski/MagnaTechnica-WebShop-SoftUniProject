@@ -72,7 +72,7 @@ public class MachinesController {
                 .anyMatch(role -> role.equals("ROLE_ADMIN"))) {
             boolean result = machineService.deleteById(id);
         }
-        return "redirect:/machines";
+        return "redirect:/machines/all";
     }
 
     @GetMapping("/edit/{id}")
@@ -98,6 +98,7 @@ public class MachinesController {
         }
 
         FullMachineDTO result = machineService.updateMachine(id, machineDTO);
+        redirectAttributes.addFlashAttribute("machineUpdated", true);
         return "redirect:/machines/" + result.getId();
     }
 
@@ -127,6 +128,7 @@ public class MachinesController {
         }
 
         machineService.addMachine(addMachineDTO);
-        return "redirect:/machines";
+        redirectAttributes.addFlashAttribute("machineCreated", true);
+        return "redirect:/machines/all";
     }
 }

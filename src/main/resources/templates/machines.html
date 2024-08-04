@@ -18,6 +18,26 @@
     <body class="d-flex flex-column h-100">
         <header th:replace="~{fragments/navbar::navbar(activeLink=${'machines'})}"></header>
         <main class="flex-shrink-0">
+            <!--            <Notification Messages>-->
+            <section>
+                <!--        Add Machine Message-->
+                <div class="container-fluid row text-center justify-content-center mt-4" th:if="${machineCreated}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{add_machine_message}">Machine added successfully!</p>
+                        </div>
+                    </div>
+                </div>
+                <!--        Add Enquiry Message-->
+                <div class="container-fluid row text-center justify-content-center mt-4" th:if="${enquiryCreated}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{add_machine_enquiry_message}">Enquiry sent successfully!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
 
             <!-- Parts section -->
             <section class="py-5">

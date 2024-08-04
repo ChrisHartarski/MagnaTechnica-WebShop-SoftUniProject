@@ -17,6 +17,25 @@
     <body class="d-flex flex-column h-100">
         <header th:replace="~{fragments/navbar::navbar(activeLink=${'home'})}"></header>
         <main class="flex-shrink-0">
+            <!--            <Notification Messages>-->
+            <section class="bg-dark">
+                <!--        Edit User Message-->
+                <div class="container-fluid row text-center justify-content-center pt-4" th:if="${userEdited}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{edit_user_message}">User details updated successfully!</p>
+                        </div>
+                    </div>
+                </div>
+                <!--        Order Placed Message-->
+                <div class="container-fluid row text-center justify-content-center pt-4" th:if="${orderCreated}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{add_order_message}">Order placed successfully!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- Header-->
             <header class="bg-dark py-5">

@@ -77,6 +77,7 @@ public class AdminPanelController {
         }
 
         brandService.addBrand(brandData.getName(), brandData.getLogoURL());
+        redirectAttributes.addFlashAttribute("brandCreated", true);
         return "redirect:/admin-panel";
     }
 

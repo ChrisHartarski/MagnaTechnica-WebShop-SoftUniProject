@@ -51,7 +51,8 @@ public class EnquiryController {
         enquiryData.setMachineId(id);
         enquiryData.setUserId(currentUser.getId());
         enquiryService.addEnquiry(enquiryData);
-        return "redirect:/machines";
+        redirectAttributes.addFlashAttribute("enquiryCreated", true);
+        return "redirect:/machines/all";
     }
 
     @GetMapping("/all")

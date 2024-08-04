@@ -16,6 +16,18 @@
     <body class="d-flex flex-column">
         <header th:replace="~{fragments/navbar::navbar(activeLink=${'login'})}"></header>
         <main class="flex-shrink-0">
+            <!--            <Notification Messages>-->
+            <section>
+                <!--        Registered User Message-->
+                <div class="container-fluid row text-center justify-content-center mt-4" th:if="${userRegistered}">
+                    <div class="card bg-success col-4">
+                        <div class="card-text mt-3">
+                            <p class="text-light" th:text="#{register_user_message}">User registered successfully!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Page content-->
             <section class="py-5">
                 <div class="container px-5">

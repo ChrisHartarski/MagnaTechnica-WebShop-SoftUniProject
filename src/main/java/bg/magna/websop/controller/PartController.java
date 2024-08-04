@@ -22,13 +22,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/parts")
-public class PartsController {
+public class PartController {
     private final UserService userService;
     private final BrandService brandService;
     private final PartService partService;
     private final OrderService orderService;
 
-    public PartsController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
+    public PartController(UserService userService, BrandService brandService, PartService partService, OrderService orderService) {
         this.userService = userService;
         this.brandService = brandService;
         this.partService = partService;
@@ -82,6 +82,7 @@ public class PartsController {
         }
 
         partService.addPart(partData);
+        redirectAttributes.addFlashAttribute("partCreated", true);
         return "redirect:/admin-panel";
     }
 
@@ -134,6 +135,7 @@ public class PartsController {
         }
 
         partService.editPart(partData);
+        redirectAttributes.addFlashAttribute("partUpdated", true);
 
         return "redirect:/parts/" + partCode;
     }
