@@ -56,7 +56,7 @@
                     <div class="row gx-5 mt-3">
                         <div class="col-3 fw-bold" th:text="#{machine_technical_data} + ': '">Technical Data: </div>
                         <div th:if="${#locale.toString() == 'en_US'}" class="col-8" th:text="${machine.descriptionEn}">{machine Description}</div>
-                        <div th:if="${#locale.toString() == 'bg_BG'}"class="col-8" th:text="${machine.descriptionBg}">{machine Description}</div>
+                        <div th:if="${#locale.toString() == 'bg_BG'}" class="col-8" th:text="${machine.descriptionBg}">{machine Description}</div>
                     </div>
                     <div class="row gx-5">
                         <div class="col-3" th:text="#{machine_year} + ': '">Year: </div>

@@ -121,9 +121,6 @@ public class EnquiryControllerIT {
         FullMachineDTO testMachineDTO = createTestFullMachineDTO("machineId");
         when(machineService.getById(testMachineDTO.getId())).thenReturn(testMachineDTO);
 
-        Enquiry testEnquiry = createTestEnquiryAndSaveToDB(user);
-        FullEnquiryDTO fullEnquiryDTO = modelMapper.map(testEnquiry, FullEnquiryDTO.class);
-
         mockMvc.perform(get("/machines/enquiries/all")
                         .with(user(user.getEmail()).roles("ADMIN"))
                         .with(csrf()))

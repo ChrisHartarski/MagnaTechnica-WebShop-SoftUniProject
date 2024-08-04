@@ -55,7 +55,7 @@
                     <div class="row gx-5">
                         <div class="col-2" th:text="#{part_description} + ': '">Description: </div>
                         <div th:if="${#locale.toString() == 'en_US'}" class="col-8" th:text="${part.descriptionEn}">{part Description}</div>
-                        <div th:if="${#locale.toString() == 'bg_BG'}"class="col-8" th:text="${part.descriptionBg}">{part Description}</div>
+                        <div th:if="${#locale.toString() == 'bg_BG'}" class="col-8" th:text="${part.descriptionBg}">{part Description}</div>
                     </div>
                     <div class="row gx-5">
                         <div class="col-2" th:text="#{part_size} + ': '">Size: </div>
