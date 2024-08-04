@@ -284,9 +284,9 @@ public class UserServiceImplTest {
     @Test
     void testEditUserEmail() {
         UserEmailDTO testUserEmailDTO = new UserEmailDTO("newMail@example.com");
-        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
 
-        toTest.editUserEmail(testUserEmailDTO, TEST_USER_1.getEmail());
+        toTest.editUserEmail(testUserEmailDTO, TEST_USER_1.getId());
         verify(userRepository).saveAndFlush(userCaptor.capture());
         UserEntity actual = userCaptor.getValue();
 
@@ -297,9 +297,9 @@ public class UserServiceImplTest {
     @Test
     void testEditUserPassword() {
         UserPasswordDTO testUserPasswordDTO = new UserPasswordDTO(TEST_USER_1.getEmail(), TEST_USER_1.getPassword(), "newPassword", "newPassword");
-        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
 
-        toTest.editUserPassword(testUserPasswordDTO, TEST_USER_1.getEmail());
+        toTest.editUserPassword(testUserPasswordDTO, TEST_USER_1.getId());
         verify(userRepository).saveAndFlush(userCaptor.capture());
         UserEntity actual = userCaptor.getValue();
 
@@ -316,14 +316,14 @@ public class UserServiceImplTest {
 
     private UserDTO getUserDTOFromUserEntity(UserEntity user) {
         return new UserDTO(
-                TEST_USER_1.getEmail(),
-                TEST_USER_1.getPassword(),
-                TEST_USER_1.getPassword(),
-                TEST_USER_1.getFirstName(),
-                TEST_USER_1.getLastName(),
-                TEST_COMPANY.getName(),
-                TEST_USER_1.getPhone(),
-                UserRole.USER);
+                user.getEmail(),
+                user.getPassword(),
+                user.getPassword(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getCompany().getName(),
+                user.getPhone(),
+                user.getUserRole());
     }
 
 }

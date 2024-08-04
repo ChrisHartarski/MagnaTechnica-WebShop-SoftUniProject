@@ -108,15 +108,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserEmail(UserEmailDTO userData, String userEmail) {
-        UserEntity user = getUserByEmail(userEmail);
+    public void editUserEmail(UserEmailDTO userData, String userId) {
+        UserEntity user = getUserById(userId);
         modelMapper.map(userData, user);
         saveUserToDB(user);
     }
 
     @Override
-    public void editUserPassword(UserPasswordDTO userData, String userEmail) {
-        UserEntity user = getUserByEmail(userEmail);
+    public void editUserPassword(UserPasswordDTO userData, String userId) {
+        UserEntity user = getUserById(userId);
         user.setPassword(userData.getPassword());
         encodePassAndSaveUserToDB(user);
     }

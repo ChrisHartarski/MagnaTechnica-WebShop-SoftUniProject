@@ -33,9 +33,9 @@ public interface UserService {
 
     void editUserData(EditUserDTO userData, String userEmail);
 
-    void editUserEmail(UserEmailDTO userData, String userEmail);
+    void editUserEmail(UserEmailDTO userData, String userId);
 
-    void editUserPassword(UserPasswordDTO userData, String userEmail);
+    void editUserPassword(UserPasswordDTO userData, String userId);
 
     void emptyUserCart(UserEntity user);
 }

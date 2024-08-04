@@ -44,19 +44,19 @@
 
                                     <!-- First Name input-->
                                     <div class="form-floating mb-3 mt-3">
-                                        <input class="form-control" id="firstName" type="text" placeholder="Enter your first name..." th:field="*{firstName}"/>
+                                        <input class="form-control" id="firstName" type="text" maxlength="40" minlength="2" placeholder="Enter your first name..." th:field="*{firstName}" required/>
                                         <label for="firstName" th:text="#{register_first_name}">First name</label>
                                         <small th:errors="*{firstName}" class="text-danger">First name input errors!</small>
                                     </div>
                                     <!-- Last Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="lastName" type="text" placeholder="Enter your last name..." th:field="*{lastName}"/>
+                                        <input class="form-control" id="lastName" type="text" maxlength="40" minlength="2" placeholder="Enter your last name..." th:field="*{lastName}" required/>
                                         <label for="lastName" th:text="#{register_last_name}">Last name</label>
                                         <small th:errors="*{lastName}" class="text-danger">Last name input errors!</small>
                                     </div>
                                     <!-- Company Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="companyName" type="text" placeholder="Enter company name..." th:field="*{companyName}"/>
+                                        <input class="form-control" id="companyName" type="text" maxlength="40" minlength="2" placeholder="Enter company name..." th:field="*{companyName}" required/>
                                         <label for="companyName" th:text="#{register_company_name}">Company name</label>
                                         <small th:errors="*{companyName}" class="text-danger">Company name input errors!</small>
                                         <small th:if="${companyDoesNotExist}" class="text-danger">
@@ -67,7 +67,7 @@
                                     </div>
                                     <!-- Phone number input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="phone" type="text" placeholder="(123) 456-7890" th:field="*{phone}"/>
+                                        <input class="form-control" id="phone" type="text" pattern="[+]?\d{6,15}" title="0888123456 / +359888123456" placeholder="(123) 456-7890" th:field="*{phone}" required/>
                                         <label for="phone" th:text="#{register_phone}">Phone number</label>
                                         <small th:errors="*{phone}" class="text-danger">Phone number input errors!</small>
                                     </div>

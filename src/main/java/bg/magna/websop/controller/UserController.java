@@ -156,8 +156,8 @@ public class UserController {
         }
 
         String userId = userService.getUserByEmail(userDetails.getUsername()).getId();
-        userService.editUserEmail(userData, userDetails.getUsername());
-        userHelperService.updateAuthentication(userId);
+        userService.editUserEmail(userData, userId);
+
         return "redirect:/";
     }
 
@@ -179,9 +179,7 @@ public class UserController {
         UserEntity user = userService.getUserByEmail(userHelperService.getCurrentUserDetails().getUsername());
 
         if(bindingResult.hasErrors()) {
-//            userPasswordData = new UserPasswordDTO(user.getEmail());
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordData", bindingResult);
-//            redirectAttributes.addFlashAttribute("userPasswordData", userPasswordData);
             return "redirect:/users/edit/password";
         }
 
@@ -195,8 +193,7 @@ public class UserController {
             return "redirect:/users/edit/password";
         }
 
-        userService.editUserPassword(userPasswordData, user.getEmail());
-        userHelperService.updateAuthentication(user.getId());
+        userService.editUserPassword(userPasswordData, user.getId());
 
         return "redirect:/";
     }
