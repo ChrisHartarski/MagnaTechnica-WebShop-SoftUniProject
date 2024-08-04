@@ -31,7 +31,7 @@ public interface UserService {
 
     UserDTO getCurrentUserData(String email);
 
-    void editUserData(EditUserDTO userData, String userEmail);
+    void editUserData(EditUserDTO userData, String userId);
 
     void editUserEmail(UserEmailDTO userData, String userId);
 

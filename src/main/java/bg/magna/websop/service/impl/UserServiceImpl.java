@@ -100,8 +100,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserData(EditUserDTO userData, String userEmail) {
-        UserEntity user = getUserByEmail(userEmail);
+    public void editUserData(EditUserDTO userData, String userId) {
+        UserEntity user = getUserById(userId);
         modelMapper.map(userData, user);
         user.setCompany(companyService.getCompanyByName(userData.getCompanyName()));
         saveUserToDB(user);

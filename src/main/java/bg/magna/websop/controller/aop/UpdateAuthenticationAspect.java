@@ -17,7 +17,8 @@ public class UpdateAuthenticationAspect {
     }
 
     @Pointcut("execution(* bg.magna.websop.service.impl.UserServiceImpl.editUserEmail(..))" +
-            "|| execution(* bg.magna.websop.service.impl.UserServiceImpl.editUserPassword(..))")
+            "|| execution(* bg.magna.websop.service.impl.UserServiceImpl.editUserPassword(..))" +
+            "|| execution(* bg.magna.websop.service.impl.UserServiceImpl.editUserData(..))")
     void onUpdateEmailOrPasswordPointcut() {}
 
     @After("onUpdateEmailOrPasswordPointcut()")

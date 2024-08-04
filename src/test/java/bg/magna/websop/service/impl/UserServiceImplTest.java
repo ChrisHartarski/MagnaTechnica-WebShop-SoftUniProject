@@ -265,12 +265,12 @@ public class UserServiceImplTest {
     @Test
     void testEditUserData() {
         EditUserDTO testEditUserDTO = new EditUserDTO("newFirstName", "newLastName", "someCompany", "newPhone");
-        when(userRepository.findByEmail(TEST_USER_1.getEmail())).thenReturn(Optional.of(TEST_USER_1));
+        when(userRepository.findById(TEST_USER_1.getId())).thenReturn(Optional.of(TEST_USER_1));
 
         Company expectedCompany = new Company("someCompany", "BG123456789", "address", "phone", "email");
         when(companyService.getCompanyByName(testEditUserDTO.getCompanyName())).thenReturn(expectedCompany);
 
-        toTest.editUserData(testEditUserDTO, TEST_USER_1.getEmail());
+        toTest.editUserData(testEditUserDTO, TEST_USER_1.getId());
         verify(userRepository).saveAndFlush(userCaptor.capture());
         UserEntity actual = userCaptor.getValue();
 

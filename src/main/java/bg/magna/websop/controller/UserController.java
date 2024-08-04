@@ -123,7 +123,7 @@ public class UserController {
         }
 
         String userId = userService.getUserByEmail(userDetails.getUsername()).getId();
-        userService.editUserData(userData, userDetails.getUsername());
+        userService.editUserData(userData, userId);
         userHelperService.updateAuthentication(userId);
         return "redirect:/";
     }
