@@ -163,12 +163,7 @@ public class UserController {
     }
 
     @GetMapping("/edit/password")
-    public String viewEditUserPassoword(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-
-        UserEntity user = userService.getUserByEmail(userDetails.getUsername());
-        UserPasswordDTO userPasswordDTO = new UserPasswordDTO(user.getEmail());
-        model.addAttribute("userPasswordData", userPasswordDTO);
-
+    public String viewEditUserPassoword() {
         return "edit-user-password";
     }
 
@@ -181,6 +176,7 @@ public class UserController {
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordData", bindingResult);
+            redirectAttributes.addFlashAttribute("userPasswordData", new UserPasswordDTO());
             return "redirect:/users/edit/password";
         }
 

@@ -56,7 +56,7 @@ public class BrandServiceImpl implements BrandService {
             addBrand("Manitou", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Logo_Manitou_Group.png?20171005085211");
             addBrand("Friuli", "https://www.agricolmeccanica.it/wp-content/uploads/2020/11/FRIULI-logo-corretto.png");
             addBrand("Akpil", "https://www.akpil.pl/wp-content/uploads/2024/04/logo-akpil-1975.jpg");
-            addBrand("Arbos", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Logo_ARBOS.png/330px-Logo_ARBOS.png");
+            addBrand("Arbos", "https://agrimar.pl/wp-content/uploads/2018/02/logo-arbos-www.png");
         }
     }
 }
